@@ -5,6 +5,45 @@
 ### 目录
 - [1.介绍js的基本数据类型](#1-介绍-js-的基本数据类型)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### 1.介绍js的基本数据类型.
 ```javascript
 js 一共有六种基本数据类型，分别是 Undefined、Null、Boolean、Number、String，还有在 ES6 中新增的 Symbol 和 BigInt 类型。

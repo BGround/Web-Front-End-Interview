@@ -5,7 +5,7 @@
 ### 目录
 
 * [1. DOCTYPE 的作用是什么？](#1-doctype-的作用是什么)
-* [2. 关于<!doctype html> 和 <meta>](#2-关于<!doctype html>-和-<meta>)
+* [2. 关于DOCTYPE html和meta](#2-关于DOCTYPE-html和meta)
 
 #### 1. DOCTYPE 的作用是什么？
    
@@ -28,7 +28,7 @@
    档中允许的属性以及一些规则。而 html5 不再基于 SGML 了，所以不再需要使用 DTD。
    ```
    
-#### 2. 关于<!doctype html> 和 <meta> 
+#### 2. 关于DOCTYPE html和meta 
    ```
   <!DOCTYPE html>  H5标准声明，使用 HTML5 doctype，不区分大小写
   <head lang=”en”> 标准的 lang 属性写法

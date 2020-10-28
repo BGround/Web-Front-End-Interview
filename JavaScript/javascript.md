@@ -48,7 +48,7 @@ BigInt 是一种数字类型的数据，它可以表示任意精度格式的整�
 var es = 'ES6';
 ```
 const需要注意的点
-1. const不允许重复声明，var可以
+###### 1. const不允许重复声明，var可以
 ```javascript
 var str = 'es6';
 var str = 'es2015';
@@ -60,12 +60,12 @@ const es = 'es2015';
 console.log(es);    
 //Uncaught SyntaxError: Identifier 'es' has already been declared
 ```
-2.const不属于顶层对象window,var可以
+###### 2.const不属于顶层对象window,var可以
 ```javascript
 const str = 'es6';
 console.log(window.str);   //undefined
 ```
-3.不存在变量提升
+###### 3.不存在变量提升
 ```javascript
 console.log(str);
 const str = 'es2015';  
@@ -75,14 +75,14 @@ console.log(str);               var str;
 var str = 'es2015';    =>       console.log(str);
                                 str = 'es6';    
 ```
-4.暂时性死区,和变量先声明后使用本质没有区别？
+###### 4.暂时性死区,和变量先声明后使用本质没有区别？
 ```javascript
 if(true) {
     console.log(str);
     const str = 'es6';
 }
 ```
-5.块级作用域
+###### 5.块级作用域
 ```javascript
 if(true) {
     const str = 'es6';
@@ -90,8 +90,8 @@ if(true) {
 console.log(str);
 //1_const.html:57 Uncaught ReferenceError: str is not defined at 1_const.html:57
 ```
-const可以修改变量的本质
-上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
+###### const可以修改变量的本质
+###### 上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
 ```javascript
 const esObj = {
     name: 'es6',

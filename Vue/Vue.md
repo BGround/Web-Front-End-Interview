@@ -2,7 +2,7 @@
 
 ### 目录
 
-* [1. vm.data调用问题？](#1-vmdata调用问题)
+* [1. vm.data调用问题？](#1-vm-data调用问题)
 *
 *
 *
@@ -24,7 +24,7 @@
 
 
 
-#### 1. vmdata调用问题？
+#### 1. vm.data调用问题？
 ```javascript
 // 我们的数据对象
 var data = { a: 1 }

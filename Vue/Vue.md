@@ -73,8 +73,8 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
     </div>
 </template>
 ```
-<font color='red'> template标签中不能使用v-show </font>
 
+<font color=red size=72>template标签中不能使用v-show</font>
 
 
 

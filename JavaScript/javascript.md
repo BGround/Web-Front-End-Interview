@@ -48,7 +48,7 @@ BigInt 是一种数字类型的数据，它可以表示任意精度格式的整�
 var es = 'ES6';
 ```
 const需要注意的点
-###### 1. const不允许重复声明，var可以
+###### const不允许重复声明，var可以
 ```javascript
 var str = 'es6';
 var str = 'es2015';
@@ -60,12 +60,12 @@ const es = 'es2015';
 console.log(es);    
 //Uncaught SyntaxError: Identifier 'es' has already been declared
 ```
-###### 2.const不属于顶层对象window,var可以
+###### const不属于顶层对象window,var可以
 ```javascript
 const str = 'es6';
 console.log(window.str);   //undefined
 ```
-###### 3.不存在变量提升
+###### 不存在变量提升
 ```javascript
 console.log(str);
 const str = 'es2015';  
@@ -75,14 +75,14 @@ console.log(str);               var str;
 var str = 'es2015';    =>       console.log(str);
                                 str = 'es6';    
 ```
-###### 4.暂时性死区,和变量先声明后使用本质没有区别？
+###### 暂时性死区,和变量先声明后使用本质没有区别？
 ```javascript
 if(true) {
     console.log(str);
     const str = 'es6';
 }
 ```
-###### 5.块级作用域
+###### 块级作用域
 ```javascript
 if(true) {
     const str = 'es6';
@@ -105,3 +105,6 @@ const arr = ['es6', 'es7', 'es8'];
 arr[0] = 'es2015';
 console.log(arr);
 ```
+###### let定义的变量，只能在块作用域里访问，不能跨块作用域访问，也不能跨函数作用域访问,
+###### var定义的变量，可以跨块作用域访问, 不能跨函数作用域访问,
+###### const用来定义常量，创建时必须赋值，只能在块作用域里访问，并且不能修改。

@@ -65,6 +65,9 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
     </div>
 </template>
 ```
+
+<font color=red>template标签中不能使用v-show
+
 有时候,不需要这外层的 div ，可以采用下面 的方法，在 <template>标签上使用 v-for来循环
 ```javascript
 <template>
@@ -74,7 +77,7 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 </template>
 ```
 
-<font color=red>template标签中不能使用v-show
+
 
 
 

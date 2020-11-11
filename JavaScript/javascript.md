@@ -154,14 +154,50 @@ bar(); // 2;
 所以只能在全局作用域中找a,输出结果为2，而非bar作用域中的a。如果js采用的时动态作用域，那么foo在bar中调用，就会先在bar中查询a,输出为3。*
 
 > ES6中let为javascript添加了块级作用域，
+
 > 函数作用域：变量在定义的函数内及嵌套的子函数内处处可见；
+
 > 块级函数域：变量在离开定义的块级代码后马上被回收。
     
 **[:arrow_up: 返回目录](#目录)**
 
 #### 4. 说说对于闭包的理解
-闭包是指能够访问其他作用域自由变量的函数，即使该作用域已经销毁，理论上说在Javascript中Function都是闭包
+闭包是指能够访问其他作用域自由变量的函数，即使该作用域已经销毁，理论上说在Javascript中Function都是闭包，
+闭包无非满足以下两点：
+>闭包首先得是一个函数。
 
+>闭包能访问外部函数作用域中的自由变量，即使外部函数上下文已销毁。
+```javascript
+var name = "听风是风";
+var obj = {
+    name: "行星飞行",
+    sayName: function () {
+        return function () {
+            console.log(this.name);
+        };
+    }
+};
+obj.sayName()(); // 听风是风
+```
+** 这里主要涉及到函数的作用域和闭包的this指向问题**
+> 函数作用域在定义时就已经确定了，而不是调用时确定
+
+> this在最终调用时才确定，而不是定义时确定
+```javascript
+var name = "听风是风";
+var obj = {
+    name: "行星飞行",
+    sayName: function () {
+        var that = this;
+        return function () {
+            console.log(that.name);
+        };
+    }
+};
+obj.sayName()(); // 听风是风
+```
+
+参考链接：《[一篇文章看懂JS闭包，都要2020年了，你怎么能还不懂闭包？](https://www.cnblogs.com/echolun/p/11897004.html)》
 
 **[:arrow_up: 返回目录](#目录)**
 

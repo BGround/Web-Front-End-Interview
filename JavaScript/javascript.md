@@ -9,7 +9,7 @@
 - [4.说说对于闭包的理解](#4-说说对于闭包的理解)
 - [5.JS的执行上下文](#5-JS的执行上下文)
 - [6.变量提升和函数声明提前](#6-变量提升和函数声明提前)
--
+- [7.深拷贝和浅拷贝的理解](#7-深拷贝和浅拷贝的理解)
 -
 -
 -
@@ -198,6 +198,8 @@ var obj = {
 };
 obj.sayName()(); // 听风是风
 ```
+##### 闭包的用途
+可以节流防抖，模拟私有属性和工厂函数等
 
 参考链接：《[一篇文章看懂JS闭包，都要2020年了，你怎么能还不懂闭包？](https://www.cnblogs.com/echolun/p/11897004.html)》
 
@@ -243,3 +245,40 @@ function fn() {
 }
 ```
 **[:arrow_up: 返回目录](#目录)**
+
+#### 7. 深拷贝和浅拷贝的理解
+深拷贝(deep clone)其实是针对引用对象类型来说的，要介绍深浅拷贝，得站在基本类型数据与引用类型数据存储区别上去理解。事实上基本类型，比如数字，字符串，JavaScript都没提供可以修改它们的方法，正因为不可变性，基本类型数据存放在栈中。
+
+而对象就不一样了，比如数组可以增加元素，对象也可以添加属性，删除属性。对象大小不确定，所以我们声明一个对象，对象的key因为是基本类型（不考虑map结构的情况），所以key会存在栈中，而值是对象，所以放在堆中。这就导致了一个问题，当我们拷贝一个对象时，其实拷贝的是指向堆中value的指针，这也导致其中一方修改了对象值，会影响另一个对象。
+
+而对于对象的深拷贝实现，乞丐版，JSON的两个方法，缺点是不能拷贝函数，undefined等。好一点可以递归层层遍历拷贝，或者有其它三方拷贝。
+```javascript
+//递归遍历实现
+function deepClone(obj) {
+	let objClone = Array.isArray(obj)? [] : {}
+	if(obj && typeof obj === "object") {
+		for(key in obj) {
+			if(obj.hasOwnPropety(key)) {
+				if(obj[key] && typeof obj[key] === "object") {
+					objClone[key] = deepClone(obj[key])
+				} else {
+					objClone[key] = obj[key]
+				}
+			}
+		}
+	}
+	return objClone
+}
+
+//JSON的stringify和parse,
+//这个原理是先利用JSON.stringify()将对象转变成基本数据类型，然后使用了基本类型的拷贝方式，再利用JSON.parse()将这个字符串还原成一个对象，达到了深拷贝的目的
+function deepClone(obj) {
+	let tmp = JSON.stringify(obj)
+	let objClone = JSON.parse(tmp)
+	return objClone
+}
+```
+**[:arrow_up: 返回目录](#目录)**
+
+
+

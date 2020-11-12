@@ -4,7 +4,7 @@
 
 ### 目录
 - [1.介绍js的基本数据类型](#1-介绍js的基本数据类型)
-- [2.const与var和let的区别](#2-const与var和let的区别)
+- [2.const与let和var的区别](#2-const与let和var的区别)
 - [3.说下你理解的作用域和作用域链](#3-说下你理解的作用域和作用域链)
 - [4.说说对于闭包的理解](#4-说说对于闭包的理解)
 - [5.JS的执行上下文](#5-JS的执行上下文)
@@ -44,57 +44,59 @@ BigInt 是一种数字类型的数据，它可以表示任意精度格式的整�
 ```
 **[:arrow_up: 返回目录](#目录)**
 
-#### 2. const与var和let的区别
-常量：只能取值不能赋值，就是只读不写  
+#### 2. const与let和var的区别
+**let和var声明的是变量，const声明的是常量 **
+常量：只能取值不能赋值，就是只读不写   
 常量的声明：
 ```javascript
 var es = 'ES6';
 ```
-const需要注意的点
-###### const不允许重复声明，var可以
+let和var的区别
+###### let不允许重复声明，var可以
 ```javascript
 var str = 'es6';
 var str = 'es2015';
 console.log(str);
 
 
-const es = 'es6';
-const es = 'es2015';
+let es = 'es6';
+let es = 'es2015';
 console.log(es);    
 //Uncaught SyntaxError: Identifier 'es' has already been declared
 ```
-###### const不属于顶层对象window,var可以
+###### let不属于顶层对象window,var可以
 ```javascript
-const str = 'es6';
+let str = 'es6';
 console.log(window.str);   //undefined
 ```
 ###### 不存在变量提升[5.JS的执行上下文](#JS的执行上下文)
 ```javascript
 console.log(str);
-const str = 'es2015';  
-//Uncaught ReferenceError: Cannot access 'str' before initialization at 1_const.html:46
+let str = 'es2015';  
+//Uncaught ReferenceError: Cannot access 'str' before initialization
 
 console.log(str);               var str;
 var str = 'es2015';    =>       console.log(str);
                                 str = 'es6';    
+//结果是undefined，具体细节参照执行上下文分析								
 ```
 ###### 暂时性死区,和变量先声明后使用本质没有区别？
 ```javascript
 if(true) {
     console.log(str);
-    const str = 'es6';
+    let str = 'es6';
 }
 ```
 ###### 块级作用域
 ```javascript
 if(true) {
-    const str = 'es6';
+    let str = 'es6';
 }
 console.log(str);
-//1_const.html:57 Uncaught ReferenceError: str is not defined at 1_const.html:57
+//Uncaught ReferenceError: str is not defined
 ```
-###### const可以修改变量的本质
-###### 上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
+###### let的特性const都有，不能重复声明、不存在变量提升、存在块级作用域也有暂时性死区，唯一的区别const声明常量，一旦声明无法修改。
+###### 但是有一点特别注意，上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
 ```javascript
 const esObj = {
     name: 'es6',
@@ -110,7 +112,7 @@ console.log(arr);
 ```
 ###### let定义的变量，只能在块作用域里访问，不能跨块作用域访问，也不能跨函数作用域访问,ES6新增的命令
 ###### var定义的变量，可以跨块作用域访问, 不能跨函数作用域访问,
-###### const用来定义常量，创建时必须赋值，只能在块作用域里访问，并且不能修改。
+###### const用来定义常量，创建时必须赋值，只能在块作用域里访问，并且不能修改引用数据类型的指向地址，但是可以修改引用数据指向地址内的数据。
 **[:arrow_up: 返回目录](#目录)**
 
 #### 3. 说下你理解的作用域和作用域链

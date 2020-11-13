@@ -10,7 +10,7 @@
 - [5.JS的执行上下文](#5-JS的执行上下文)
 - [6.变量提升和函数声明提前](#6-变量提升和函数声明提前)
 - [7.深拷贝和浅拷贝的理解](#7-深拷贝和浅拷贝的理解)
-- [8.JSON.stringify()和JSON.parse()的作用和区别](#8-JSON.stringify和JSON.parse的作用和区别)
+- [8.JSON.stringify和JSON.parse的作用和区别](#8-JSON.stringify和JSON.parse的作用和区别)
 - 
 -
 -

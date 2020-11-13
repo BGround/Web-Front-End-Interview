@@ -11,8 +11,8 @@
 - [6.变量提升和函数声明提前](#6-变量提升和函数声明提前)
 - [7.深拷贝和浅拷贝的理解](#7-深拷贝和浅拷贝的理解)
 - [8.理解JSON的stringify和parse](#8-理解JSON的stringify和parse)
-- [9.浏览器的缓存](#9-浏览器的缓存)
--
+- [9.浏览器的缓存localStorage和sessionStorage](#9-浏览器的缓存)
+- [10.this指向的问题](#10-this指向的问题)
 -
 -
 -
@@ -367,5 +367,10 @@ let  a = getLocalStorage('demo');//[1,2,3]
 >但是不同页面或标签页间无法共享sessionStorage的信息。这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
 
 ![storage](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/cookie-sessionStoge-LocalStorage.png)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 10. this指向的问题
+
 
 **[:arrow_up: 返回目录](#目录)**

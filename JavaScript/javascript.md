@@ -10,8 +10,8 @@
 - [5.JS的执行上下文](#5-JS的执行上下文)
 - [6.变量提升和函数声明提前](#6-变量提升和函数声明提前)
 - [7.深拷贝和浅拷贝的理解](#7-深拷贝和浅拷贝的理解)
-- [8.JSON.stringify和JSON.parse的作用和区别](#8-JSON.stringify和JSON.parse的作用和区别)
-- 
+- [8.理解JSON的stringify和parse](#8-理解JSON的stringify和parse)
+- [9.浏览器的缓存](#9-浏览器的缓存)
 -
 -
 -
@@ -280,7 +280,7 @@ function deepClone(obj) {
 ```
 **[:arrow_up: 返回目录](#目录)**
 
-#### 8. JSON.stringify和JSON.parse的作用和区别
+#### 8. 理解JSON的stringify和parse
 上一问学习过这两个方法,现在再深入学习一下，
 ###### MDN中
 > JSON.stringify() 方法将一个 JavaScript 对象或值转换为 JSON 字符串...
@@ -313,7 +313,9 @@ console.log(JSON.parse(b));// 报错
 ![SyntaxError](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/JSON-SyntaxError.png)
 
 JSON.stringify的作用
-> 判断数组是否包含某对象，或者判断对象是否相等。
+> 判断数组是否包含某对象，或者判断对象是否相等(慎用，undefined、任意的函数以及 symbol 值，
+> 在序列化过程中会被忽略（出现在非数组对象的属性值中时）或者被转换成 null（出现在数组中时）。
+> 函数、undefined 被单独转换时，会返回 undefined，如JSON.stringify(function(){}) or JSON.stringify(undefined).)
 ```javascript
 //判断数组是否包含某对象
 let data = [
@@ -348,7 +350,22 @@ let  a = getLocalStorage('demo');//[1,2,3]
 例子上文已经说过
 
 参考链接：《[json.stringify()的妙用，json.stringify()与json.parse()的区别](https://www.cnblogs.com/echolun/p/9631836.html)》
-
+《[MDN中关于JSON.stringify的描述](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)》
 **[:arrow_up: 返回目录](#目录)**
 
+#### 9. 浏览器的缓存
+这里指的是LocalStorage和SessionStorage,主要是从使用和区别去理解这两个缓存
 
+使用方面：
+>他们都是以key/value的形式保存在浏览器的端中，
+
+区别方面：
+>localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
+
+>sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
+>不同浏览器无法共享localStorage或sessionStorage中的信息。相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），
+>但是不同页面或标签页间无法共享sessionStorage的信息。这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
+
+![storage](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/cookie-sessionStoge-LocalStorage.png)
+
+**[:arrow_up: 返回目录](#目录)**

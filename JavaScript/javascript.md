@@ -10,8 +10,8 @@
 - [5.JS的执行上下文](#5-JS的执行上下文)
 - [6.变量提升和函数声明提前](#6-变量提升和函数声明提前)
 - [7.深拷贝和浅拷贝的理解](#7-深拷贝和浅拷贝的理解)
--
--
+- [8.JSON.stringify()和JSON.parse()的作用和区别](#8-JSON.stringify和JSON.parse的作用和区别)
+- 
 -
 -
 -
@@ -280,5 +280,75 @@ function deepClone(obj) {
 ```
 **[:arrow_up: 返回目录](#目录)**
 
+#### 8. JSON.stringify和JSON.parse的作用和区别
+上一问学习过这两个方法,现在再深入学习一下，
+###### MDN中
+> JSON.stringify() 方法将一个 JavaScript 对象或值转换为 JSON 字符串...
+一句话就是JSON.stringify()将值转换为相应的JSON格式：
+```javascript
+JSON.stringify({});                        // '{}'
+JSON.stringify(true);                      // 'true'
+JSON.stringify("foo");                     // '"foo"'
+JSON.stringify([1, "false", false]);       // '[1,"false",false]'
+JSON.stringify({ x: 5 });                  // '{"x":5}'
+```
+
+>JSON.parse() 方法用来解析JSON字符串，构造由字符串描述的JavaScript值或对象。提供可选的 reviver 函数用以在返回之前对所得到的对象执行变换(操作)。
+一句话就是JSON.parse()将JSON文本转成对应的对象/值
+```javascript
+JSON.parse('{}');              // {}
+JSON.parse('true');            // true
+JSON.parse('"foo"');           // "foo"
+JSON.parse('[1, 5, "false"]'); // [1, 5, "false"]
+JSON.parse('null');            // null
+```
+
+注意：若传入的字符串不符合 JSON 规范，则会抛出 SyntaxError 异常，即你的字符串必须符合JSON格式，键值都必须使用双引号包裹。
+```javascript
+let a = '["1","2"]';
+let b = "['1','2']";
+console.log(JSON.parse(a));// Array [1,2]
+console.log(JSON.parse(b));// 报错
+```
+![SyntaxError](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/JSON-SyntaxError.png)
+
+JSON.stringify的作用
+> 判断数组是否包含某对象，或者判断对象是否相等。
+```javascript
+//判断数组是否包含某对象
+let data = [
+    {name:'echo'},
+    {name:'听风是风'},
+    {name:'天子笑'},
+    ],
+    val = {name:'天子笑'};
+JSON.stringify(data).indexOf(JSON.stringify(val)) !== -1;//true
+
+//判断两数组/对象是否相等
+let a = [1,2,3],
+    b = [1,2,3];
+JSON.stringify(a) === JSON.stringify(b);//true
+```
+> 让localStorage/sessionStorage可以存储对象
+```javascript
+//存
+function setLocalStorage(key,val){
+    window.localStorage.setItem(key,JSON.stringify(val));
+};
+//取
+function getLocalStorage(key){
+    let val = JSON.parse(window.localStorage.getItem(key));
+    return val;
+};
+//测试
+setLocalStorage('demo',[1,2,3]);
+let  a = getLocalStorage('demo');//[1,2,3]
+```
+> 实现对象深拷贝
+例子上文已经说过
+
+参考链接：《[json.stringify()的妙用，json.stringify()与json.parse()的区别](https://www.cnblogs.com/echolun/p/9631836.html)》
+
+**[:arrow_up: 返回目录](#目录)**
 
 

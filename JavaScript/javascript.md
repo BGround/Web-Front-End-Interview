@@ -351,6 +351,7 @@ let  a = getLocalStorage('demo');//[1,2,3]
 
 参考链接：《[json.stringify()的妙用，json.stringify()与json.parse()的区别](https://www.cnblogs.com/echolun/p/9631836.html)》
 《[MDN中关于JSON.stringify的描述](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)》
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### 9. 浏览器的缓存

@@ -13,8 +13,9 @@
 - [8.理解JSON的stringify和parse](#8-理解JSON的stringify和parse)
 - [9.浏览器的缓存localStorage和sessionStorage](#9-浏览器的缓存)
 - [10.this指向的问题](#10-this指向的问题)
--
--
+- [11.原型和原型链](#11-原型和原型链)
+- [12.constuctor typeof和instanceof](#12-constuctor-typeof和instanceof)
+- [1*.Object有哪些属性方法](#1*-Object有哪些属性方法)
 -
 -
 -
@@ -374,3 +375,84 @@ let  a = getLocalStorage('demo');//[1,2,3]
 
 
 **[:arrow_up: 返回目录](#目录)**
+
+#### 11. 原型和原型链
+JavaScript中万物皆对象，且对象皆可通过__proto__属性访问创建自己构造函数的原型对象，说直白点，原型就是一个包含了诸多属性方法的对象,也就是**prototype**, 原型对象的__proto__指向构造函数Object()的原型。
+当一个对象访问某个属性时，它会先查找自己有没有，如果没有就顺着__proto__往上查找创建自己构造函数的原型有没有，这个过程就是原型链，原型链的顶端是null。
+**说明**
+①、出undefined和null的基本数据类型+引用数据类型都是对象, 基本数据类型中, 都有所谓的包装对象, `'a'.__proto__ === String.prototype`
+②、对象都有__proto__, 但是只有函数有prototype
+③、__proto__是一个访问器属性,相当于C++中的指针，在不修改构造函数prototype前提下，所有实例__proto__属性中的constructor属性都指向创建自己的构造函数
+④、在不修改构造函数原型的前提下, 实例的__proto__与构造函数的prototype是对等的关系, `fn.__proto__ === Function.prototype`
+
+
+参考: 《[JS 疫情宅在家，学习不能停，七千字长文助你彻底弄懂原型与原型链](https://www.cnblogs.com/echolun/p/12321869.html#top)》
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 12. constructor typeof和instanceof
+在判断类型上, 这三者都能做到, constructor是原型对象的一个属性, 通过本身, 也能做到一个类型判断，那么三者有和区别呢:
+typeof返回的是一个字符串,MDN中定义:表示未经计算的操作数的类型, 语法是`typeof operand`. 主要判断的是基本数据类型, 引用数据类型和包装对象就没法准确判断
+```javascript
+ typeof('1') === 'string'  //true
+ typeof(Array) === 'function' //true
+```
+constructor返回的是创建实例的构造函数, 查找的是原型链的上一层;
+instanceof返回的也是一个布尔值,MDN中定义:用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上,语法是`object instanceof constructor`. 主要用于判断引用数据类型
+```javascript
+var a = 2;
+console.log(a instanceof Number);  //false, 这个a不是一个Object
+console.log(a.constructor === Number); //true  a.constructor === Function就是false
+```
+这个转换一下
+```javascript
+var a = new Number(2);(或者var a = new Object(2))
+console.log(a instanceof Number); // true
+console.log(a.constructor === Number); // true
+```
+
+#### 1*. Object有哪些属性方法
+Object 构造函数创建一个对象包装器,可以通过**new Object()**, **Object.create()方法**，或者使用**字面量标识**(初始化标记)[初始化对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer)。
+###### 属性
+> Object.prototype.__proto__
+__proto__属性是一个访问器属性(一个setter和一个getter函数), 暴露了通过它访问对象内部的[[prototype]] {一个对象或null},注意：因为修改属性会引起性能问题，不推荐使用
+```javascript
+let Circle = function () {};
+let shape = {};
+let circle = new Circle();
+ 
+// 设置该对象的原型链引用
+// 过时且不推荐使用的。这里只是举个例子，尽量不要在生产环境中这样做。
+shape.__proto__ = circle;
+
+// 判断该对象的原型链引用是否属于circle
+console.log(shape.__proto__ === circle); // true
+```
+
+>Object.prototype.constructor
+返回创建实例对象的 Object 构造函数的引用。注意，此属性的值是对函数本身的引用，而不是一个包含函数名称的字符串。对原始类型来说，如1，true和"test"，该值只可读。
+```javascript
+```
+
+###### 方法
+> Object.create
+Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
+```javascript
+const person = {
+  isHuman: false,
+  printIntroduction: function() {
+    console.log(`My name is ${this.name}. Am I human? ${this.isHuman}`);
+  }
+};
+
+const me = Object.create(person);
+
+me.name = 'Matthew'; // "name" is a property set on "me", but not on "person"
+me.isHuman = true; // inherited properties can be overwritten
+
+me.printIntroduction();
+// expected output: "My name is Matthew. Am I human? true"
+```
+
+**[:arrow_up: 返回目录](#目录)**
+

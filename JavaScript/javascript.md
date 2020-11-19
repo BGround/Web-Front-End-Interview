@@ -14,7 +14,10 @@
 - [9.浏览器的缓存localStorage和sessionStorage](#9-浏览器的缓存)
 - [10.this指向的问题](#10-this指向的问题)
 - [11.原型和原型链](#11-原型和原型链)
-- [12.constuctor typeof和instanceof](#12-constuctor-typeof和instanceof)
+- [12.constuctor和typeof以及instanceof](#12-constuctor和typeof以及instanceof)
+- [13.手动实现一个new方法](#13-手动实现一个new方法)
+- [14.js实现Call和Apply方法](#14-js实现Call和Apply方法)
+- [15.js实现bind方法](#15-js实现bind方法)
 - [1*.Object有哪些属性方法](#1*-Object有哪些属性方法)
 -
 -
@@ -373,17 +376,31 @@ let  a = getLocalStorage('demo');//[1,2,3]
 **[:arrow_up: 返回目录](#目录)**
 
 #### 10. this指向的问题
+在javascript中对象是通过构造函数新建的, 在调用函数的时候, 除了声明的形参, 每个函数还接收两个附加的参数: this和arguments.
 
+this的取值取决于调用模式: **方法调用模式**; **函数调用模式**; **构造函数调用模式**; **call、apply和bind调用模式**
+
+对应的this绑定方式是: **隐式绑定**; **默认绑定**; **new绑定**; **显示绑定**; 还有一种不同于上面的**箭头函数绑定方式**
+
+其中, new绑定和显示绑定没有可比性, 两者不能同时绑定
+>显示绑定 > 隐式绑定 > 默认绑定; new绑定 > 隐式绑定 > 默认绑定
+
+参照: 《[js 五种绑定彻底弄懂this，默认绑定、隐式绑定、显式绑定、new绑定、箭头函数绑定详解](https://www.cnblogs.com/echolun/p/11962610.html#top)》
 
 **[:arrow_up: 返回目录](#目录)**
 
 #### 11. 原型和原型链
 JavaScript中万物皆对象，且对象皆可通过__proto__属性访问创建自己构造函数的原型对象，说直白点，原型就是一个包含了诸多属性方法的对象,也就是**prototype**, 原型对象的__proto__指向构造函数Object()的原型。
 当一个对象访问某个属性时，它会先查找自己有没有，如果没有就顺着__proto__往上查找创建自己构造函数的原型有没有，这个过程就是原型链，原型链的顶端是null。
-**说明**
-①、出undefined和null的基本数据类型+引用数据类型都是对象, 基本数据类型中, 都有所谓的包装对象, `'a'.__proto__ === String.prototype`
+
+**说明**  
+
+①、出undefined和null的基本数据类型+引用数据类型都是对象, 基本数据类型中, 都有所谓的包装对象, `'a'.__proto__ === String.prototype`  
+
 ②、对象都有__proto__, 但是只有函数有prototype
+
 ③、__proto__是一个访问器属性,相当于C++中的指针，在不修改构造函数prototype前提下，所有实例__proto__属性中的constructor属性都指向创建自己的构造函数
+
 ④、在不修改构造函数原型的前提下, 实例的__proto__与构造函数的prototype是对等的关系, `fn.__proto__ === Function.prototype`
 
 
@@ -391,7 +408,7 @@ JavaScript中万物皆对象，且对象皆可通过__proto__属性访问创建�
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 12. constructor typeof和instanceof
+#### 12. constuctor和typeof以及instanceof
 在判断类型上, 这三者都能做到, constructor是原型对象的一个属性, 通过本身, 也能做到一个类型判断，那么三者有和区别呢:
 typeof返回的是一个字符串,MDN中定义:表示未经计算的操作数的类型, 语法是`typeof operand`. 主要判断的是基本数据类型, 引用数据类型和包装对象就没法准确判断
 ```javascript
@@ -411,6 +428,7 @@ var a = new Number(2);(或者var a = new Object(2))
 console.log(a instanceof Number); // true
 console.log(a.constructor === Number); // true
 ```
+**[:arrow_up: 返回目录](#目录)**
 
 #### 1*. Object有哪些属性方法
 Object 构造函数创建一个对象包装器,可以通过**new Object()**, **Object.create()方法**，或者使用**字面量标识**(初始化标记)[初始化对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer)。

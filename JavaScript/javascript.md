@@ -184,6 +184,9 @@ var obj = {
     }
 };
 obj.sayName()(); // 听风是风
+//这个可以改写成 
+var fn = obj.sayName();
+window.fn() // 所以this指向是window
 ```
 ** 这里主要涉及到函数的作用域和闭包的this指向问题**
 > 函数作用域在定义时就已经确定了，而不是调用时确定
@@ -202,6 +205,7 @@ var obj = {
 };
 obj.sayName()(); // 听风是风
 ```
+[面试题](https://github.com/BGround/Web-Front-End-Interview/issues/1)
 ##### 闭包的用途
 可以节流防抖，模拟私有属性和工厂函数等
 
@@ -382,8 +386,45 @@ this的取值取决于调用模式: **方法调用模式**; **函数调用模式
 
 对应的this绑定方式是: **隐式绑定**; **默认绑定**; **new绑定**; **显示绑定**; 还有一种不同于上面的**箭头函数绑定方式**
 
+下面来说说箭头函数, 箭头函数没有自己的this, 它的this是通过执行上下文确定的, 执行上下文分为全局上下文和函数上下文(eval不考虑), 
+```javascript
+//全局上下文
+var name = 'window'
+var obj1 = {
+    name: 'I am obj1',
+    fn2: () => console.log(this.name),
+}
+var obj2 = {
+    name: 'I am obj2'
+}
+
+obj1.fn2();    //window
+obj1.fn2.call(obj2);   //window
+
+//函数上下文
+var name = 'window'
+function Person(name) {
+	this.name = name
+	this.fn2 = () => console.log(this.name)
+}
+var obj1 = new Person("I am obj1")
+var obj2 = new Person("I am obj2")
+
+obj1.fn2(); //I am obj1
+obj1.fn2.call(obj2); // I am obj1
+```
+且一旦绑定无法通过call，apply或者bind再次改变箭头函数的this, 但是箭头函数的this也不是真的无法修改，我们知道箭头函数的this就像作用域继承一样从上层作用域找，
+因此我们可以修改外层函数this指向达到间接修改箭头函数this的目的。
+如函数上下文的例子中, 修改fn2函数this指向达到修改箭头函数this指向
+```javascript
+obj1.fn2(); //I am obj1
+obj2.fn2(); //I am obj2
+```
+
 其中, new绑定和显示绑定没有可比性, 两者不能同时绑定
 >显示绑定 > 隐式绑定 > 默认绑定; new绑定 > 隐式绑定 > 默认绑定
+
+[面试题](https://github.com/BGround/Web-Front-End-Interview/issues/1)
 
 参照: 《[js 五种绑定彻底弄懂this，默认绑定、隐式绑定、显式绑定、new绑定、箭头函数绑定详解](https://www.cnblogs.com/echolun/p/11962610.html#top)》
 

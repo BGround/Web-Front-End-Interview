@@ -16,9 +16,10 @@
 - [11.原型和原型链](#11-原型和原型链)
 - [12.constuctor和typeof以及instanceof](#12-constuctor和typeof以及instanceof)
 - [13.手动实现一个new方法](#13-手动实现一个new方法)
-- [14.js实现Call和Apply方法](#14-js实现Call和Apply方法)
-- [15.js实现bind方法](#15-js实现bind方法)
-- [1*.Object有哪些属性方法](#1*-Object有哪些属性方法)
+- [14.手动实现Call和Apply方法](#14-手动实现Call和Apply方法)
+- [15.手动实现bind方法](#15-手动实现bind方法)
+- [99.Object有哪些属性方法](#99-Object有哪些属性方法)
+- [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
 -
 -
@@ -471,7 +472,106 @@ console.log(a.constructor === Number); // true
 ```
 **[:arrow_up: 返回目录](#目录)**
 
-#### 1*. Object有哪些属性方法
+#### 13. 手动实现一个new方法
+new在MDN中时这样定义的
+>new 运算符创建一个用户定义的对象类型的实例或具有构造函数的内置对象的实例。
+
+`语法:
+new constructor[([arguments])],
+constructor
+一个指定对象实例的类型的类或函数。
+arguments
+一个用于被 constructor 调用的参数列表。`
+
+new的过程做了什么？ **new过程中会新建对象，此对象会继承构造器的原型与原型上的属性，最后它会被作为实例返回这样一个过程**
+```javascript
+// ES5构造函数
+let Parent = function (name, age) {
+    //1.创建一个新对象，赋予this，这一步是隐性的，
+    // let this = {};
+    //2.给this指向的对象赋予构造属性
+    this.name = name;
+    this.age = age;
+    //3.如果没有手动返回对象，则默认返回this指向的这个对象，也是隐性的
+    // return this;
+};
+const child = new Parent();
+```
+这个例子不是完美,它只描述了构造器属性是如何塞给实例，没说原型上的属性是如何给实例继承的
+
+手动实现：
+```javascript
+// 构造器函数
+let Parent = function (name, age) {
+    this.name = name;
+    this.age = age;
+};
+Parent.prototype.sayName = function () {
+    console.log(this.name);
+};
+//自己定义的new方法
+let newMethod = function (Parent, ...rest) {
+    // 1.以构造器的prototype属性为原型，创建新对象；
+    let child = Object.create(Parent.prototype);
+    // 2.将this和调用参数传给构造器执行
+    let result = Parent.apply(child, rest);
+    // 3.如果构造器没有手动返回对象，则返回第一步的对象
+    return typeof result  === 'object' ? result : child;
+};
+//创建实例，将构造函数Parent与形参作为参数传入
+const child = newMethod(Parent, 'echo', 26);
+child.sayName() //'echo';
+
+//最后检验，与使用new的效果相同
+child instanceof Parent//true
+child.hasOwnProperty('name')//true
+child.hasOwnProperty('age')//true
+child.hasOwnProperty('sayName')//false
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 14. 手动实现Call和Apply方法
+**call()方法的作用和apply()方法类似，都能改变this指向并执行函数，区别就是call()方法接受的是参数列表，而apply()方法接受的是一个参数数组**
+```javascript
+var fn = function (arg1, arg2) {
+    // do something
+};
+
+fn.call(this, arg1, arg2); // 参数散列
+fn.apply(this, [arg1, arg2]) // 参数使用数组包裹
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 15. 手动实现bind方法
+**bind()方法不同于call和apply，它在改变this的指向时，返回一个绑定函数，但是不会立即执行，返回的 boundFunction 的 this 指向无法再次通过bind、apply或 call 修改**
+```javascript
+let o1 = {
+    a: 1
+};
+let o2 = {
+    a: 2
+};
+let o3 = {
+    a: 3
+};
+
+function fn(b, c) {
+    console.log(this.a);
+};
+
+let fn1 = fn.bind(o1);
+let fn2 = fn1.bind(o2);
+let fn3 = fn2.bind(o3);
+fn3() // 1
+```
+此时打印fn1函数可以看到，它并不是一个普通的function，而是一个bound function，简称绑定函数：
+![](javascript_files/1.jpg)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 99. Object有哪些属性方法
 Object 构造函数创建一个对象包装器,可以通过**new Object()**, **Object.create()方法**，或者使用**字面量标识**(初始化标记)[初始化对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer)。
 ###### 属性
 > Object.prototype.__proto__
@@ -516,3 +616,52 @@ me.printIntroduction();
 
 **[:arrow_up: 返回目录](#目录)**
 
+
+#### 100. Array有哪些属性方法
+javascript中Array对象是用于构造数组的全局对象, 创建的方式有两种: **new Array()**、和 **通过字面量的方式**const arr = [1,2,...];
+##### 属性
+>Array.length
+数组的长度属性.在js中, Array.length是没有上界的,可以通过下标来给数组添加新的元素，不会发生越界错误
+```javascript
+var arr = [1,2,3]
+arr[arr.length] = 4
+arr  // [1,2,3,4]
+```
+后面的push方法要更加的方便完成这件事情
+
+#### 方法
+>Array.prototype.filter()
+为数组提供过滤功能,它会遍历数组的所有元素,并返回满足筛选条件元素组成的**新数组**,filter()不会修改原数组
+```javascript
+var arr = [1,2,3]
+var newArr = arr.filter(x => x%2 === 0) //[2]
+```
+
+filter()还可以配合Array.prototype.indexOf()去重
+```javascript
+var arr = [1,2,2,3,4,4,5]
+var newArr = arr.filter((x,index,self) => 
+	self.indexOf(x) === index //[1,2,3,4,5]
+)
+```
+
+>Array.prototype.indexOf()
+indexOf()方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1
+上面的例子解释一遍是：
+第一次循环，传入元素1，index(1)的索引为0，而此时1的索引本来就是0，OK，满足。
+
+第二次循环，传入元素2，index(2)的索引为1，而此时2的索引也是1，OK，也满足。
+
+第三次循环，传入元素2，index(2)的索引为1，而此时2的索引为2，OK，不满足，被PASS，这里就是巧妙的借用了indexOf始终查找到第一次出现的位置。
+...
+
+>Array.prototype.push()
+push方法将一个或多个元素添加到数组的末尾，**并返回原数组的新长度**
+```javascript
+var arr = ['a','b'];
+var val = [1,2,3]
+var len = arr.push(val) // 3
+console.log(arr) // ['a','b',[1,2,3]]
+```
+
+**[:arrow_up: 返回目录](#目录)**

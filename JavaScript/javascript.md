@@ -261,19 +261,29 @@ function fn() {
 
 而对象就不一样了，比如数组可以增加元素，对象也可以添加属性，删除属性。对象大小不确定，所以我们声明一个对象，对象的key因为是基本类型（不考虑map结构的情况），所以key会存在栈中，而值是对象，所以放在堆中。这就导致了一个问题，当我们拷贝一个对象时，其实拷贝的是指向堆中value的指针，这也导致其中一方修改了对象值，会影响另一个对象。
 
-而对于对象的深拷贝实现，乞丐版，JSON的两个方法，缺点是不能拷贝函数，undefined等。好一点可以递归层层遍历拷贝，或者有其它三方拷贝。
+而对于对象的深拷贝实现，乞丐版JSON的两个方法，缺点是不能拷贝函数，undefined等;好一点可以递归层层遍历拷贝，或者有其它三方拷贝。
 ```javascript
 //递归遍历实现
-function deepClone(obj) {
-	let objClone = Array.isArray(obj)? [] : {}
-	if(obj && typeof obj === "object") {
-		for(key in obj) {
-			if(obj.hasOwnPropety(key)) {
-				if(obj[key] && typeof obj[key] === "object") {
-					objClone[key] = deepClone(obj[key])
-				} else {
-					objClone[key] = obj[key]
-				}
+function deepClone(source) {
+	// 此实现只针对[]与{}，由于null的typeof类型也是object，特做过滤,因为typeof(null) === Object且null === null是true
+	function isObject(obj) {
+		return typeof(obj) === 'object' && obj !== null
+	}
+	//如果参数不是[]或者{},直接返回
+	if( !isObject(source)) {
+		return souece
+	}
+	//创建一个新对象,不是[]就是{}
+	let objClone = Array.isArray(source)? [] : {}
+	//遍历源对象，进行拷贝
+	for(key in source) {
+		//判断当前属性是否是自身属性
+		if(source.hasOwnPropety(key)) {
+			//判断当前值是否仍是对象
+			if(isObject(source[key])) {
+				objClone[key] = deepClone(source[key])
+			} else {
+				objClone[key] = source[key]
 			}
 		}
 	}

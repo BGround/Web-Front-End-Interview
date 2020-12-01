@@ -20,6 +20,7 @@
 - [15.手动实现bind方法](#15-手动实现bind方法)
 - [16.数组去重的方法](#16-数组去重的方法)
 - [17.javascript中高阶函数](#17-javascript中高阶函数)
+- [18.正则表达式和常用的正则表达式](#18-正则表达式和常用的正则表达式)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -623,9 +624,59 @@ var newArr = [...new Set(arr)]
 
 **[:arrow_up: 返回目录](#目录)**
 
+#### 18. 正则表达式和常用的正则表达式
+正则表达式是用于匹配字符串中字符组合的模式，正则表达式也是一个对象
+##### 创建方式
+①正则表达式字面量创建
+>const reg = /pattern/flags
+```javascript
+const re = /[a-b]/i
+```
+
+flags 	| 	描述
+------- | -------------
+g  		| global 全局的，匹配多次
+m  		| multiline 多行搜索 (^和$能匹配行结束符)
+i  		| ignoreCase 不区分大小写
+u  		| Unicode码的匹配模式
+y  		| 执行“粘性(sticky)”搜索,匹配从目标字符串的当前位置开始
+s  		| 允许 . 匹配换行符
+
+②构造函数方式创建
+>const reg = new RegExp("pattern",'flags')
+```javascript
+const re = new RegExp('[a-b]','i')
+```
+
+##### 方法
+exec() 
+
+*在一个指定字符串中执行一个搜索匹配，返回一个结果数组或 null. 类似String.prototype.match() 只会返回匹配到的结果*
+
+test()
+
+*方法执行一个检索，用来查看正则表达式与指定的字符串是否匹配。返回 true 或 false。*
+
+##### 常用的表达式
+```javascript
+// (1)手机号码正则
+var regex = /^1[345789]\d{9}$/g
+
+// (2)匹配 qq 号
+var regex = /^[1-9][0-9]{4,10}$/g
+
+// (3)匹配日期，如 yyyy-mm-dd 格式
+var regex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+
+// (4)匹配 16 进制颜色值
+var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
 #### 99. Object有哪些属性方法
 Object 构造函数创建一个对象包装器,可以通过**new Object()**, **Object.create()方法**，或者使用**字面量标识**(初始化标记)[初始化对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer)。
-###### 属性
+##### 属性
 > Object.prototype.__proto__
 __proto__属性是一个访问器属性(一个setter和一个getter函数), 暴露了通过它访问对象内部的[[prototype]] {一个对象或null},注意：因为修改属性会引起性能问题，不推荐使用
 ```javascript
@@ -646,7 +697,7 @@ console.log(shape.__proto__ === circle); // true
 ```javascript
 ```
 
-###### 方法
+##### 方法
 > Object.create
 Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
 ```javascript

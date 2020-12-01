@@ -19,6 +19,7 @@
 - [14.手动实现Call和Apply方法](#14-手动实现Call和Apply方法)
 - [15.手动实现bind方法](#15-手动实现bind方法)
 - [16.数组去重的方法](#16-数组去重的方法)
+- [17.javascript中高阶函数](#17-javascript中高阶函数)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -597,10 +598,28 @@ var newArr = arr.filter(function(el,index,arr){
 	return arr.indexOf(el) === index
 })
 ```
+
+>使用reduce
+```javascript
+let arr = [1,2,1,2,3,5,4,5,3,4,4,4,4];
+var newArr = arr.sort().reduce((init,curr) => {
+	if(init.length === 0 || init[init.length-1] !== curr) {
+		init.push(curr);
+	}
+	return init;
+},[])
+```
+
 ##### ES6
 ```javascript
 var newArr = [...new Set(arr)]
 ```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 17. javascript中高阶函数
+
+
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -654,6 +673,7 @@ me.printIntroduction();
 javascript中Array对象是用于构造数组的全局对象, 创建的方式有两种: **new Array()**、和 **通过字面量的方式**const arr = [1,2,...];
 ##### 属性
 >Array.length
+
 数组的长度属性.在js中, Array.length是没有上界的,可以通过下标来给数组添加新的元素，不会发生越界错误
 ```javascript
 var arr = [1,2,3]
@@ -664,6 +684,7 @@ arr  // [1,2,3,4]
 
 ##### 方法
 >Array.prototype.filter()
+
 为数组提供过滤功能,它会遍历数组的所有元素,并返回满足筛选条件元素组成的**新数组**,filter()不会修改原数组
 ```javascript
 var arr = [1,2,3]
@@ -679,6 +700,7 @@ var newArr = arr.filter((x,index,self) =>
 ```
 
 >Array.prototype.indexOf()
+
 indexOf()方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1
 上面的例子解释一遍是：
 第一次循环，传入元素1，index(1)的索引为0，而此时1的索引本来就是0，OK，满足。
@@ -689,6 +711,7 @@ indexOf()方法返回在数组中可以找到一个给定元素的第一个索�
 ...
 
 >Array.prototype.push()
+
 push方法将一个或多个元素添加到数组的末尾，**并返回原数组的新长度**
 ```javascript
 var arr = ['a','b'];
@@ -698,11 +721,18 @@ console.log(arr) // ['a','b',[1,2,3]]
 ```
 
 >Array.prototype.forEach()
+
 完整的遍历数组的方法，语法： `arr.forEach(function(element,index,arr),this)`,与for循环一样，forEach也属于完整遍历数组的方法，并会对数组每项元素执行提供的回调函数
+返回值是undefined
+
 element: 遍历的当前元素；
+
 index: 当前元素的索引；
+
 arr: 数组本身
+
 this: 回调函数中this指向
+
 
 下面的例子加深一下参数的理解，同时理解这句话，**forEach() 被调用时，不会改变原数组，也就是调用它的数组（尽管 callback 函数在被调用时可能会改变原数组）**
 ```javascript
@@ -716,4 +746,53 @@ arr.forEach(function(el,index,arr) {
 ```
 [面试题](https://github.com/BGround/Web-Front-End-Interview/issues/2)
 
+>Array.prototype.reduce()
+
+`reduce`为数组中的每一个元素依次执行`callback函数`，不包括数组中被删除或从未被赋值的元素，语法：
+`arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])`
+
+接受四个参数：
+
+accumulator 累计器
+
+currentValue 数组中正在处理的元素。
+
+*currentIndex 当前索引 可选*
+
+*array 数组 可选*
+
+```javascript
+let arr = [1,2,1,3,4]
+let newArr = arr.reduce(function(acc,curr) {
+	if(acc.indexOf(curr) === -1) {
+		acc.push(curr);
+	}
+	return acc  //返回值：arr数组每个元素执行的callback函数后返回的新数组
+},[]);
+```
+
+>Array.prototype.map()
+
+一个由原数组每个元素执行回调函数的高阶方法, 返回值是执行callback函数后组成的`新数组`,map()不改变原数组, 但是callback函数可能修改
+
+`var new_array = arr.map(function callback(currentValue[, index[, array]]) {
+ // Return element for new_array 
+}[, thisArg])`
+
+**callback 函数会被自动传入三个参数：数组元素，元素索引，原数组本身。**
+
+[面试题](https://github.com/BGround/Web-Front-End-Interview/issues/4)
+
+```javascript
+var map = Array.prototype.map
+var a = map.call("Hello World", function(x) { 
+  return x.charCodeAt(0); 
+})
+// a的值为[72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]
+```
+
 **[:arrow_up: 返回目录](#目录)**
+
+
+
+

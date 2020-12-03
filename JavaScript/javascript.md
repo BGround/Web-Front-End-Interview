@@ -493,7 +493,7 @@ console.log(a.constructor === Number); // true
 思考题：
 ```javascript
 typeof(null) // ?
-null instal Object // ?
+null instanceof Object // ?
 ```
 **[:arrow_up: 返回目录](#目录)**
 

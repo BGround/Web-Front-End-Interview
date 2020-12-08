@@ -23,6 +23,7 @@
 - [18.正则表达式和常用的正则表达式](#18-正则表达式和常用的正则表达式)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
+- [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -689,6 +690,11 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 
 #### 31. ES6入门之函数形参的扩展及箭头函数
 [传送门](https://github.com/BGround/Web-Front-End-Interview/issues/7)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 32. ES6入门之第七种数据类型Symbol
+[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/8)
 
 **[:arrow_up: 返回目录](#目录)**
 

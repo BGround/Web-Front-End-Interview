@@ -1,5 +1,11 @@
-## 浏览器工作原理及实践 知识点总结
+《浏览器工作原理与实践》这个专栏，系统学习浏览器,把网络、页面、渲染、JavaScript、浏览器安全知识串联起来。
 
-本部分主要是笔者在复习 浏览器工作原理及实践 相关知识和一些相关面试题时所做的笔记，如果出现错误，希望大家指出！
+[浏览器工作原理知识图](https://github.com/BGround/Web-Front-End-Interview/blob/main/BrowserWork/browser.md)
 
-![](https://static001.geekbang.org/resource/image/33/4d/334170a8e1d1ef1935191fc4a0f94b4d.png)
+
+
+
+
+
+
+

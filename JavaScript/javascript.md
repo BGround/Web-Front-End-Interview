@@ -601,7 +601,7 @@ fn3() // 1
 
 #### 16. 数组去重的方法
 var arr = [1,2,1,2,3,4]数组去重得到数组[1,2,3,4]
-##### Array
+**Array**
 >使用filter
 ```javascript
 var newArr = arr.filter(function(el,index,arr){
@@ -620,7 +620,7 @@ var newArr = arr.sort().reduce((init,curr) => {
 },[])
 ```
 
-##### ES6
+**ES6**
 ```javascript
 var newArr = [...new Set(arr)]
 ```

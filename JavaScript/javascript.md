@@ -227,9 +227,19 @@ obj.sayName()(); // 听风是风
 **[:arrow_up: 返回目录](#目录)**
 
 #### 5. JS的执行上下文
-JS代码在执行前，JS引擎会做一些准备工作，对应的就是创建对应的上下文，上下文创建分为创建阶段和执行阶段，
-上下文分为三种，**①全局执行上下文**，一般有浏览器创建为window对象，通过this访问**②函数上下文**，可以存在无数个，每次调用函数就创建一个③eval上下文，很少用也不建议使用
-JS上下文的创建阶段主要负责三件事：绑定this---创建词法环境组件(LexicalEnvironment)---创建变量环境组件(VariableEnvironment)
+只有理解了 JavaScrip 的执行上下文，你才能更好地理解 JavaScript 语言本身，比如变量提升、作用域和闭包等.
+```javascript
+showName()
+console.log(myname)
+var myname = '极客时间'
+function showName() { 
+	console.log('函数showName被执行');
+}
+```
+JS代码在执行前，JS引擎会做编译，编译完成之后才会进入到执行阶段.编译后会生成两部分内容：**执行上下文**，**可执行代码**
+执行上下文是JavaScript执行一段代码时的运行环境,分为三种，**①全局执行上下文**，一般有浏览器创建为window对象，通过this访问,**②函数上下文**，可以存在无数个，每次调用函数就创建一个③eval上下文，很少用也不建议使用
+![JavaScript 执行流程细化图](https://static001.geekbang.org/resource/image/06/13/0655d18ec347a95dfbf843969a921a13.png)
+`执行上下文`的创建阶段主要负责三件事：绑定this---创建词法环境组件(LexicalEnvironment)---创建变量环境组件(VariableEnvironment)
 用伪代码表示：
 
 ```javascript
@@ -242,6 +252,7 @@ ExecutionContext = {
     VariableEnvironment = {}, // 创建变量环境组件
 };
 ```
+[思考题](https://github.com/BGround/Web-Front-End-Interview/issues/10)
 
 参考链接：《[一篇文章看懂JS执行上下文](https://www.cnblogs.com/echolun/p/11438363.html)》    《[理解JavaScript 中的执行上下文和执行栈](https://www.muyiy.cn/blog/1/1.1.html)》
 

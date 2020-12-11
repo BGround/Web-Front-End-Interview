@@ -2,7 +2,7 @@
 
 本部分主要是笔者在复习 浏览器工作原理及实践 相关知识和一些相关面试题时所做的笔记，如果出现错误，希望大家指出！
 
-![](https://static001.geekbang.org/resource/image/33/4d/334170a8e1d1ef1935191fc4a0f94b4d.png)
+![浏览器工作原理框架图](https://static001.geekbang.org/resource/image/33/4d/334170a8e1d1ef1935191fc4a0f94b4d.png)
 
 
 

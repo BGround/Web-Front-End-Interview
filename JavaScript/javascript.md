@@ -100,6 +100,10 @@ if(true) {
 }
 ```
 因为暂时性死区, 所以要特别注意typeof的使用
+【拓展】
+var的创建和初始化被提升，赋值不会被提升。
+let的创建被提升，初始化和赋值不会被提升。
+function的创建、初始化和赋值均会被提升。
 
 ⑤ 块级作用域
 ```javascript
@@ -236,7 +240,7 @@ function showName() {
 	console.log('函数showName被执行');
 }
 ```
-JS代码在执行前，JS引擎会做编译，编译完成之后才会进入到执行阶段.编译后会生成两部分内容：**执行上下文**，**可执行代码**
+JS代码在执行前，JS引擎会做编译，编译完成之后才会进入到执行阶段.编译后会生成两部分内容：**执行上下文**和**可执行代码**
 执行上下文是JavaScript执行一段代码时的运行环境,分为三种，**①全局执行上下文**，一般有浏览器创建为window对象，通过this访问,**②函数上下文**，可以存在无数个，每次调用函数就创建一个③eval上下文，很少用也不建议使用
 ![JavaScript 执行流程细化图](https://static001.geekbang.org/resource/image/06/13/0655d18ec347a95dfbf843969a921a13.png)
 `执行上下文`的创建阶段主要负责三件事：绑定this---创建词法环境组件(LexicalEnvironment)---创建变量环境组件(VariableEnvironment)
@@ -252,6 +256,11 @@ ExecutionContext = {
     VariableEnvironment = {}, // 创建变量环境组件
 };
 ```
+**词法环境**，存let和const声明的变量，块级作用域就是通过词法环境的栈结构实现的，
+
+**变量环境**，存var声明的变量，变量提升就是通过变量环境实现的
+
+
 [思考题](https://github.com/BGround/Web-Front-End-Interview/issues/10)
 
 参考链接：《[一篇文章看懂JS执行上下文](https://www.cnblogs.com/echolun/p/11438363.html)》    《[理解JavaScript 中的执行上下文和执行栈](https://www.muyiy.cn/blog/1/1.1.html)》

@@ -26,6 +26,7 @@
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
 - [33.ES6入门-Set和Map数据结构](#33-ES6入门之Set和Map数据结构)
+- [34.ES6入门之Promise详解](#34-ES6入门之Promise详解)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -728,6 +729,11 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 
 #### 33. ES6入门之Set和Map数据结构
 [传送门](https://github.com/BGround/Web-Front-End-Interview/issues/9)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 34. ES6入门之Promise详解
+[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/12)
 
 **[:arrow_up: 返回目录](#目录)**
 

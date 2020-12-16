@@ -22,6 +22,8 @@
 - [17.javaScript继承的几种方式及优缺点](#17-javaScript继承的几种方式及优缺点)
 - [18.正则表达式和常用的正则表达式](#18-正则表达式和常用的正则表达式)
 - [19.for...of与for...in的区别](#19-for-of与for-in的区别)
+- [20.JS的事件循环 事件队列以及宏任务和微任务](#20-JS的事件循环-事件队列以及宏任务和微任务)
+- [21.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#21-为什么使用-settimeout-实现-setinterval怎么模拟)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
@@ -709,6 +711,15 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 #### 19. for of与for in的区别
 
 [传送门](https://github.com/BGround/Web-Front-End-Interview/issues/11)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 20. JS的事件循环 事件队列以及宏任务和微任务
+JavaScript有一个基于事件循环的并发模型
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 21. 为什么使用 setTimeout 实现 setInterval？怎么模拟？
 
 **[:arrow_up: 返回目录](#目录)**
 

@@ -23,7 +23,8 @@
 - [18.正则表达式和常用的正则表达式](#18-正则表达式和常用的正则表达式)
 - [19.for...of与for...in的区别](#19-for-of与for-in的区别)
 - [20.JS的事件循环 事件队列以及宏任务和微任务](#20-JS的事件循环-事件队列以及宏任务和微任务)
-- [21.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#21-为什么使用-settimeout-实现-setinterval怎么模拟)
+- [21.手写一个promise](#21-手写一个promise)
+- [22.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#21-为什么使用-settimeout-实现-setinterval怎么模拟)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
@@ -716,10 +717,46 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 
 #### 20. JS的事件循环 事件队列以及宏任务和微任务
 JavaScript有一个基于事件循环的并发模型
+![可视化描述](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_Javascript_Runtime_Environment_Example.svg)
+>事件队列：事件队列是一个包含了执行任务的队列，每个执行任务都关联着一个用以处理该任务的回调函数，任务的执行顺序是严格按照先后顺序，
+执行栈则是一个类似于函数调用栈的运行容器，当执行栈为空时，JS引擎便检查事件队列，如果不为空的话，事件队列便将第一个任务压入执行栈运行
+
+>事件循环：JS是单线程非阻塞的语言，在代码执行的时候，将函数的执行上下文压入执行栈中保证代码的有序执行。在执行同步代码时遇到一个异步事件后，JS引擎并不会一直等待结果，
+而是将这个事件挂起，继续执行执行栈中的其他任务。当异步事件执行完后，将异步事件的回调加入到事件队列中，当当前执行栈的任务全部执行完毕后，
+JS引擎会去判断微任务事件队列中是否有任务可执行，如果有就将微任务队首的事件压入执行栈中执行，当微任务队列中任务全部执行完毕之后再去判断宏任务队列。
+这样的一个过程就是`事件循环`，引用网络上的一张图描述
+![事件循环](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_JS_Runtime.jpg)
+
+微任务：`promise回调`，`node 中的 process.nextTick `，` Dom 变化监听的 MutationObserver`
+宏任务：`script 脚本的执行`，`setTimeout`，`setInterval`，`setImmediate`，还有如 `I/O 操作`、`UI 渲染`
+```js
+setTimeout(function() {
+	console.log(1);
+},0)
+
+new Promise(function(resolve,reject) {
+	console.log(2);
+	resolve(3);
+}).then(resp => console.log(resp))
+
+console.log(4)
+// 2
+// 4
+// 3
+// 1
+```
+[实现红绿灯代码，红灯2秒，黄灯1秒，绿灯3秒，循环改变颜色](https://github.com/BGround/Web-Front-End-Interview/issues/13)
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 21. 为什么使用 setTimeout 实现 setInterval？怎么模拟？
+#### 21. 手写一个promise
+```js
+
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 22. 为什么使用 setTimeout 实现 setInterval？怎么模拟？
 
 **[:arrow_up: 返回目录](#目录)**
 

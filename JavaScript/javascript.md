@@ -717,7 +717,7 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 
 #### 20. JS的事件循环 事件队列以及宏任务和微任务
 JavaScript有一个基于事件循环的并发模型
-![可视化描述](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_Javascript_Runtime_Environment_Example.svg)
+![可视化描述](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_Javascript_Runtime_Environment_Example.png)
 >事件队列：事件队列是一个包含了执行任务的队列，每个执行任务都关联着一个用以处理该任务的回调函数，任务的执行顺序是严格按照先后顺序，
 执行栈则是一个类似于函数调用栈的运行容器，当执行栈为空时，JS引擎便检查事件队列，如果不为空的话，事件队列便将第一个任务压入执行栈运行
 
@@ -745,6 +745,7 @@ console.log(4)
 // 3
 // 1
 ```
+[理解JS执行机制与定时器](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/%E7%90%86%E8%A7%A3JS%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%AE%9A%E6%97%B6%E5%99%A8.md)
 [实现红绿灯代码，红灯2秒，黄灯1秒，绿灯3秒，循环改变颜色](https://github.com/BGround/Web-Front-End-Interview/issues/13)
 
 **[:arrow_up: 返回目录](#目录)**

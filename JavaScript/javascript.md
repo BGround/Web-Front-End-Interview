@@ -758,6 +758,53 @@ console.log(4)
 **[:arrow_up: 返回目录](#目录)**
 
 #### 22. 为什么使用 setTimeout 实现 setInterval？怎么模拟？
+**1.setTimeout()参数**
+setTimeout定时器用来指定某个函数或某段代码，在多少毫秒之后执行。它返回一个整数，表示定时器的编号，以后可以用来取消这个定时器。
+```js
+var timerID = setTimeout(func|code, delay, [...args])
+```
+上面代码中，setTimeout函数接受两个参数，第一个参数func|code是将要推迟执行的函数名或者一段代码，第二个参数delay是推迟执行的毫秒数。
+
+还有可选的第三，第四...参数args，它们会被作为回调函数的参数传入.
+
+**2.setInterval()**
+setInterval定时器的用法和setTimeout完全一致，区别仅仅在于setInterval指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
+```js
+// 下面代码表示每隔1000毫秒就输出一个2，直到用户点击了停止按钮。
+<input type="button" onclick="clearInterval(timer)" value="stop">
+
+<script>
+  var i = 1
+  var timer = setInterval(function() {
+    console.log(2);
+  }, 1000);
+</script>
+```
+为什么...？
+setInterval的作用是每隔一段时间就执行回调函数，根据JS的执行机制，这个延迟时间不是时间到了就执行，而是每隔一段时间就把事件加入到事件队列中，等
+执行栈中的为空时，才去事件队列中取出队首的事件执行。所以可能出现这个情况，执行栈执行的事件很长，导致事件队列中积累了很多个定时器加入的事件，当
+执行栈执行为空时，这些积累的事件会依次执行，因此不能间隔一段时间执行的效果。
+
+针对setInterval这个缺点，可以利用setTimeout的递归来模拟setInterval，只有当一个事件结束了，才会触发下一个定时器事件
+```js
+function myInterval(func, wait) {
+	var interval = function() {
+		func.call(null) //闭包
+		setTimeout(interval, wait)
+	}
+	
+	setTimeout(interval, wait)
+}
+
+myInterval(function() {
+	console.log(2, new Date().getSeconds())
+},2000)
+```
+
+
+参考文章：
+[《你所不知道的setTimeout》](https://www.jeffjade.com/2016/01/10/2016-01-10-javacript-setTimeout/)
+[《你所不知道的setInterval》](https://www.jeffjade.com/2016/01/10/2016-01-10-javaScript-setInterval/)
 
 **[:arrow_up: 返回目录](#目录)**
 

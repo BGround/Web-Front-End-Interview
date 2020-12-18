@@ -88,7 +88,23 @@ for(var i = 0; i < 5 ; i++) {
 }
 ```
 
-**3.ES6中的let**
+**3.利用定时器setTimeout的第三参数**
+setTimeout除了回调函数和时间延迟两个参数，还有可选的第三，第四...参数，它们会被作为回调函数的参数
+```js
+for(var i = 0; i < 5 ; i++) {
+	setTimeout(i => {
+		console.log(i,new Date().getSeconds())
+	}, i * 1000,i) 
+}
+//为了方便理解，将这段代码改写下面这样就好理解一点
+for(var i = 0; i < 5 ; i++) {
+	setTimeout(j => {
+		console.log(j,new Date().getSeconds())
+	}, i * 1000,j = i) //第三参数j传入回调函数执行
+}
+```
+
+**4.ES6中的let**
 ```js
 for(let i = 0; i < 5 ; i++) {
 	setTimeout(() => {

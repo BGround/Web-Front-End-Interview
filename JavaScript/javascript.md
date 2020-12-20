@@ -24,7 +24,7 @@
 - [19.for...of与for...in的区别](#19-for-of与for-in的区别)
 - [20.JS的事件循环 事件队列以及宏任务和微任务](#20-JS的事件循环-事件队列以及宏任务和微任务)
 - [21.手写一个promise](#21-手写一个promise)
-- [22.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#21-为什么使用-settimeout-实现-setinterval怎么模拟)
+- [22.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#22-为什么使用-settimeout-实现-setinterval怎么模拟)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)

@@ -759,6 +759,7 @@ console.log(4)
 
 #### 22. 为什么使用 setTimeout 实现 setInterval？怎么模拟？
 **1.setTimeout()参数**
+
 setTimeout定时器用来指定某个函数或某段代码，在多少毫秒之后执行。它返回一个整数，表示定时器的编号，以后可以用来取消这个定时器。
 ```js
 var timerID = setTimeout(func|code, delay, [...args])
@@ -768,6 +769,7 @@ var timerID = setTimeout(func|code, delay, [...args])
 还有可选的第三，第四...参数args，它们会被作为回调函数的参数传入.
 
 **2.setInterval()**
+
 setInterval定时器的用法和setTimeout完全一致，区别仅仅在于setInterval指定某个任务每隔一段时间就执行一次，也就是无限次的定时执行。
 ```js
 // 下面代码表示每隔1000毫秒就输出一个2，直到用户点击了停止按钮。

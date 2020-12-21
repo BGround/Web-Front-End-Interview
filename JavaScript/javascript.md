@@ -25,6 +25,7 @@
 - [20.JS的事件循环 事件队列以及宏任务和微任务](#20-JS的事件循环-事件队列以及宏任务和微任务)
 - [21.手写一个promise](#21-手写一个promise)
 - [22.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#22-为什么使用-settimeout-实现-setinterval怎么模拟)
+- [23.JS中虚值或者假值？怎么判断？](#23-JS中虚值或者假值怎么判断)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
@@ -808,6 +809,31 @@ myInterval(function() {
 参考文章：
 [《你所不知道的setTimeout》](https://www.jeffjade.com/2016/01/10/2016-01-10-javacript-setTimeout/)
 [《你所不知道的setInterval》](https://www.jeffjade.com/2016/01/10/2016-01-10-javaScript-setInterval/)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 23. JS中虚值或者假值？怎么判断？
+falsy值(虚值)是在Boolean上下文中认定为false的值.
+
+意思就是在条件或者循环语句中，需要用到布尔类型的值时，会强制做类型转换，而falsy值会被转换成false
+| 值 | 关键字 | 类型 |
+| ---- |---------- |---- |
+| 0 | 数值zero | Number |
+| -0 | 数值负zero | Number |
+| 0n | 当 BigInt 作为布尔值使用时, 遵从其作为数值的规则. 0n 是 falsy 值 | BigInt |
+| NaN | 非数值 | NaN |
+| "",'', ``| JS中字符串表示可以双引号，单引号，或者模板字面量 | String |
+| false | false关键字 | Boolean |
+| null | null-缺少值 | Object |
+| undefined | undefined- 原始值 | Undefined |
+
+*一个数组返回为真的元素？*
+```js
+var arr = [0, 1, true, false, '', NaN, null, undefined, {}, []]
+var newArr = arr.filter((item) => item)
+console.log(newArr) // [1, true, {}, []]
+```
+
 
 **[:arrow_up: 返回目录](#目录)**
 

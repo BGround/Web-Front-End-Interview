@@ -829,9 +829,9 @@ falsy值(虚值)是在Boolean上下文中认定为false的值.
 
 *一个数组返回为真的元素？*
 ```js
-var arr = [0, 1, true, false, '', NaN, null, undefined, {}, []]
+var arr = [0, 1, true, false, '', NaN, null, undefined, Infinity, {}, []]
 var newArr = arr.filter((item) => item)
-console.log(newArr) // [1, true, {}, []]
+console.log(newArr) // [1, true, Infinity, {}, []]
 ```
 
 

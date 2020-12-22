@@ -5,7 +5,7 @@
 | [CSS](https://github.com/BGround/Web-Front-End-Interview/blob/main/CSS/CSS.md) | [HTML](https://github.com/BGround/Web-Front-End-Interview/blob/main/HTML/HTML.md) | [JavaScript](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript.md) | [VUE](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/Vue.md) | [React](https://github.com/BGround/Web-Front-End-Interview/blob/main/React/React.md) | [算法]() | [浏览器工作原理](https://github.com/BGround/Web-Front-End-Interview/blob/main/BrowserWork/README.md) |[工具]() |
 
 ## JS专题目录
-- [JavaScript专题之去重](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript%E4%B8%93%E9%A2%98/JavaScript%E4%B8%93%E9%A2%98%E4%B9%8BJS%E4%B8%AD%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0%E6%B5%85%E6%9E%90.md)
+- [JavaScript专题之去重](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题/JavaScript专题之JS中高阶函数浅析.md)
 - [JavaScript专题之JS中高阶函数浅析]()
 - [JavaScript专题之从underscore学习节流]()
 - [JavaScript专题之从underscore学习防抖]()

@@ -29,6 +29,7 @@
 - [24.从内存管理谈垃圾回收](#24-从内存管理谈垃圾回收)
 - [25.JS中高阶函数浅析](#25-JS中高阶函数浅析)
 - [26.闭包的应用之节流和防抖](#26-闭包的应用之节流和防抖)
+- [27.继承的方式](#27-继承的方式)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
@@ -297,7 +298,9 @@ function fn() {
 **[:arrow_up: 返回目录](#目录)**
 
 #### 7. 深拷贝和浅拷贝的理解
-**深拷贝(deep clone)**其实是针对引用对象类型来说的，要介绍深浅拷贝，得站在基本类型数据与引用类型数据存储区别上去理解。事实上基本类型，比如数字，字符串，JavaScript都没提供可以修改它们的方法，正因为不可变性，基本类型数据存放在栈中。
+**深拷贝(deep clone)**其实是针对引用对象类型来说的，要介绍深浅拷贝，得站在基本类型数据与引用类型数据存储区别上去理解。
+
+事实上基本类型，比如数字，字符串，JavaScript都没提供可以修改它们的方法，正因为不可变性，基本类型数据存放在栈中。
 
 而对象就不一样了，比如数组可以增加元素，对象也可以添加属性，删除属性。对象大小不确定，所以我们声明一个对象，对象的key因为是基本类型（不考虑map结构的情况），所以key会存在栈中，而值是对象，所以放在堆中。这就导致了一个问题，当我们拷贝一个对象时，其实拷贝的是指向堆中value的指针，这也导致其中一方修改了对象值，会影响另一个对象。
 
@@ -338,6 +341,9 @@ function deepClone(obj) {
 	return objClone
 }
 ```
+
+简单点说就是，**浅拷贝**之后两个数据对象互不关联，而**深拷贝**之后，改变一个数据对象，另一个也同样改变
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### 8. 理解JSON的stringify和parse
@@ -509,8 +515,23 @@ JavaScript中万物皆对象，且对象皆可通过__proto__属性访问创建�
  typeof(Array) === 'function' //true
 ```
 **constructor**返回的是创建实例的构造函数, 查找的是原型链的上一层;
-**instanceof**返回的也是一个布尔值,MDN中定义:用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上,
+
+**instanceof**返回的也是一个布尔值,
+>MDN中定义:用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上,
+
 语法是`object instanceof constructor`,用来检测 constructor.prototype 是否存在于参数 object 的原型链上. 主要用于判断引用数据类型
+```js
+const myInstaceof = (left, right) => {
+	if(typeof left !== 'object' || left === null) return false   // instanceof判断前左边必须是一个对象，基本数据类型都返回false
+	let proto = Object.getPrototypeOf(left)
+	while(true) {
+		if(proto === null) return false
+		if(proto === right.prototype) return true
+		proto = Object.getPrototypeOf(proto)
+	}
+}
+```
+通过下面的例子来加深一下理解
 ```javascript
 var a = 2;
 console.log(a instanceof Number);  //false, 这个a不是一个Object
@@ -907,6 +928,12 @@ me.isHuman = true; // inherited properties can be overwritten
 me.printIntroduction();
 // expected output: "My name is Matthew. Am I human? true"
 ```
+
+>Object.assign
+将一个或多个源对象的所有可枚举属性拷贝到目标对象，并且返回这个目标对象(注意：这里是浅拷贝)
+
+
+
 
 **[:arrow_up: 返回目录](#目录)**
 

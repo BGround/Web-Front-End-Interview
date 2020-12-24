@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="button" onclick="clearTimeout(timer)" value="stop" />
+		<script>
+			//时间戳
+			const throttle1 = (fn, time) => {
+				var context, args
+				var prev = 0
+				return function() {
+					var now = +new Date()
+					context = this
+					if(now - prev > time) {
+						fn.apply(context, args)
+						prev = now
+					}
+				}
+			}
+			
+			//定时器1
+			const throttle2 = (fn, time) => {
+			  let flag = true;
+			  return function() {
+			    if (!flag) return;
+			    flag = false;
+			    setTimeout(() => {
+			      fn.apply(this, arguments);
+			      flag = true;
+			    }, time);
+			  }
+			}
+			//定时器2
+			const throttle3 = (fn, time) => {
+				var context, args
+				var timeout
+				return function() {
+					context = this
+					args = arguments
+					if(!timeout) {
+						timeout = setTimeout(() => {
+							timeout = null
+							fn.apply(context, args)
+						},time)
+					}
+				}
+			}
+			
+			
+			const throttle4 = (func, wait, options) => {
+			  var timeout, context, args, result;
+			  var previous = 0;
+			  if (!options) options = {};
+			
+			  var later = function() {
+			    previous = options.leading === false ? 0 : new Date().getTime();
+			    timeout = null;
+			    result = func.apply(context, args);
+			    if (!timeout) context = args = null;
+			  };
+			
+			  var throttled = function() {
+			    var _now = new Date().getTime();
+			    if (!previous && options.leading === false) previous = _now;
+			    var remaining = wait - (_now - previous);
+			    context = this;
+			    args = arguments;
+			    if (remaining <= 0 || remaining > wait) {
+			      if (timeout) {
+			        clearTimeout(timeout);
+			        timeout = null;
+			      }
+			      previous = _now;
+			      result = func.apply(context, args);
+			      if (!timeout) context = args = null;
+			    } else if (!timeout && options.trailing !== false) {
+			      timeout = setTimeout(later, remaining);
+			    }
+			    return result;
+			  };
+			
+			  throttled.cancel = function() {
+			    clearTimeout(timeout);
+			    previous = 0;
+			    timeout = context = args = null;
+			  };
+			
+			  return throttled;
+			}
+		
+			const betterFn = throttle4(() => console.log('it is running ', new Date().getSeconds()), 5000, /* {leading:false, trailing : true} */)
+			const timer = setInterval(betterFn,1000)
+			
+		</script>
+	</body>
+</html>

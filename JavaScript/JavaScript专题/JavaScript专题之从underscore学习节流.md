@@ -84,14 +84,13 @@ export default function throttle(func, wait, options) {
   // 如果options为空则置为空对象
   if (!options) options = {};
 
-  var later = function() {
-	//
-	//
-	//
+    // 当设置 { leading: false } 时
+    // 每次触发回调函数后设置 previous 为 0
+    // 不然为当前时间
     previous = options.leading === false ? 0 : new Date().getTime();
     timeout = null;
     result = func.apply(context, args);
-	// 释放内存
+    // 释放内存
     if (!timeout) context = args = null;
   };
 
@@ -100,20 +99,20 @@ export default function throttle(func, wait, options) {
   // func 才是我们业务层代码想要执行的函数
   var throttled = function() {
     var _now = new Date().getTime();
-	// 第一次执行时（此时previous为0，为上一次的时间戳）
-	// 并且设置了 leading === false，表示第一次回调不执行
-	// 再设置previous为当前值，表示刚执行过，本次不执行了
+    // 第一次执行时（此时previous为0，为上一次的时间戳）
+    // 并且设置了 leading === false，表示第一次回调不执行
+    // 再设置previous为当前值，表示刚执行过，本次不执行了
     if (!previous && options.leading === false) previous = _now;
 	
-	// 距离下次执行还需要等待的时间
+    // 距离下次执行还需要等待的时间
     var remaining = wait - (_now - previous);
     context = this;
     args = arguments;
 	
-	// 要么是到了间隔时间了，立即触发回调方法 (remaining <= 0)
-	// 要么是没有传入leading === false，且是第一次回调，此时previous = 0，也会立即触发
-	// 还有一种特殊情况，手动改了系统时间，导致remaining > wait，也会立即触发
-	// 之后会把 previous = _now
+    // 要么是到了间隔时间了，立即触发回调方法 (remaining <= 0)
+    // 要么是没有传入leading === false，且是第一次回调，此时previous = 0，也会立即触发
+    // 还有一种特殊情况，手动改了系统时间，导致remaining > wait，也会立即触发
+    // 之后会把 previous = _now
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
         clearTimeout(timeout);
@@ -123,10 +122,10 @@ export default function throttle(func, wait, options) {
       result = func.apply(context, args);
       if (!timeout) context = args = null;
     } else if (!timeout && options.trailing !== false) {
-	  // 最后一次需要触发的情况
-	  // 如果存在一个定时器不会进入这个 else if 分支
-	  // 如果 {trailing: false}，即最后一次不需要触发了，也不会进入这个分支
-	  // 间隔 remaining milliseconds 后触发 later 方法
+      // 最后一次需要触发的情况
+      // 如果存在一个定时器不会进入这个 else if 分支
+      // 如果 {trailing: false}，即最后一次不需要触发了，也不会进入这个分支
+      // 间隔 remaining milliseconds 后触发 later 方法
       timeout = setTimeout(later, remaining);
     }
     return result;

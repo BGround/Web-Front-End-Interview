@@ -13,7 +13,12 @@
 
 
 ## ES6专题目录
-
+- [ES6入门之let和const](https://github.com/BGround/Web-Front-End-Interview/issues/16)
+- [ES6入门之变量的解构赋值](https://github.com/BGround/Web-Front-End-Interview/issues/6)
+- [ES6入门之函数形参的扩展及箭头函数](https://github.com/BGround/Web-Front-End-Interview/issues/7)
+- [ES6入门之第七种数据类型Symbol](https://github.com/BGround/Web-Front-End-Interview/issues/8)
+- [ES6入门之Set和Map数据结构](https://github.com/BGround/Web-Front-End-Interview/issues/9)]
+- [ES6入门之Promise详解](https://github.com/BGround/Web-Front-End-Interview/issues/12)
 
 ## 浏览器目录
 

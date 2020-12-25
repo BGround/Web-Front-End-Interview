@@ -770,7 +770,7 @@ console.log(4)
 // 3
 // 1
 ```
-[理解JS执行机制与定时器](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/%E7%90%86%E8%A7%A3JS%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%AE%9A%E6%97%B6%E5%99%A8.md)
+[理解JS执行机制与定时器](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/理解JS执行机制与定时器.md)
 [实现红绿灯代码，红灯2秒，黄灯1秒，绿灯3秒，循环改变颜色](https://github.com/BGround/Web-Front-End-Interview/issues/13)
 
 **[:arrow_up: 返回目录](#目录)**

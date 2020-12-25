@@ -132,5 +132,5 @@ addEvent()
 
 
 详情请参考：
-[《深入高阶函数应用之柯里化》](https://www.muyiy.cn/blog/6/6.2.html#%E6%9F%AF%E9%87%8C%E5%8C%96)
+> [《深入高阶函数应用之柯里化》](https://www.muyiy.cn/blog/6/6.2.html)
 [《JavaScript专题之惰性函数》](https://github.com/mqyqingfeng/Blog/issues/44)

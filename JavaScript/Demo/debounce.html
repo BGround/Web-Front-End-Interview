@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>debounce</title>
+	</head>
+	<body>
+		<input type="button" onclick="clearTimeout(timer)" value="stop" />
+		<script>
+			
+			const debounce = (func, wait) => {
+				var context, args
+				var timeout
+				return function() {
+					context = this
+					args = arguments
+					timeout = setTimeout(() => {
+						clearTimeout(timeout)
+						func.apply(context, args)
+					},wait)
+				}
+			}
+			
+			// 加入第三参数immediate，判断是否立即执行
+			const debounce1 = (func, wait,immediate) => {
+				var context, args
+				var timeout
+				return function() {
+					context = this
+					args = arguments
+					
+					// 新增参数immediate，传入true表示第一次就执行回调
+					// timeout为空，表示首次就触发
+					if(immediate && !timeout) {
+						func.apply(context, args)
+					}
+					
+					timeout = setTimeout(() => {
+						if(timeout) clearTimeout(timeout)
+						func.apply(context, agrs)
+					},wait)
+				}
+			}
+			
+			// 加强版throttle
+			const debounce3 = (func, wait) => {
+				var context, args
+				var prev = 0
+				var timeout
+				
+				return function() {
+					var now = +new Date()
+					context = this
+					args = arguments
+					
+					if(now - prev < wait) {
+						if(timeout) clearTimeout(timeout)
+						timeout = setTimeout(() => {
+							prev = now
+							func.apply(context,args)
+						},wait)
+					} else {
+						prev = now
+						func.apply(context, args)
+					}
+				}
+			}
+			
+			// underscore中模拟debounce
+			const debounce4 = (func, wait, immediate) => {
+				var callNow, timeout
+				var result
+				
+				var debounced = function() {
+					var context = this
+					var args = arguments
+					if(timeout) clearTimeout(timeout)
+					if(immediate) {
+						// 立即执行之后不在执行
+						callNow = !timeout 
+						timeout = setTimeout(() => {
+							timeout = null  // 清空定时器，使之不影响下次连续事件的触发func
+						},wait)
+						if(callNow) result = func.apply(context, args)
+					} else {
+						timeout = setTimeout(() => {
+							func.apply(context,args)
+						},wait)
+					}
+					
+					return result
+				}
+				
+				debounced.cancel = function() {
+				  clearTimeout(timeout);
+				  timeout = args = context = null;
+				};
+				
+				return debounced
+				
+			}
+			
+			
+			const betterFn = debounce4(() => console.log('it is running', new Date().getSeconds()), 3000, true)
+			const timer = setInterval(betterFn,1000)
+			
+		</script>
+	</body>
+</html>

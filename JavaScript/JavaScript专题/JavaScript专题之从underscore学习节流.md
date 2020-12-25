@@ -9,7 +9,6 @@
 - [4.underscore中学习优化throttle](#4-underscore中学习优化throttle)
 
 
-
 ### 1. 什么是throttle函数?
 函数节流是指在一定时间间隔内(例如3S)某个函数只执行一次,在3S内无视后来函数的调用请求,也不会延长时间间隔。3S间隔结束之后第一次遇到函数调用会触发执行,
 然后在这个3S内依旧无视后来函数的调用请求,以此类推
@@ -35,8 +34,11 @@ const throttle = (fn, wait) => {
 	return function() {
 		var now = +new Date() // 一元+运算符将其操作数转换为Number类型并反转其正负, 类似toNumber(new Date())
 		context = this
-		fn.apply(context,agrs)
-		prev = now
+		args = arguments
+		if(now - perv > wait) {
+			fn.apply(context,agrs)
+			prev = now
+		}
 	}
 }
 ```
@@ -145,4 +147,8 @@ export default function throttle(func, wait, options) {
 
 最后学习实例参照[DEMO](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/Demo/throttle.html)
 
+
+参考文章：
+>[《深入浅出节流函数 throttle》](https://www.muyiy.cn/blog/7/7.1.html)
+[《JavaScript专题之跟着 underscore 学节流》](https://github.com/mqyqingfeng/Blog/issues/26)
 

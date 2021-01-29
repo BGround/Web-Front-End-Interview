@@ -13,7 +13,7 @@
 - [JavaScript专题之从underscore学习防抖](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题篇/JavaScript专题之从underscore学习防抖.md)
 
 ## JS深入篇
--[JS深入篇之数组API](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript深入篇/JS深入篇之数组API.md)
+- [JS深入篇之数组API](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript深入篇/JS深入篇之数组API.md)
 
 ## ES6专题篇
 - [ES6入门之let和const](https://github.com/BGround/Web-Front-End-Interview/issues/16)

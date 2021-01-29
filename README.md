@@ -15,7 +15,6 @@
 ## JS深入篇
 - [JS深入篇之数组API](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript深入篇/JS深入篇之数组API.md)
 
->>>>>>> Stashed changes
 ## ES6专题篇
 - [ES6入门之let和const](https://github.com/BGround/Web-Front-End-Interview/issues/16)
 - [ES6入门之变量的解构赋值](https://github.com/BGround/Web-Front-End-Interview/issues/6)

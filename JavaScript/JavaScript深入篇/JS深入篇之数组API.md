@@ -227,7 +227,7 @@ var arr = [1, 2, 3, 4]
 var isExist = arr.some(item => item % 2 === 0)
 console.log(isExist) //true
 
-//filer - 
+//filer - 创建一个新数组, 其包含通过所提供函数实现的测试的所有元素。 
 var arr = [0, 1, false, true, NaN, '', 'a', {}, undefined, null]
 var arrNew = arr.filter(item => item)
 console.log(arrNew) // [1, true, "a", {}]

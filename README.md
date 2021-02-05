@@ -14,6 +14,7 @@
 
 ## JS深入篇
 - [JS深入篇之数组API](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript深入篇/JS深入篇之数组API.md)
+- [JS深入篇之类数组](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript深入篇/JS深入篇之类数组.md)
 
 ## ES6专题篇
 - [ES6入门之let和const](https://github.com/BGround/Web-Front-End-Interview/issues/16)
@@ -39,6 +40,14 @@
 ## Vue
 - [Vue学习笔记](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/vueNote.md)
 
+## 面试经验
+#### 2021
+ - [阿里和快手等](https://juejin.cn/post/6922290178836922381)
+#### 2020
+ - [字节](https://juejin.im/post/5e61136ee51d4527196d6019)
+ - [由浅入深，66条JavaScript面试知识点和答案解析](https://juejin.im/post/5ef8377f6fb9a07e693a6061)
+## 框架搭建
+ - [手把手教你搭建一个灰度发布环境](https://segmentfault.com/a/1190000022612488)
 
 ## 关于仓库
 这个仓库主要总结一些比较重要的知识点和前端面试问题.

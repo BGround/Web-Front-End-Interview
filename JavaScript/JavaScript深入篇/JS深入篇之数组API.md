@@ -237,6 +237,18 @@ var arr = [1,2,3,4]
 var arrNew = arr.map(item => item * 2)
 console.log(arrNew) // [2,4,6,8]
 
+//手动实现map函数
+function map(arr, mapCallback) {
+	if(!Array.isArray(arr) || !arr.length || typeof(mapCallback)!== 'function') 
+		return [];
+	let result = [];
+	for(var i = 0; i < arr.length; i++){
+		result.push(mapCallback(arr[i],i))
+	}
+	return result;
+}
+map([1,2,3], function(a,b){return a+b;})
+
 // reduce - arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue]),
 //注意没有initialValue，index是从1开始
 var arr = [{name: 'one'}, {name: 'two'}, {name: 'three'}]
@@ -250,6 +262,20 @@ var arrNew = arr.reduce(function(pre,curr,index,arr){
 	}
 }, '')
 console.log(arrNew) // one,two&three
+
+//手动实现reduce函数
+function reduce(arr, reduceCallback, initValue) {
+	if(!Array.isArray(arr) || !arr.length || typeof(reduceCallback) !== 'function')
+		return [];
+	var hasInitValue = true;
+	if(initValue === undefined || initValue === null)
+		hasInitValue = false;
+	var value = hasInitValue ? initValue : arr[0];
+	for(var i = hasInitValue ? 1 : 0; i < arr.length; i++) {
+		value = reduceCallback(value, arr[i], i, arr);
+	}
+	return value;
+}
 
 //find -返回查找到的值， findIndex - 返回查找到底的值底标
 var arr = [1,2,3,4,5]

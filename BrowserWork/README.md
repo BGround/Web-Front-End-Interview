@@ -13,7 +13,7 @@
 - [1.Chrome架构:仅仅打开了1个页面,为什么有4个进程？](#1-Chrome架构)
 - [2.UDP协议,TCP和HTTP协议](#2-UDP协议-TCP和HTTP协议)
 - [3.Http请求详解关于cache和cookie](#3-Http请求详解关于cache和cookie)
-- 
+- [4.Http请求中GET和POST本质区别](#4-Http请求中GET和POST本质区别)
 - 
 - 
 - 
@@ -107,3 +107,10 @@ HTTP协议属于应用层，TCP协议属于传输层，HTTP协议位于TCP协议
 >3 假如别人访问很快，自己电脑很慢，就要看看自己客户端是否有问题了
 
 **[:arrow_up: 返回目录](#目录)**
+
+### 4. Http请求中GET和POST本质区别
+
+
+参考资料:《[GET和POST两种基本请求方法的区别](https://cnblogs.com/logsharing/p/8448446.html)》
+**[:arrow_up: 返回目录](#目录)**
+

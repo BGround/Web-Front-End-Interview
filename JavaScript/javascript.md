@@ -376,7 +376,7 @@ let b = "['1','2']";
 console.log(JSON.parse(a));// Array [1,2]
 console.log(JSON.parse(b));// 报错
 ```
-![SyntaxError](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/JSON-SyntaxError.png)
+![SyntaxError](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/JSON-SyntaxError.png)
 
 JSON.stringify的作用
 > 判断数组是否包含某对象，或者判断对象是否相等(慎用，undefined、任意的函数以及 symbol 值，
@@ -433,7 +433,7 @@ let  a = getLocalStorage('demo');//[1,2,3]
 >不同浏览器无法共享localStorage或sessionStorage中的信息。相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），
 >但是不同页面或标签页间无法共享sessionStorage的信息。这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
 
-![storage](https://github.com/BGround/Web-Front-End-Interview/blob/main/image/cookie-sessionStoge-LocalStorage.png)
+![storage](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/cookie-sessionStoge-LocalStorage.png)
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -742,7 +742,7 @@ var regex = /#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})/g;
 
 #### 20. JS的事件循环 事件队列以及宏任务和微任务
 JavaScript有一个基于事件循环的并发模型
-![可视化描述](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_Javascript_Runtime_Environment_Example.png)
+![可视化描述](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/The_Javascript_Runtime_Environment_Example.png)
 >事件队列：事件队列是一个包含了执行任务的队列，每个执行任务都关联着一个用以处理该任务的回调函数，任务的执行顺序是严格按照先后顺序，
 执行栈则是一个类似于函数调用栈的运行容器，当执行栈为空时，JS引擎便检查事件队列，如果不为空的话，事件队列便将第一个任务压入执行栈运行
 
@@ -750,7 +750,7 @@ JavaScript有一个基于事件循环的并发模型
 而是将这个事件挂起，继续执行执行栈中的其他任务。当异步事件执行完后，将异步事件的回调加入到事件队列中，当当前执行栈的任务全部执行完毕后，
 JS引擎会去判断微任务事件队列中是否有任务可执行，如果有就将微任务队首的事件压入执行栈中执行，当微任务队列中任务全部执行完毕之后再去判断宏任务队列。
 这样的一个过程就是`事件循环`，引用网络上的一张图描述
-![事件循环](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript_files/The_JS_Runtime.jpg)
+![事件循环](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/The_JS_Runtime.jpg)
 
 微任务：`promise回调`，`node 中的 process.nextTick `，` Dom 变化监听的 MutationObserver`
 宏任务：`script 脚本的执行`，`setTimeout`，`setInterval`，`setImmediate`，还有如 `I/O 操作`、`UI 渲染`
@@ -770,7 +770,7 @@ console.log(4)
 // 3
 // 1
 ```
-[理解JS执行机制与定时器](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/理解JS执行机制与定时器.md)
+[理解JS执行机制与定时器](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/理解JS执行机制与定时器.md)
 [实现红绿灯代码，红灯2秒，黄灯1秒，绿灯3秒，循环改变颜色](https://github.com/BGround/Web-Front-End-Interview/issues/13)
 
 **[:arrow_up: 返回目录](#目录)**

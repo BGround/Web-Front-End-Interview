@@ -33,7 +33,8 @@
 ## 浏览器目录
 
 
-## 面试题型目录
+## 面试复习框架
+![JavaScript相关知识](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/JSON-SyntaxError.png)
 
 ## React
 

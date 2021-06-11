@@ -291,7 +291,7 @@ var fn = function(){
 *通过function fn(){}定义函数，是将整个函数体提前了，此时使用fn()调用函数就会正常*
 ```javascript
 fn();
-function fn() {
+function fn() {   
 	console.log('函数体提前');
 }
 ```

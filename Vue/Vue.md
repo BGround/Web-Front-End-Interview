@@ -1,20 +1,30 @@
 ## Vue 面试知识点总结
+可以阅读组件库源码哈 😄https://github.com/vueComponent/ant-design-vue
 
-### 目录
+vue源码可以推荐两个：
+https://ustbhuangyi.github.io/vue-analysis/
+https://github.com/answershuto/learnVue
 
+## 目录
+
+### Vue
 * [1. vm.data调用问题？](#1-vmdata调用问题)
 * [2. v-if和v-show的区别](#2-v-if和v-show的区别)
 * [3. template的使用](#3-template的使用)
 * [4. vue的diff算法](#4-vue的diff算法)
 * [5. 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#5-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
+* [6. ](#6-)
 *
+
+### Vuex
+* [11. vue2和vue3中Vuex使用区别？](#11-vue2和vue3中Vuex使用区别)
+* [12. 为什么Vuex的mutation和Redux的reducer中不能做异步操作](#12-为什么Vuex的mutation和Redux的reducer中不能做异步操作)
+* [13. 为什么Vuex的store中的状态是响应式的?](#13-为什么Vuex的store中的状态是响应式的)
+* [14. 双向绑定和单向数据流不冲突?](#14-双向绑定和单向数据流不冲突)
+* [15. vuex中的数据在页面刷新以后消失怎么办？](#15-vuex中的数据在页面刷新以后消失怎么办)
 *
-*
-*
-*
-*
-*
-*
+
+### Vue-router
 *
 *
 *
@@ -91,7 +101,7 @@ key的特殊属性是在虚拟DOM的算法中，在新旧node对比时辨识VNod
 Vue官方文档：
 >这个默认的模式是高效的，但是只适用于不依赖子组件状态或临时 DOM 状态 (例如：表单输入值) 的列表渲染输出。
 
-默认模式就是Vue在使用v-for渲染元素时，默认会采用`就地复用更新`的策略
+默认模式就是Vue在使用v-for渲染元素时，默认会采用`就地复用更新`的策略  
 ```js
 var vm = new Vue({
   el: '#app',
@@ -130,6 +140,76 @@ vm.dataList = [3, 4, 5, 6, 7] // 数据进行增删
 要解决这个问题，可以为列表项带上新闻id作为唯一key，那么每次渲染列表时都会完全替换所有组件，使其拥有正确状态。
 
 
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### 11. vue2和vue3中Vuex使用区别
+两者核心区别就是类型提示，像定义组件需要 defineComponent 同出一辙：
+```js
+/**   vue3    ***/
+import { createStore } from "vuex";
+
+import example from './modules/example'
+
+export default createStore({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: { example }
+})
+
+/**   vue2    ***/
+import Vue from "vue";
+import Vuex from "vuex";
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {}
+});
+
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### 12. 为什么Vuex的mutation和Redux的reducer中不能做异步操作
+分析一下mutation必须是同步函数的原因，是因为devtool插件需要跟踪记录每一条mutation日志，每一条 mutation 被记录，devtools 都需要捕捉到前一状态和后一状态的快照
+如果mutation中使用异步函数操作，当mutation被触发时，回调函数还没有被调用的话，devtools就无法知道回调函数什么时候结束，也就无法无法追踪store中state，这与vuex设计
+的初衷不符
+**[:arrow_up: 返回目录](#目录)**
+
+#### 13. 为什么Vuex的store中的状态是响应式的
+
+14-双向绑定和单向数据流不冲突
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 14. 双向绑定和单向数据流不冲突
+双向绑定是使用v-model实现，它知识一种语法糖，为了写更少的代码，实质上还是单向数据流
+当在严格模式中使用 Vuex 时，在属于 Vuex 的 state 上使用 v-model 会比较棘手：
+现有两种解决方法：
+ * 给 <input> 中绑定 value，然后侦听 input 或者 change 事件，在事件回调中调用一个方法:
+ * 双向绑定的计算属性
+**[:arrow_up: 返回目录](#目录)**
+
+#### 15. vuex中的数据在页面刷新以后消失怎么办
+1.采用将store中数据存储到本地浏览器sessionStorage中
+```js
+//在页面加载时读取 sessionStorage 里的状态信息
+if (sessionStorage.getItem("store") ) {
+ this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem("store"))))     
+} 
+//在页面刷新时将 vuex 里的信息保存到 sessionStorage 里
+window.addEventListener("beforeunload",()=>{
+  sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+}
+```
+2.解决 vuex 刷新数据初始化问题  vuex-persistedstate  采用 h5 本地缓存的原理  可以自定义为永久缓存和会话级缓存，这两种方式缓存方式可一起使用。 
+ 看项目需求而定  建议 会话级缓存  因为 h5 本地缓存储存方式没有对 xss 攻击有任何抵御机制，一旦出现 xss 漏洞 信息就会泄露
 **[:arrow_up: 返回目录](#目录)**
 
 

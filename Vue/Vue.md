@@ -8,12 +8,13 @@ https://github.com/answershuto/learnVue
 ## 目录
 
 ### Vue
-* [1. vm.data调用问题？](#1-vmdata调用问题)
-* [2. v-if和v-show的区别](#2-v-if和v-show的区别)
-* [3. template的使用](#3-template的使用)
-* [4. vue的diff算法](#4-vue的diff算法)
-* [5. 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#5-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
-* [6. ](#6-)
+* [vue的生命周期和每个生命周期所做的事情](#vue的生命周期和每个生命周期所做的事情)
+* [vm.data调用问题？](#vm.data调用问题)
+* [v-if和v-show的区别](#v-if和v-show的区别)
+* [template的使用](#template的使用)
+* [vue的diff算法](#vue的diff算法)
+* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#5-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
+
 *
 
 ### Vuex
@@ -34,8 +35,25 @@ https://github.com/answershuto/learnVue
 
 
 
+#### vue的生命周期和每个生命周期所做的事情
+vue的生命周期分为四个阶段
+1：实例创建
+2：DOM渲染
+3：数据更新
+4：实例销毁
+共有八个基本钩子函数
+beforeCreat: 在new一个vue实例之后，data和methods都还没有初始化，不能使用;
+created: data和methods都初始化好了，$el还没有，此阶段可以做的：解决loading，请求ajax数据为mounted渲染做准备
+beforeMount: vue的$el和data都初始化了，但是还是虚拟的dom节点，具体的data.filter还没替换;
+mounted: 已挂载vue实例已经初始化完成了，data.filter成功渲染，配合路由钩子使用;
+beforeUpdate: data更新时触发;
+updated: 
+beforeDestory: 实例销毁之前，实例仍可使用
+destroyed: 
 
-#### 1. vm.data调用问题？
+**[:arrow_up: 返回目录](#目录)**
+
+#### vm.data调用问题？
 ```javascript
 // 我们的数据对象
 var data = { a: 1 }
@@ -60,7 +78,7 @@ vue中定义的data在执行new Vue（）创建时候变为vue对象实例的属
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 2. v-if和v-show的区别
+#### v-if和v-show的区别
 
 v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的标签元素都不可见，但是这两个选项是有区别的:
  - 1.v-if在条件切换时，会对标签进行适当的创建和销毁，而v-show则仅在初始化时加载一次，因此v-if的开销相对来说会比v-show大。
@@ -69,7 +87,7 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 3. template的使用
+#### template的使用
 在.vue文件中,template标签是用来写html模块的，且内部必须只有一个根元素，不然会报错
 ```javascript
 <template>
@@ -91,11 +109,11 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 ```
 **[:arrow_up: 返回目录](#目录)**
 
-#### 4. vue的diff算法
+#### vue的diff算法
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 5. 写 React和Vue 项目时为什么要在列表组件中写 key，其作用是什么?
+#### 写 React和Vue 项目时为什么要在列表组件中写 key，其作用是什么?
 key的特殊属性是在虚拟DOM的算法中，在新旧node对比时辨识VNodes。key的作用是子更新组件时更准确更快的判断两个节点是否相同，相同就复用，不相同就删除旧的创建新的
 
 Vue官方文档：
@@ -143,7 +161,7 @@ vm.dataList = [3, 4, 5, 6, 7] // 数据进行增删
 **[:arrow_up: 返回目录](#目录)**
 
 
-#### 11. vue2和vue3中Vuex使用区别
+#### vue2和vue3中Vuex使用区别
 两者核心区别就是类型提示，像定义组件需要 defineComponent 同出一辙：
 ```js
 /**   vue3    ***/
@@ -176,19 +194,19 @@ export default new Vuex.Store({
 **[:arrow_up: 返回目录](#目录)**
 
 
-#### 12. 为什么Vuex的mutation和Redux的reducer中不能做异步操作
+#### 为什么Vuex的mutation和Redux的reducer中不能做异步操作
 分析一下mutation必须是同步函数的原因，是因为devtool插件需要跟踪记录每一条mutation日志，每一条 mutation 被记录，devtools 都需要捕捉到前一状态和后一状态的快照
 如果mutation中使用异步函数操作，当mutation被触发时，回调函数还没有被调用的话，devtools就无法知道回调函数什么时候结束，也就无法无法追踪store中state，这与vuex设计
 的初衷不符
 **[:arrow_up: 返回目录](#目录)**
 
-#### 13. 为什么Vuex的store中的状态是响应式的
+#### 为什么Vuex的store中的状态是响应式的
 
 14-双向绑定和单向数据流不冲突
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 14. 双向绑定和单向数据流不冲突
+#### 双向绑定和单向数据流不冲突
 双向绑定是使用v-model实现，它知识一种语法糖，为了写更少的代码，实质上还是单向数据流
 当在严格模式中使用 Vuex 时，在属于 Vuex 的 state 上使用 v-model 会比较棘手：
 现有两种解决方法：
@@ -196,7 +214,7 @@ export default new Vuex.Store({
  * 双向绑定的计算属性
 **[:arrow_up: 返回目录](#目录)**
 
-#### 15. vuex中的数据在页面刷新以后消失怎么办
+#### vuex中的数据在页面刷新以后消失怎么办
 1.采用将store中数据存储到本地浏览器sessionStorage中
 ```js
 //在页面加载时读取 sessionStorage 里的状态信息

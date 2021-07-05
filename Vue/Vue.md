@@ -12,9 +12,13 @@ https://github.com/answershuto/learnVue
 * [vm.data调用问题？](#vm.data调用问题)
 * [v-if和v-show的区别](#v-if和v-show的区别)
 * [template的使用](#template的使用)
+* [vue的虚拟DOM的理解](#vue的虚拟DOM的理解)
 * [vue的diff算法](#vue的diff算法)
-* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#5-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
-
+* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
+* [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
+*
+* [vue和react的对比](#vue和react的对比)
+*
 *
 
 ### Vuex
@@ -49,7 +53,9 @@ mounted: 已挂载vue实例已经初始化完成了，data.filter成功渲染，
 beforeUpdate: data更新时触发;
 updated: 
 beforeDestory: 实例销毁之前，实例仍可使用
-destroyed: 
+destroyed:
+ 
+![](Vue_files/1.jpg)
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -100,13 +106,28 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 <font color=red>template标签中不能使用v-show </font>
 
 有时候,不需要这外层的 div ，可以采用下面 的方法，在 <template>标签上使用 v-for来循环
-```javascript
+```js
 <template>
-    <div class="root">
-        <div v-for="item,index in 5" :key="index">测试{{index}}</div>
-    </div>
+    <div v-for="item,index in 5" :key="index">测试{{index}}</div>
 </template>
 ```
+**[:arrow_up: 返回目录](#目录)**
+
+#### vue的虚拟DOM的理解
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### vue的diff算法
@@ -160,6 +181,37 @@ vm.dataList = [3, 4, 5, 6, 7] // 数据进行增删
 
 **[:arrow_up: 返回目录](#目录)**
 
+
+#### 为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty
+1. Object.defineProperty无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应；
+
+>Object.defineProperty无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应。 
+为了解决这个问题，经过vue内部处理后可以使用以下几种方法来监听数组(push, pop, shift, unshift, splice, sort, reverse)
+
+由于只针对了以上七种方法进行了hack处理,所以其他数组的属性也是检测不到的，还是具有一定的局限性。
+```
+PS：尤大说了vue针对数组数组下标动态响应不是做不到，而是因为性能不做
+数组length 尽量不能去改写。
+
+length 在规范中不允许改写，configurable = false
+a.length = 100，等于增加了 100 个属性，需要对每个属性进行监听，这样一来，性能上所有问题，使用 push 或者 pop 等重写方法更加简单
+```
+
+2. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。
+3. Proxy不仅可以代理对象，还可以代理数组, 可以劫持整个对象并返回对象。还可以代理动态增加的属性。
+
+
+参考链接：《[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439)》
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### vue和react的对比
+
+参考链接：《[关于Vue和React的一些对比及个人思考（上）](https://juejin.cn/post/6844904040564785159#heading-25)》
+**[:arrow_up: 返回目录](#目录)**
+
+-----------------------------------------------------------------------------
 
 #### vue2和vue3中Vuex使用区别
 两者核心区别就是类型提示，像定义组件需要 defineComponent 同出一辙：
@@ -229,5 +281,10 @@ window.addEventListener("beforeunload",()=>{
 2.解决 vuex 刷新数据初始化问题  vuex-persistedstate  采用 h5 本地缓存的原理  可以自定义为永久缓存和会话级缓存，这两种方式缓存方式可一起使用。 
  看项目需求而定  建议 会话级缓存  因为 h5 本地缓存储存方式没有对 xss 攻击有任何抵御机制，一旦出现 xss 漏洞 信息就会泄露
 **[:arrow_up: 返回目录](#目录)**
+
+
+-----------------------------------------------------------------------------
+
+
 
 

@@ -4,10 +4,13 @@
 
 ### 目录
 
-* [1. DOCTYPE 的作用是什么？](#1-doctype-的作用是什么)
-* [2. 关于DOCTYPE html和meta](#2-关于DOCTYPE-html和meta)
+* [DOCTYPE 的作用是什么？](#doctype-的作用是什么)
+* [关于DOCTYPE html和meta](#关于DOCTYPE-html和meta)
+* [html中元素和标签](#html中元素和标签)
+* [浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢](#浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢)
+* [attribute和property的区别是什么](#attribute和property的区别是什么)
 
-#### 1. DOCTYPE 的作用是什么？
+#### DOCTYPE 的作用是什么？
    
    相关知识点：
    ```
@@ -28,7 +31,10 @@
    档中允许的属性以及一些规则。而 html5 不再基于 SGML 了，所以不再需要使用 DTD。
    ```
    
-#### 2. 关于DOCTYPE html和meta 
+**[:arrow_up: 返回目录](#目录)**
+	 
+	 
+#### 关于DOCTYPE html和meta 
    ```
   <!DOCTYPE html>  H5标准声明，使用 HTML5 doctype，不区分大小写
   <head lang=”en”> 标准的 lang 属性写法
@@ -64,3 +70,80 @@
   <meta http-equiv=”expires” content=”0″>
    ```
 详细资料可以参考：[《关于<!doctype html>和meta》](https://www.jianshu.com/p/2acf929ac280?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### html中元素和标签
+HTML 元素指的是从开始标签（start tag）到结束标签（end tag）的所有代码。
+```
+<p>这是元素内容</p>
+注： 
+<p> 开始标签 </p>结束标签 ，‘这是元素内容’这是元素内容， 没有的话就是空元素
+```
+常见标签：<a> <br> <button> <div> <font> <form> <h1> - <h6> <link> <map> <ul> <ol> - <li> <p> <span> <strong>
+
+##### 下面介绍一下语义标签
+**什么是语义标签？**
+多html标签也具有语义的意义，也就是说元素本身传达了关于标签所包含内容类型的一些信息
+**为什么要语义**
+1. **代码结构**: 使页面没有css的情况下，也能够呈现出很好的内容结构
+2. **有利于SEO**: 爬虫依赖标签来确定关键字的权重，因此可以和搜索引擎建立良好的沟通，帮助爬虫抓取更多的有效信息
+3. **提升用户体验**： 例如title、alt可以用于解释名称或者解释图片信息，以及label标签的灵活运用。
+4. **便于团队开发和维护**: 语义化使得代码更具有可读性，让其他开发人员更加理解你的html结构，减少差异化。
+5. **方便其他设备解析**: 如屏幕阅读器、盲人阅读器、移动设备等，以有意义的方式来渲染网页。
+
+结构体|文本|一致
+--|:--:|--:
+header |    |		a
+h1     | p     |	 stong
+h2     | ul     |		em
+h3     |	ol     |	q
+nav     | li     |	abbr
+footer     | blockquote     |	small
+article     |     |
+section     | |
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### 浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢
+ 在线的情况下，浏览器发现 html 头部有 manifest 属性，它会请求 manifest 文件，如果是第一次访问 app ，那么浏览器
+ 就会根据 manifest 文件的内容下载相应的资源并且进行离线存储。如果已经访问过 app 并且资源已经离线存储了，那么浏览器
+ 就会使用离线的资源加载页面，然后浏览器会对比新的 manifest 文件与旧的 manifest 文件，如果文件没有发生改变，就不做
+ 任何操作，如果文件改变了，那么就会重新下载文件中的资源并进行离线存储。
+
+ 离线的情况下，浏览器就直接使用离线存储的资源。
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### attribute和property的区别是什么
+ attribute 是 dom 元素在文档中作为 html 标签拥有的属性；
+ property 就是 dom 元素在 js 中作为对象拥有的属性。
+ 对于 html 的标准属性来说，attribute 和 property 是同步的，是会自动更新的，
+ 但是对于自定义的属性来说，他们是不同步的。
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 # Web-Front-End-Interview
 
-| Ⅰ | Ⅱ | Ⅲ | Ⅳ | Ⅴ | Ⅵ | Ⅶ | Ⅷ |
-| :----:| :----: | :----: | :----: |:----: |:----: |:----: |:----: |
+| Ⅰ | Ⅱ | Ⅲ | Ⅳ | Ⅴ | Ⅵ | Ⅶ | Ⅷ | Ⅸ
+| :----:| :----: | :----: | :----: |:----: |:----: |:----: |:----: |:----: |
 | [CSS](https://github.com/BGround/Web-Front-End-Interview/blob/main/CSS/CSS.md) | [HTML](https://github.com/BGround/Web-Front-End-Interview/blob/main/HTML/HTML.md) | [JavaScript](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/javascript.md) | [VUE](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/Vue.md) | [React](https://github.com/BGround/Web-Front-End-Interview/blob/main/React/React.md) | [算法]() | [浏览器工作原理](https://github.com/BGround/Web-Front-End-Interview/blob/main/BrowserWork/README.md) |[工具化]() |
 
 ## JS专题篇
@@ -30,8 +30,8 @@
 ## 算法专题篇
 - []()
 
-## 浏览器目录
-
+## 浏览器网络安全
+- [图解HTTP学习](https://github.com/BGround/Web-Front-End-Interview/issues?q=is%3Aopen+is%3Aissue+label%3AHTTP)
 
 ## 面试复习框架
 ![JavaScript相关知识](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/image/复习框架/JavaScript基础知识框架.png)

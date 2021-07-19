@@ -37,6 +37,8 @@
 
 
 ## 面试经验
+#### vue
+ - [详解 30 道 Vue 面试题](https://mp.weixin.qq.com/s/g5c-cHPHG4u1OtSm4Bqv7g)
 #### 2021
  - [阿里和快手等](https://juejin.cn/post/6922290178836922381)
 #### 2020

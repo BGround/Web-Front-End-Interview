@@ -30,7 +30,7 @@ https://github.com/answershuto/learnVue
 *
 
 ### Vue-router
-*
+* [Vue Router 的路由模式 hash 和 history 的实现原理？](# Vue Router 的路由模式 hash 和 history 的实现原理)
 *
 *
 *
@@ -285,6 +285,64 @@ window.addEventListener("beforeunload",()=>{
 
 -----------------------------------------------------------------------------
 
+#### Vue Router 的路由模式 hash 和 history 的实现原理
+1. hash 模式的实现原理
 
+早期的前端路由的实现事基于 location.hash 来实现的。其实现原理很简单，location.hash 的值就是 URL 中 # 后面的内容，比如下面这个网站，它的 location.hash 的值就是 #search
+**https://www.baidu.com#search**
 
+hash 路由模式的实现主要是基于以下几个特性：
+
+ - URL中 hash 值只是客户端的一种状态，也就是说当向服务器发出请求时，hash部分不会被发送
+ - hash 值的改变，都会在浏览器的访问历史中留下记录，因此我们通过浏览器的回退、前进按钮控制 hash 的切换
+ - 可以通过 a 标签，并设置 href 属性，当用户点击这个标签后，URL 的 hash 值会发生改变，或者使用 JavaScript 来对 location.hash 进行赋值，改变URL的hash值
+ - 我们可以使用 hashchange 事件来监听 hash 值的变化， 从而对页面进行跳转
+
+2. history模式的实现原理
+
+HTML5提供了History API来实现 URL 的变化，其中最主要的API有以下两个：history.pushState() 和 history.replaceState().
+这两个API可以在不进行刷新的情况下，操作浏览器的历史记录。唯一不同的是，前者是新增一个历史记录，后者是直接替换当前的历史记录，如下所示：
+```
+window.history.pushState(null, null, path)
+window.history.replaceState(null, null, path)
+```
+
+history 路由模式实现主要是基于以下几个特性：
+
+- pushState 和 replaceState 两个API来操作实现 URL 的变化
+- 我们可以使用 popstate 事件来监听 URL的变化，从而对页面进行跳转
+- history.pushState() 和 history.replaceState() 不会触发 popstate 事件，这是需要我们手动出发页面更新
+
+3. 简单实现 Vue Router
+
+Vue Router 核心是，通过 Vue.use 注册插件，在插件的 install 方法中获取用户配置的 router 对象，当浏览器地址发生变化的时候，
+根据 router 对象匹配相应路由，获取组件，并将组件渲染到视图上
+
+**(1) 如何在 install 方法中获取 Vue 实例上的 router 属性**
+
+可以利用 Vue.mixin 混入声明周期函数 beforeCreate，在beforeCreate 函数中可以获取到Vue实例上的属性并赋值到Vue原型链上
+```
+_Vue.mixin({
+	beforeCreate() {
+		if (this.$options.router) {
+			_Vue.protoType.$router = this.$options.router
+		}
+	}
+})
+```
+
+**(2) 如何触发更新**
+
+hash 模式下：
+
+- 通过 history.pushState() 修改浏览器地址，触发更新
+- 通过监听 hashchange 事件来监听浏览器前进或者后退，触发更新
+
+history模式下：
+
+- 通过 location.hash 修改 hash 值，触发更新
+- 通过监听 popstate 事件来监听浏览器前进或者后退，触发更新
+- 渲染 router-view 组件
+
+**[:arrow_up: 返回目录](#目录)**
 

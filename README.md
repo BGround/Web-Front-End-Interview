@@ -27,19 +27,14 @@
 - [ES6入门之Async和Await](https://github.com/BGround/Web-Front-End-Interview/issues/15)
 - [ES6入门之class]()
 
-## 算法专题篇
-- []()
-
-## 浏览器网络安全
+## 浏览器原理和网络安全
 - [图解HTTP学习](https://github.com/BGround/Web-Front-End-Interview/issues?q=is%3Aopen+is%3Aissue+label%3AHTTP)
 
 ## 面试复习框架
 ![JavaScript相关知识](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/image/复习框架/JavaScript基础知识框架.png)
 
-## React
+## nodejs
 
-## Vue
-- [Vue学习笔记](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/vueNote.md)
 
 ## 面试经验
 #### 2021

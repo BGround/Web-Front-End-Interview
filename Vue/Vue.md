@@ -9,7 +9,7 @@ https://github.com/answershuto/learnVue
 
 ### Vue
 * [vue的生命周期和每个生命周期所做的事情](#vue的生命周期和每个生命周期所做的事情)
-* [vm.data调用问题？](#vm.data调用问题)
+* [vm中data调用问题](#vm中data调用问题)
 * [v-if和v-show的区别](#v-if和v-show的区别)
 * [template的使用](#template的使用)
 * [vue的虚拟DOM的理解](#vue的虚拟DOM的理解)
@@ -30,8 +30,7 @@ https://github.com/answershuto/learnVue
 *
 
 ### Vue-router
-* [Vue Router 的路由模式 hash 和 history 的实现原理？](# Vue Router 的路由模式 hash 和 history 的实现原理)
-*
+* [VueRouter的路由模式hash和history的实现原理](#VueRouter的路由模式hash和history的实现原理)
 *
 *
 *
@@ -59,7 +58,7 @@ destroyed:
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### vm.data调用问题？
+#### vm中data调用问题
 ```javascript
 // 我们的数据对象
 var data = { a: 1 }
@@ -285,7 +284,7 @@ window.addEventListener("beforeunload",()=>{
 
 -----------------------------------------------------------------------------
 
-#### Vue Router 的路由模式 hash 和 history 的实现原理
+#### VueRouter的路由模式hash和history的实现原理
 1. hash 模式的实现原理
 
 早期的前端路由的实现事基于 location.hash 来实现的。其实现原理很简单，location.hash 的值就是 URL 中 # 后面的内容，比如下面这个网站，它的 location.hash 的值就是 #search

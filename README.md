@@ -33,7 +33,7 @@
 ## 面试复习框架
 ![JavaScript相关知识](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/image/复习框架/JavaScript基础知识框架.png)
 
-## nodejs
+## Node.js
 
 
 ## 面试经验

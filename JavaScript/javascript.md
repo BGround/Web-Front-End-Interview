@@ -30,6 +30,8 @@
 - [25.JS中高阶函数浅析](#25-JS中高阶函数浅析)
 - [26.闭包的应用之节流和防抖](#26-闭包的应用之节流和防抖)
 - [27.继承的方式](#27-继承的方式)
+- [28.ES5的继承和ES6的继承有什么区别](#28-ES5的继承和ES6的继承有什么区别)
+- [29.模块化发展历程](#29-模块化发展历程)
 - [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
 - [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
@@ -777,7 +779,112 @@ console.log(4)
 
 #### 21. 手写一个promise
 ```js
+const PENDING = "pending";
+const RESOLVED = "resolved";
+const REJECTED = "rejected";
 
+function MyPromise(fn) {
+  // 保存初始化状态
+  var self = this;
+
+  // 初始化状态
+  this.state = PENDING;
+
+  // 用于保存 resolve 或者 rejected 传入的值
+  this.value = null;
+
+  // 用于保存 resolve 的回调函数
+  this.resolvedCallbacks = [];
+
+  // 用于保存 reject 的回调函数
+  this.rejectedCallbacks = [];
+
+  // 状态转变为 resolved 方法
+  function resolve(value) {
+    // 判断传入元素是否为 Promise 值，如果是，则状态改变必须等待前一个状态改变后再进行改变
+    if (value instanceof MyPromise) {
+      return value.then(resolve, reject);
+    }
+
+    // 保证代码的执行顺序为本轮事件循环的末尾
+    setTimeout(() => {
+      // 只有状态为 pending 时才能转变，
+      if (self.state === PENDING) {
+        // 修改状态
+        self.state = RESOLVED;
+
+        // 设置传入的值
+        self.value = value;
+
+        // 执行回调函数
+        self.resolvedCallbacks.forEach(callback => {
+          callback(value);
+        });
+      }
+    }, 0);
+  }
+
+  // 状态转变为 rejected 方法
+  function reject(value) {
+    // 保证代码的执行顺序为本轮事件循环的末尾
+    setTimeout(() => {
+      // 只有状态为 pending 时才能转变
+      if (self.state === PENDING) {
+        // 修改状态
+        self.state = REJECTED;
+
+        // 设置传入的值
+        self.value = value;
+
+        // 执行回调函数
+        self.rejectedCallbacks.forEach(callback => {
+          callback(value);
+        });
+      }
+    }, 0);
+  }
+
+  // 将两个方法传入函数执行
+  try {
+    fn(resolve, reject);
+  } catch (e) {
+    // 遇到错误时，捕获错误，执行 reject 函数
+    reject(e);
+  }
+}
+
+MyPromise.prototype.then = function(onResolved, onRejected) {
+  // 首先判断两个参数是否为函数类型，因为这两个参数是可选参数
+  onResolved =
+    typeof onResolved === "function"
+      ? onResolved
+      : function(value) {
+          return value;
+        };
+
+  onRejected =
+    typeof onRejected === "function"
+      ? onRejected
+      : function(error) {
+          throw error;
+        };
+
+  // 如果是等待状态，则将函数加入对应列表中
+  if (this.state === PENDING) {
+    this.resolvedCallbacks.push(onResolved);
+    this.rejectedCallbacks.push(onRejected);
+  }
+
+  // 如果状态已经凝固，则直接执行对应状态的函数
+
+  if (this.state === RESOLVED) {
+    onResolved(this.value);
+  }
+
+  if (this.state === REJECTED) {
+    onRejected(this.value);
+  }
+};
 ```
 
 **[:arrow_up: 返回目录](#目录)**
@@ -863,6 +970,59 @@ console.log(newArr) // [1, true, Infinity, {}, []]
 
 #### 24. 从内存管理谈垃圾回收
 
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+
+#### 27. 继承的方式
+传送门: 
+[JavaScript专题之继承](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题之继承/JavaScript专题之继承.md)
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 28. ES5的继承和ES6的继承有什么区别
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 29. 模块化发展历程
+模块化主要是用来抽离公共代码，隔离作用域和避免全局变量冲突等,
+可以从IIFE, AMD, CMD, CommonJs, webpack, ES6 这几个角度来考虑
+
+**IIFE:** 使用自执行函数来编写模块化, 特点是在**一个单独函数作用域中执行代码, 避免变量冲突**
+```
+(function () {
+	return {
+		data:[]
+	}
+})()
+```
+
+**AMD:** 使用requireJS来编写模块化，特点是**依赖必须提前声明好**
+```
+define('./index.js',function(code){
+    // code 就是index.js 返回的内容
+})
+```
+
+**CMD:** 使用seaJS 来编写模块化，特点：**支持动态引入依赖文件。**
+```
+define(function(require, exports, module) {  
+  var indexCode = require('./index.js');
+})
+```
+
+**CommonJS:** nodejs中自带模块化
+```
+const fs = require('fs')
+```
+
+**webpack(require.ensure)**：webpack 2.x 版本中的代码分割。
+**ES6:** ES6 引入的模块化，支持import 来引入另一个 js 。
+```
+import React from 'react'
+```
 
 **[:arrow_up: 返回目录](#目录)**
 

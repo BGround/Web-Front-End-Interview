@@ -20,3 +20,33 @@ npm install moment
 执行 npm install moment 就可以把 moment 这个包从 npm 的软件包仓库中下载这个包，然后安装到本地了。而 npm 的软件包仓库中，有数以万计的 moment 这样的包。
 
 
+## 目录
+- [1.为什么输入 npm install 就可以自动安装对应的模块？](#1-为什么输入-npm-install-就可以自动安装对应的模块)
+-
+-
+-
+
+
+
+
+
+
+
+
+
+
+
+### 1. 为什么输入 npm install 就可以自动安装对应的模块
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+
+
+
+
+
+
+

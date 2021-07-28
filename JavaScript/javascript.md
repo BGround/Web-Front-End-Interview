@@ -26,7 +26,7 @@
 - [21.手写一个promise](#21-手写一个promise)
 - [22.为什么使用 setTimeout 实现 setInterval？怎么模拟？](#22-为什么使用-settimeout-实现-setinterval怎么模拟)
 - [23.JS中虚值或者假值？怎么判断？](#23-JS中虚值或者假值怎么判断)
-- [24.从内存管理谈垃圾回收](#24-从内存管理谈垃圾回收)
+- [24.](#24-)
 - [25.JS中高阶函数浅析](#25-JS中高阶函数浅析)
 - [26.闭包的应用之节流和防抖](#26-闭包的应用之节流和防抖)
 - [27.继承的方式](#27-继承的方式)
@@ -37,6 +37,7 @@
 - [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
 - [33.ES6入门-Set和Map数据结构](#33-ES6入门之Set和Map数据结构)
 - [34.ES6入门之Promise详解](#34-ES6入门之Promise详解)
+- [35.如何封装一个 javascript 的类型判断函数](#34-如何封装一个 javascript 的类型判断函数)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -973,16 +974,29 @@ console.log(newArr) // [1, true, Infinity, {}, []]
 
 **[:arrow_up: 返回目录](#目录)**
 
+#### 26. 闭包的应用之节流和防抖
+传送门: 
+[JavaScript专题之从underscore学习防抖](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题篇/JavaScript专题之从underscore学习防抖.md)
+[JavaScript专题之从underscore学习节流](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题篇/JavaScript专题之从underscore学习节流.md)
+
+**[:arrow_up: 返回目录](#目录)**
 
 
 #### 27. 继承的方式
 传送门: 
-[JavaScript专题之继承](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题之继承/JavaScript专题之继承.md)
+[JavaScript专题之继承](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/JavaScript专题篇/JavaScript专题之继承.md)
 
 **[:arrow_up: 返回目录](#目录)**
 
 #### 28. ES5的继承和ES6的继承有什么区别
+ES5的继承是通过prototype或者构造函数实现，**ES5的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.apply(this)）**
 
+ES6的继承完全不同，**实质上是先创建父类的实例对象this(所以必须先调用父类的super()方法，然后再用子类的构造函数去修改this)**
+
+具体的：ES6通过class关键字定义类，里面有构造函数，类之间通过extends关键字实现继承。子类必须在constructor方法中调用super方法，否则新建实列报错，
+因为子类中没有自己的this对象，而是继承了父类的this对象，然后对其进行修改。如果不调用super()方法，子类得不到this对象
+
+PS：super代表父类的实例，即父类的this对象。在子类构造函数中，调用super后，才可使用this关键字，否则报错
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -1049,6 +1063,26 @@ import React from 'react'
 #### 34. ES6入门之Promise详解
 [传送门](https://github.com/BGround/Web-Front-End-Interview/issues/12)
 
+**[:arrow_up: 返回目录](#目录)**
+
+#### 35. 如何封装一个-javascript-的类型判断函数
+```
+function getType(value) {
+	//空判断
+	if (value === null) return '';
+	if (typeOf value === "object") {
+		let valueClass = Object.prototype.toString.call(value);
+		type = valueClass.split(" ")[1].split("");
+		//移除最后一个元素，改变自身
+		type.pop();
+		
+		return type.join('').toLowerCase();
+	}else {
+		return typeOf value;
+	}
+}
+
+```
 **[:arrow_up: 返回目录](#目录)**
 
 #### 99. Object有哪些属性方法

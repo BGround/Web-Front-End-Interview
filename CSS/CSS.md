@@ -19,7 +19,7 @@
 **[:arrow_up: 返回目录](#目录)**
 
 
-### 2. 分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景
+### 2. 分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景
 **结构：**
 display:none: 会让元素完全从渲染树中消失，渲染的时候不占据任何空间, 不能点击，
 visibility: hidden:不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，不能点击
@@ -43,19 +43,19 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 
  - 如果元素是常规流中的inline元素，为父元素设置 text-align: center, 就可以
 ```
-	<body>
-	  <div class="content">
-	  aaaaaa aaaaaa a a a a a a a a
-	  </div>
-	</body>
+<body>
+	<div class="content">
+	aaaaaa aaaaaa a a a a a a a a
+	</div>
+</body>
 
-	<style>
-	  body {
-		  background: grey;
-		  
-		  text-align: center;
-	  }
-	</style>
+<style>
+	body {
+	  background: grey;
+
+    text-align: center;
+	}
+</style>
 ```
  - 如果元素是常规流中的block元素，
 		1. 为元素设置宽度，
@@ -76,7 +76,7 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
   .content {
       width: 500px;      /* 1 */
       margin: 0 auto;    /* 2 */
-			text-align: left;  /* 3 */
+      text-align: left;  /* 3 */
 
       background: purple;
   }

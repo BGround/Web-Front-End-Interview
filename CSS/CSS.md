@@ -4,7 +4,7 @@
 
 ### 目录
 - [1.请简述下CSS选择器的权重与优先规则](#1-请简述下CSS选择器的权重与优先规则)
-- [2.分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
+- [2.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
 - [3.如何水平居中一个元素](#3-如何水平居中一个元素)
 -
 -
@@ -53,13 +53,15 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 	  background: grey;
 
     text-align: center;
-	}
+  }
 </style>
 ```
  - 如果元素是常规流中的block元素，
+ 
 		1. 为元素设置宽度，
 		2. 设置左右 margin 为 auto，
 		3. IE6下需在父元素上设置 text-align: center, 再给子元素恢复需要的值
+		
 ```
 <body>
   <div class="content">
@@ -82,14 +84,16 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 </style>		
 ```
  - 如果元素是浮动元素，
+ 
 		1. 为元素设置宽度，
 		2. position: relative
 		3. 浮动方向偏移量 (left或者right) 设置50%
 		4. 浮动方向上的margin设置为元素宽度一半乘以 -1
+		
 ```
 <body>
 	<div class="content">
-	aaaaaa aaaaaa a a a a a a a a
+    aaaaaa aaaaaa a a a a a a a a
 	</div>
 </body>
 

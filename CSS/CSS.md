@@ -15,7 +15,6 @@
 ### 1. 请简述下CSS选择器的权重与优先规则
 !important > 行内样式 > ID选择器 > 类选择器 > 元素选择器 > 通配符选择器 > 继承 > 浏览器默认属性。
 
-
 **[:arrow_up: 返回目录](#目录)**
 
 
@@ -44,13 +43,13 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
  - 如果元素是常规流中的inline元素，为父元素设置 text-align: center, 就可以
 ```
 <body>
-	<div class="content">
-	aaaaaa aaaaaa a a a a a a a a
-	</div>
+  <div class="content">
+	  aaaaaa aaaaaa a a a a a a a a
+  </div>
 </body>
 
 <style>
-	body {
+  body {
 	  background: grey;
 
     text-align: center;
@@ -111,6 +110,7 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 </style>
 ```
  - 如果元素是绝对定位元素
+
 		1. 为元素设置宽度，
 		2. 偏移量设置为50%
 		3. 偏移方向外边距设置为元素宽度一半乘以-1
@@ -139,5 +139,6 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 </style>
 ```
 
+**[:arrow_up: 返回目录](#目录)**
 
 

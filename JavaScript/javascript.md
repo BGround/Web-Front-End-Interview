@@ -1073,10 +1073,10 @@ function getType(value) {
 	if (typeOf value === "object") {
 		let valueClass = Object.prototype.toString.call(value);
 		type = valueClass.split(" ")[1].split("");
-		//移除最后一个元素，改变自身
+		//移除最后一个元素，改变自身, 返回新的 type
 		type.pop();
 		
-		return type.join('').toLowerCase();
+		return type.join('').toLowerCase();  /* 拼接并转为小写 */
 	}else {
 		return typeOf value;
 	}

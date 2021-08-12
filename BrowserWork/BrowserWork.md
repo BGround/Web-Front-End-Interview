@@ -16,6 +16,8 @@
 - [4.Http请求中GET和POST本质区别](#4-Http请求中GET和POST本质区别)
 - [5.TCP三次握手和四次挥手](#4-TCP三次握手和四次挥手)
 - [6.客户端如何验证证书的合法性](#4-客户端如何验证证书的合法性)
+- [7.从输入URL到页面展示，中间发生了什么](#7-从输入URL到页面展式-中间发生了什么)
+- [8.浏览器的缓存](#8-浏览器的缓存)
 - 
 - 
 - 
@@ -148,3 +150,25 @@ HTTPS 数据安全传输中客户端如何验证证书的合法性
 
 **[:arrow_up: 返回目录](#目录)**
 
+### 7. 从输入URL到页面展示，中间发生了什么
+
+传送门：[]( )
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 8. 浏览器的缓存
+这里指的是LocalStorage和SessionStorage,主要是从使用和区别去理解这两个缓存
+
+使用方面：
+>他们都是以key/value的形式保存在浏览器的端中，
+
+区别方面：
+>localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
+
+>sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
+>不同浏览器无法共享localStorage或sessionStorage中的信息。相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），
+>但是不同页面或标签页间无法共享sessionStorage的信息。这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
+
+![storage](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/cookie-sessionStoge-LocalStorage.png)
+
+**[:arrow_up: 返回目录](#目录)**

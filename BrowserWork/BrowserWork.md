@@ -17,7 +17,9 @@
 - [5.TCP三次握手和四次挥手](#4-TCP三次握手和四次挥手)
 - [6.客户端如何验证证书的合法性](#4-客户端如何验证证书的合法性)
 - [7.从输入URL到页面展示，中间发生了什么](#7-从输入URL到页面展式-中间发生了什么)
-- [8.浏览器的缓存](#8-浏览器的缓存)
+- [8.浏览器的数据存储方式](#8-浏览器的数据存储方式)
+- [9.浏览器的缓存](#9-浏览器的缓存)
+
 - 
 - 
 - 
@@ -156,19 +158,51 @@ HTTPS 数据安全传输中客户端如何验证证书的合法性
 
 **[:arrow_up: 返回目录](#目录)**
 
-### 8. 浏览器的缓存
-这里指的是LocalStorage和SessionStorage,主要是从使用和区别去理解这两个缓存
+### 8. 浏览器的数据存储方式
+浏览器存储数据主要有三种方式：cookie、localStorage、sessionStorage
 
-使用方面：
->他们都是以key/value的形式保存在浏览器的端中，
+**使用方面：**
+cookie:是以对象的形式进行存储;
+localStorage和sessionStorage: 他们都是以key/value的形式保存在浏览器的端中，
 
-区别方面：
->localStorage生命周期是永久，这意味着除非用户显示在浏览器提供的UI上清除localStorage信息，否则这些信息将永远存在。
-
->sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
->不同浏览器无法共享localStorage或sessionStorage中的信息。相同浏览器的不同页面间可以共享相同的 localStorage（页面属于相同域名和端口），
->但是不同页面或标签页间无法共享sessionStorage的信息。这里需要注意的是，页面及标 签页仅指顶级窗口，如果一个标签页包含多个iframe标签且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
+**区别方面：**
+ - 1.是否与服务器端进行交互：
+ cookie数据始终在同源的http请求中携带（即使不需要），即cookie在浏览器和服务器间来回传递；
+ 
+ 而sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。
+ 
+ - 2.数据有效期不同：
+ sessionStorage仅在当前浏览器窗口关闭或刷新前有效，需要持久保存的数据自然也就不可能使用sessionStorage；
+ 
+ localStorage保存数据始终有效，窗口或浏览器关闭也一直保存，因此可用作持久保存数据；
+ 
+ cookie只在开发人员设置的有效期时间之前一直有效，即使窗口或浏览器关闭。
+ 
+ - 3.存储大小限制：
+ cookie存储的数据不能超过4k，同时因为每次http请求都会携带cookie，所以cookie只适合保存很小的数据，比如会话标识；
+ 
+ sessionStorage和localStorage 虽然也有存储大小的限制，但比cookie大得多，可以达到5M或更大。
+ 
+ PS：这三种存储方式都不能存储大量数据，这就产生了IndexedDB。它可以被网页脚本创建和操作，IndexedDB 允许储存大量数据，提供查找接口，还能建立索引，
+ 就数据库类型而言，IndexedDB 不属于关系型数据库（不支持 SQL 查询语句），更接近 NoSQL 数据库
+ 
+ - 4.作用域不同：
+ sessionStorage在不同的浏览器窗口中不能共享，即使是同源页面；
+ 
+ localStorage 在所有浏览器的同源窗口中都是共享的；
+ 
+ cookie也是在所有同源窗口中都是共享的。
+ 
 
 ![storage](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/cookie-sessionStoge-LocalStorage.png)
 
 **[:arrow_up: 返回目录](#目录)**
+
+
+### 9. 浏览器的缓存
+缓存分为两种：强缓存和协商缓存，它们是根据响应的header内容来决定的。
+**强缓存**: 强缓存的字段有: expires，cache-control。如果expires和cache-control同时存在的话，cache-control优先级要高于expires
+**协商缓存**: 协商缓存字段有Last-Modified/If-modified-since, Etag/If-None-Match
+
+**[:arrow_up: 返回目录](#目录)**
+

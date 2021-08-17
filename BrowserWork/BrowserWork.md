@@ -115,7 +115,16 @@ HTTP协议属于应用层，TCP协议属于传输层，HTTP协议位于TCP协议
 **[:arrow_up: 返回目录](#目录)**
 
 ### 4. Http请求中GET和POST本质区别
-
+GET和POST是HTTP的两种请求方法，底层都是TCP/IP协议，但是有着本质的区别
+ - 1.在URL上的区别
+	* get请求只能进行url编码，post支持多种编码方式
+	* get请求参数是在url上，post是在request body中
+	* get的url长度是有限制的，而post没有(这里是浏览器或者web服务器导致)
+	* 请求参数在url上，get更加不安全，可以作为Bookmark
+ - 2.在缓存上面的区别
+	* get 请求类似于查找的过程，用户获取数据，可以不用每次都与数据库连接，可以使用缓存
+	* post 不同，post一般做的是修改或者删除的操作，所以必须与数据库交互，不能使用缓存。
+	* get 在浏览器回退时是无害的，而post会再次提交请求
 
 参考资料:《[GET和POST两种基本请求方法的区别](https://cnblogs.com/logsharing/p/8448446.html)》
 **[:arrow_up: 返回目录](#目录)**

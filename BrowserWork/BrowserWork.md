@@ -19,24 +19,12 @@
 - [7.从输入URL到页面展示，中间发生了什么](#7-从输入URL到页面展式-中间发生了什么)
 - [8.浏览器的数据存储方式](#8-浏览器的数据存储方式)
 - [9.浏览器的缓存](#9-浏览器的缓存)
+- [10.重绘和回流](#10-重绘和回流)
+- 
+- 
+- 
+- 
 
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-- 1
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-- 
 - 
 - 
 - 
@@ -212,6 +200,12 @@ localStorage和sessionStorage: 他们都是以key/value的形式保存在浏览�
 缓存分为两种：强缓存和协商缓存，它们是根据响应的header内容来决定的。
 **强缓存**: 强缓存的字段有: expires，cache-control。如果expires和cache-control同时存在的话，cache-control优先级要高于expires
 **协商缓存**: 协商缓存字段有Last-Modified/If-modified-since, Etag/If-None-Match
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 10. 重绘和回流
+主要是看是否影响render tree，在render tree中需要更新元素属性时，只是影响元素的外观，不影响布局，就是重绘
+
 
 **[:arrow_up: 返回目录](#目录)**
 

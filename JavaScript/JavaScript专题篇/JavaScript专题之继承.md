@@ -20,6 +20,8 @@ var instance = new Object()
 instance.__proto__ === Object.prototype
 ```
 
+JS 实现继承的几种方式
+
 ### 第一种：原型链继承
 通过一段代码来了解下
 ```js
@@ -47,7 +49,7 @@ console.log(c1.arr,c2.arr);
 
 可以看到只改变c1的arr属性，c2也跟着改变了。这是因为两个实例是公用的一个原型对象，内存空间是共享的。
 
-### 构造函数继承
+### 第二种：构造函数继承
 结合原型链继承，先看一段代码来了解下
 ```js
 function Parent2() {

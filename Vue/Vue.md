@@ -8,16 +8,16 @@ https://github.com/answershuto/learnVue
 ### 目录
 
 ### Vue
-* [vue的生命周期和每个生命周期所做的事情](#vue的生命周期和每个生命周期所做的事情)
-* [vm中data调用问题](#vm中data调用问题)
+* [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
+* [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
+* [vm中data调用问题](#-vm中data调用问题)
 * [v-if和v-show的区别](#v-if和v-show的区别)
-* [template的使用](#template的使用)
-* [vue的虚拟DOM的理解](#vue的虚拟DOM的理解)
-* [vue的diff算法](#vue的diff算法)
-* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
-* [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
-*
-* [vue和react的对比](#vue和react的对比)
+* [template的使用](#-template的使用)
+* [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
+* [vue的diff算法](#-vue的diff算法)
+* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
+* [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
+* [vue和react的对比](#-vue和react的对比)
 *
 *
 
@@ -37,6 +37,11 @@ https://github.com/answershuto/learnVue
 *
 
 
+#### vue为什么说是一个构建用户界面的渐进式框架
+
+
+
+**[:arrow_up: 返回目录](#目录)**
 
 #### vue的生命周期和每个生命周期所做的事情
 vue的生命周期分为四个阶段

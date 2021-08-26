@@ -206,7 +206,7 @@ console.log(flag) // true
 基于 ES6，不会改变自身的遍历方法一共有 12 个，分别为 forEach、every、some、filter、map、reduce、reduceRight，
 以及 ES6 新增的方法 entries、find、findIndex、keys、values
 ```js
-// forEach 
+// forEach, 遍历数组，但是不返回原数组
 var arr = [1,2,3,4]
 arr.forEach(function(value,index,arr){
 	arr[index] = value + 1;

@@ -12,14 +12,18 @@ React项目中经常用到的知识点
 - [react中组件的几种通信方式](#-react中组件的几种通信方式)
 - [哪些方法会触发react重新渲染,重新渲染render会做些什么](#-哪些方法会触发react重新渲染-重新渲染render会做些什么)
 - [React在使用过程中遇到的问题怎么解决的](#-React在使用过程中遇到的问题怎么解决的)
+- [React中key的作用](#-React中key的作用)
+- [React中Dom diff算法](#-React中Dom-diff算法)
+- [无状态组件](#-无状态组件)
 - [高阶组件](#-高阶组件)
 - 
 -
-refs和DOM Fragments diff(协调) 非受控组件
+高阶组件 refs和DOM Fragments diff(协调) 非受控组件
 
 ## Redux
 - [聊聊Redux和Vuex的设计思想](#-聊聊Redux和Vuex的设计思想)
 - [Redux中间件](#-Redux中间件)
+- [redux接入和绑定connect过程以及原理](#-redux接入和绑定connect过程以及原理)
 - [reducer处理过程以及处理后的state是怎么注入到组件中的](#-reducer处理过程以及处理后的state是怎么注入到组件中的)
 -
 
@@ -105,17 +109,44 @@ setState方法是react中最常用的命令, 执行setState会触发render。但
 只要父组件重新渲染了，即使传入子组件的props没有变化，子组件也会重新渲染，进而触发render
 
 重新渲染render会做些什么?
-- 会对新旧VNode进行对比，也就是DOM diff
-- 会对新旧两颗树进行深度遍历，将遍历到差异放到一个对象里面
-- 遍历差异对象，根据差异类型，对应规则更新VNode
+* 会对新旧VNode进行对比，也就是DOM diff
+* 会对新旧两颗树进行深度遍历，将遍历到差异放到一个对象里面
+* 遍历差异对象，根据差异类型，对应规则更新VNode
 
 **[:arrow_up: 返回目录](#目录)**
 
 ### React在使用过程中遇到的问题怎么解决的
-1. SPA应用，首屏时间过长: 可以增加Loading、骨架屏、SSR和异步加载等方法解决，React版本总还有用于数据获取的 Suspense，但是还在试验阶段；
-2. 父节点状态更新会导致无关子节点更新: 使用shouldComponentUpdate、PureComponent和React.memo等方式避免不必要的渲染
-3. setState并非都是同步更新: 在使用setState方法时，要注意setState的状态更新，多次使用setState会被忽略的问题，另外Object类型的state更新需要注意引用问题
-4. 复杂组件使用state难以追踪: 应该使用redux统一管理state
+* SPA应用，首屏时间过长: 可以增加Loading、骨架屏、SSR和异步加载等方法解决，React版本总还有用于数据获取的 Suspense，但是还在试验阶段；
+* 父节点状态更新会导致无关子节点更新: 使用shouldComponentUpdate、PureComponent和React.memo等方式避免不必要的渲染
+* setState并非都是同步更新: 在使用setState方法时，要注意setState的状态更新，多次使用setState会被忽略的问题，另外Object类型的state更新需要注意引用问题
+* 复杂组件使用state难以追踪: 应该使用redux统一管理state
+
+**[:arrow_up: 返回目录](#目录)**
+
+### React中key的作用
+key在React中是添加在数组列表中，用于确定哪些元素是被添加或者删除的一个标识。
+在Dom diff 算法中，React会借助元素的key来判断该元素是新创建的还是被移动元素，从而减少不必要的渲染。
+
+>注意事项：
+>1、key值一定要与元素一一对应
+>2、尽量不要使用数组的index去作为key
+>3、不要试图在render时候使用随机数或者其他操作给元素加上不稳定的key，不然造成的性能开销比不加key更糟糕
+
+**[:arrow_up: 返回目录](#目录)**
+
+### React中Dom diff算法
+查看![Dom-diff](https://github.com/BGround/Web-Front-End-Interview/blob/main/React/images/Dom-diff.png)
+**[:arrow_up: 返回目录](#目录)**
+
+### 无状态组件
+无状态组件指的是组件内部不维护state，只根据外部组件传入的props进行渲染的组件，当props改变时，组件重新渲染。
+有状态组件内部使用state，维护自身状态的变化，根据外部传入的props和自身的state，进行渲染。
+
+无状态组件的特点：
+ * 不依赖自身的state
+ * 可以时类组件也可以是函数组件
+ * 可以完全避免使用this（使用箭头函数无需绑定this）
+ * 有更高的性能，当不需要使用生命周期函数钩子的时候，可以考虑使用无状态组件
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -140,9 +171,14 @@ Vuex： view——>commit——>mutations——>state变化——>view变化（�
 **[:arrow_up: 返回目录](#目录)**
 
 ### Redux中间件
-- redux-thunk —— 搭建异步action构造器
-- redux-logger —— 记录所有Redux action和下一次state的日志
-- redux-saga
+* redux-thunk —— 搭建异步action构造器
+* redux-logger —— 记录所有Redux action和下一次state的日志
+* redux-saga
+
+**[:arrow_up: 返回目录](#目录)**
+
+### redux接入和绑定connect过程以及原理
+
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -158,9 +194,9 @@ Vuex： view——>commit——>mutations——>state变化——>view变化（�
 ## React-Router
 
 ### router里的Link和a标签有什么区别
-- <Link>标签是react-router-dom下的元素，<a>是html原生标签
-- 两者同样都会实现页面的跳转功能，<Link>会页面无刷新的跳转，而<a>标签进行刷新
-- 出现上面现象的原因<a>标签在涉及到path变化后浏览器的原生反应就是会刷新页面，虽然<Link>渲染后默认也是a标签,在<Link>内部的实现原理是通过history进行了跳转，并且event.preventDefault()阻止了a标签的默认事件
+* <Link>标签是react-router-dom下的元素，<a>是html原生标签
+* 两者同样都会实现页面的跳转功能，<Link>会页面无刷新的跳转，而<a>标签进行刷新
+* 出现上面现象的原因<a>标签在涉及到path变化后浏览器的原生反应就是会刷新页面，虽然<Link>渲染后默认也是a标签,在<Link>内部的实现原理是通过history进行了跳转，并且event.preventDefault()阻止了a标签的默认事件
 
 ```
 // a 标签禁掉默认事件后，怎么实现的跳转

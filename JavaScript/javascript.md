@@ -100,7 +100,7 @@ console.log(window.str);   //undefined
 ③ 不存在变量提升[5.JS的执行上下文](#JS的执行上下文)
 ```javascript
 console.log(str);
-let str = 'es2015';  
+let str = 'es2015';
 //Uncaught ReferenceError: Cannot access 'str' before initialization
 
 console.log(str);               var str;
@@ -725,7 +725,9 @@ JavaScript有一个基于事件循环的并发模型
 >事件循环：JS是单线程非阻塞的语言，在代码执行的时候，将函数的执行上下文压入执行栈中保证代码的有序执行。在执行同步代码时遇到一个异步事件后，JS引擎并不会一直等待结果，
 而是将这个事件挂起，继续执行执行栈中的其他任务。当异步事件执行完后，将异步事件的回调加入到事件队列中，当当前执行栈的任务全部执行完毕后，
 JS引擎会去判断微任务事件队列中是否有任务可执行，如果有就将微任务队首的事件压入执行栈中执行，当微任务队列中任务全部执行完毕之后再去判断宏任务队列。
-这样的一个过程就是`事件循环`，引用网络上的一张图描述
+**执行顺序:** 主任务 => 微任务 => 宏任务, 这样按照循环循序依次执行，这样的一个循环机制就是`事件循环`。
+
+引用网络上的一张图描述
 ![事件循环](https://github.com/BGround/Web-Front-End-Interview/tree/main/JavaScript/image/The_JS_Runtime.png)
 
 微任务：`promise回调`，`node 中的 process.nextTick `，` Dom 变化监听的 MutationObserver`
@@ -997,7 +999,7 @@ PS：super代表父类的实例，即父类的this对象。在子类构造函数
 可以从IIFE, AMD, CMD, CommonJs, webpack, ES6 这几个角度来考虑
 
 **IIFE:** 使用自执行函数来编写模块化, 特点是在**一个单独函数作用域中执行代码, 避免变量冲突**
-```
+```js
 (function () {
 	return {
 		data:[]
@@ -1006,27 +1008,27 @@ PS：super代表父类的实例，即父类的this对象。在子类构造函数
 ```
 
 **AMD:** 使用requireJS来编写模块化，特点是**依赖必须提前声明好**
-```
+```js
 define('./index.js',function(code){
     // code 就是index.js 返回的内容
 })
 ```
 
 **CMD:** 使用seaJS 来编写模块化，特点：**支持动态引入依赖文件。**
-```
+```js
 define(function(require, exports, module) {  
   var indexCode = require('./index.js');
 })
 ```
 
 **CommonJS:** nodejs中自带模块化
-```
+```js
 const fs = require('fs')
 ```
 
 **webpack(require.ensure)**：webpack 2.x 版本中的代码分割。
 **ES6:** ES6 引入的模块化，支持import 来引入另一个 js 。
-```
+```js
 import React from 'react'
 ```
 
@@ -1058,7 +1060,7 @@ import React from 'react'
 **[:arrow_up: 返回目录](#目录)**
 
 #### 35. 如何封装一个-javascript-的类型判断函数
-```
+```js
 function getType(value) {
 	//空判断
 	if (value === null) return '';
@@ -1075,6 +1077,7 @@ function getType(value) {
 }
 
 ```
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### 36. 简述一下原型和构造函数以及实例
@@ -1084,7 +1087,7 @@ function getType(value) {
 **构造函数:** 可以通过new来 新建一个对象的函数。
 **实例:** 通过构造函数和new创建出来的对象，便是实例。实例通过__proto__指向原型，通过constructor指向构造函数。
 
-```
+```js
 实例.__proto__ === 原型
 
 原型.constructor === 构造函数
@@ -1148,8 +1151,29 @@ me.printIntroduction();
 >Object.assign
 将一个或多个源对象的所有可枚举属性拷贝到目标对象，并且返回这个目标对象(注意：这里是浅拷贝)
 
+>Object.definProperty
+在一个对象上定义一个新属性，或者一个对象的现有属性，并返回这个对象: Object.defineProperty(obj, prop, descriptor)
+obj
+要定义属性的对象。
+prop
+要定义或修改的属性的名称或 Symbol 。
+descriptor
+要定义或修改的属性描述符。
+```js
+const obj = {
+	a: 1,
+	b: 2,
+	c: 3
+}
+Object.defineProperty(obj, "a", {
+  configurable: false, // 当且仅当该属性的 configurable 键值为 true 时，该属性的描述符才能够被改变，同时该属性也能从对应的对象上被删除。
+  enumerable: false, // 当且仅当该属性的 enumerable 键值为 true 时，该属性才会出现在对象的枚举属性中。
+  writable: false, // 表示是否可以修改属性的值。
+  value: "", // 该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。
+});
 
-
+// 这样设置之后，prop属性就变成了不能删除、不可重新修改特性、不可枚举、不能修改的属性值的属性。
+```
 
 **[:arrow_up: 返回目录](#目录)**
 

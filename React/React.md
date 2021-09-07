@@ -198,7 +198,7 @@ Vuex： view——>commit——>mutations——>state变化——>view变化（�
 * 两者同样都会实现页面的跳转功能，<Link>会页面无刷新的跳转，而<a>标签进行刷新
 * 出现上面现象的原因<a>标签在涉及到path变化后浏览器的原生反应就是会刷新页面，虽然<Link>渲染后默认也是a标签,在<Link>内部的实现原理是通过history进行了跳转，并且event.preventDefault()阻止了a标签的默认事件
 
-```
+```js
 // a 标签禁掉默认事件后，怎么实现的跳转
 let domArr = document.getElementsByTagName('a')
 [...domArr].forEach(item=>{

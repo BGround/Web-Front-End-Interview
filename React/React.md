@@ -95,7 +95,7 @@ props和state都是JavaScript对象，但是在使用中有本质的区别
 
 ### react中组件的几种通信方式
 
-文章链接：[React中组件中的几种通信方式](https://github.com/BGround/Web-Front-End-Interview/blob/main/React/组件中通信方式.md)
+文章链接：[React中组件中的几种通信方式](https://github.com/BGround/Web-Front-End-Interview/blob/main/React/React组件中通信方式.md)
 
 **[:arrow_up: 返回目录](#目录)**
 

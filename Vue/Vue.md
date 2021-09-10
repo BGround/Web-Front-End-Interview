@@ -11,14 +11,18 @@ https://github.com/answershuto/learnVue
 * [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
 * [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
 * [vm中data调用问题](#-vm中data调用问题)
-* [v-if和v-show的区别](#v-if和v-show的区别)
+* [v-if和v-show的区别](#-v-if和v-show的区别)
+* [v-model的原理](#-v-model的原理)
 * [template的使用](#-template的使用)
+* [computed的实现原理](#-computed的实现原理)
+* [computed和watch区别](#-computed和watch区别)
 * [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
 * [vue的diff算法](#-vue的diff算法)
 * [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
 * [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
+* [Vue的响应式系统](#-Vue的响应式系统)
+* [Vue组件通信的几种方式](#-Vue组件通信的几种方式)
 * [vue和react的对比](#-vue和react的对比)
-*
 *
 
 ### Vuex
@@ -30,7 +34,8 @@ https://github.com/answershuto/learnVue
 *
 
 ### Vue-router
-* [VueRouter的路由模式hash和history的实现原理](#VueRouter的路由模式hash和history的实现原理)
+* [VueRouter的路由模式有几种](#-VueRouter的路由模式有几种)
+* [VueRouter的路由模式hash和history的实现原理](#-VueRouter的路由模式hash和history的实现原理)
 *
 *
 *
@@ -50,16 +55,18 @@ vue的生命周期分为四个阶段
 3：数据更新
 4：实例销毁
 共有八个基本钩子函数
-beforeCreat: 在new一个vue实例之后，data和methods都还没有初始化，不能使用;
-created: data和methods都初始化好了，$el还没有，此阶段可以做的：解决loading，请求ajax数据为mounted渲染做准备
-beforeMount: vue的$el和data都初始化了，但是还是虚拟的dom节点，具体的data.filter还没替换;
-mounted: 已挂载vue实例已经初始化完成了，data.filter成功渲染，配合路由钩子使用;
-beforeUpdate: data更新时触发;
-updated: 
-beforeDestory: 实例销毁之前，实例仍可使用
-destroyed:
+|		生命周期  |   描述   |
+|    -       |     -    |
+| beforeCreat | 在new一个vue实例之后，data和methods都还没有初始化，不能使用|
+|  created    | data和methods都初始化好了，$el还没有，此阶段可以做的：解决loading，请求ajax数据为mounted渲染做准备|
+| beforeMount | vue的$el和data都初始化了，但是还是虚拟的dom节点，具体的data.filter还没替换|
+|  mounted    | 已挂载vue实例已经初始化完成了，data.filter成功渲染，配合路由钩子使用|
+| beforeUpdate | data更新时触发|
+|  updated     | 组件数据更新之后|
+| beforeDestory | 实例销毁之前，实例仍可使用|
+|  destroyed    | 组件销毁后调用 |
  
-![](Vue_files/1.jpg)
+![](images/vue-lifecycle.jpg)
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -91,9 +98,18 @@ vue中定义的data在执行new Vue（）创建时候变为vue对象实例的属
 #### v-if和v-show的区别
 
 v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的标签元素都不可见，但是这两个选项是有区别的:
- - 1.v-if在条件切换时，会对标签进行适当的创建和销毁，而v-show则仅在初始化时加载一次，因此v-if的开销相对来说会比v-show大。
- - 2.v-if是惰性的，只有当条件为真时才会真正渲染标签；如果初始条件不为真，则v-if不会去渲染标签。v-show则无论初始条件是否成立，都会渲染标签，
-它仅仅做的只是简单的CSS切换，改变的是display属性,block显示,none不显示
+* 1.v-if在条件切换时，会对标签进行适当的创建和销毁，而v-show则仅在初始化时加载一次，因此v-if的开销相对来说会比v-show大。
+* 2.v-if是惰性的，只有当条件为真时才会真正渲染标签；如果初始条件不为真，则v-if不会去渲染标签。v-show则无论初始条件是否成立，都会渲染标签，
+* 它仅仅做的只是简单的CSS切换，改变的是display属性,block显示,none不显示
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### v-model的原理
+我们在vue项目中主要使用v-model指令在表单input、textarea和select等元素上创建双向数据绑定，v-model不过是语法糖，v-model在内部为不同的输入元素使用不同的
+属性并抛出不同的事件:
+* text和textarea元素使用value属性和input事件
+* checkbox和radio使用check属性和change事件
+* select字段将value做为prop并将change做为事件
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -112,8 +128,75 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 有时候,不需要这外层的 div ，可以采用下面 的方法，在 <template>标签上使用 v-for来循环
 ```js
 <template>
-    <div v-for="item,index in 5" :key="index">测试{{index}}</div>
+    <div v-for="item,index in 5" :key="index">
+			测试{{index}}
+		</div>
 </template>
+```
+**[:arrow_up: 返回目录](#目录)**
+
+#### computed的实现原理
+**1. computed的初衷**
+就是为了解决模板中放入太多的声明式的逻辑时会让模板过重，增加对页面的可维护性
+
+**2. computed的使用**
+定义一个计算属性有两种写法，
+	- 一种是直接跟一个函数
+	- 另一种是添加get和set方法的对象形式
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### computed和watch区别
+**计算属性computed:**
+* 支持缓存，已有依赖数据发生改变时，才会重新进行计算
+* 不支持异步，当computed内有异步操作时无效，无法监听数据的变化
+* computed属性值默认是走缓存的，也就是基于data中声明过的或者父组件传递的props中数据进行计算得到额值
+* 如果computed属性属性值是函数，那么默认会走get方法，函数的返回值就是属性的属性值，
+
+**侦听属性watch:**
+* 不支持缓存，数据变化，直接会触发操作
+* 支持异步
+* 监听的函数接受两个参数，一个是最新的值，另一个是输入之前的值
+* 监听数据必须是data中声明过的或者是父组件传递的props中的数据，数据变化触发操作，函数有两个参数
+
+>immediate: 组件加载立即触发回调函数执行
+
+```js
+watch: {
+  firstName: {
+    handler(newName, oldName) {
+      this.fullName = newName + ' ' + this.lastName;
+    },
+    // 代表在wacth里声明了firstName这个方法之后立即执行handler方法
+    immediate: true
+  }
+}
+```
+>deep: deep的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器，但是这样性能开销就会非常大了，
+>任何修改obj里面任何一个属性都会触发这个监听器里的 handler
+```js
+watch: {
+	'obj': {
+		handler(newVal, oldVal) {
+			consloe.log('obj.a is change')
+		},
+		immediate: true,
+		deep: true
+	}
+}
+```
+优化我们可以使用字符串的形式进行监听
+```js
+watch: {
+	'obj.a': {
+		handler(newVal, oldVal) {
+			consloe.log('obj.a is change')
+		},
+		immediate: true,
+		//deep: true
+	}
+}
 ```
 **[:arrow_up: 返回目录](#目录)**
 
@@ -206,6 +289,27 @@ a.length = 100，等于增加了 100 个属性，需要对每个属性进行监�
 
 
 参考链接：《[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439)》
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### Vue的响应式系统
+Vue称其为非侵入式响应式系统，数据模型仅仅是普通的 javascript 对象，当你修改他们时，视图会自动更新。
+Vue 2.X 采用的是 Object.defineProperty 把这些属性全部转化为getter/setter
+Vue 3.0 采用的是 ES6 Proxy 
+
+**介绍下Vue 2.X**
+在Vue 2.x的响应式系统中，其核心有三点，observe, watcher, dep:
+* observe: 遍历data中的属性，使用 Object.defineProperty 的 get/set 方法对其进行数据劫持
+* dep: 每个属性拥有自己的消息订阅器dep，用于存放所有订阅了该属性的观察者对象
+* watcher: 观察者(对象)，通过dep实现对响应属性的监听，监听到结果后，主动触发自己的回调进行响应
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### Vue组件通信的几种方式
+
+传送门: 《[Vue组件通信的几种方式](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/Vue组件通信的几种方式.md)》
 
 **[:arrow_up: 返回目录](#目录)**
 

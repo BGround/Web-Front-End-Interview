@@ -4,11 +4,13 @@
 
 ### 目录
 
-* [DOCTYPE 的作用是什么？](#doctype-的作用是什么)
-* [关于DOCTYPE html和meta](#关于DOCTYPE-html和meta)
-* [html中元素和标签](#html中元素和标签)
-* [浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢](#浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢)
-* [attribute和property的区别是什么](#attribute和property的区别是什么)
+- [DOCTYPE 的作用是什么？](#-doctype-的作用是什么)
+- [关于DOCTYPE html和meta](#-关于DOCTYPE-html和meta)
+- [html中元素和标签](#-html中元素和标签)
+- [介绍一下语义标签](#-介绍一下语义标签)
+- [浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢](#-浏览器是怎么对HTML5的离线储存资源进行管理和加载的呢)
+- [attribute和property的区别是什么](#-attribute和property的区别是什么)
+- [减少dom数量的方法和一次性给大量的dom怎么优化](#-减少dom数量的方法和一次性给大量的dom怎么优化)
 
 #### DOCTYPE 的作用是什么？
    
@@ -83,9 +85,9 @@ HTML 元素指的是从开始标签（start tag）到结束标签（end tag）�
 ```
 常见标签：<a> <br> <button> <div> <font> <form> <h1> - <h6> <link> <map> <ul> <ol> - <li> <p> <span> <strong>
 
-##### 下面介绍一下语义标签
+##### 介绍一下语义标签
 **什么是语义标签？**
-多html标签也具有语义的意义，也就是说元素本身传达了关于标签所包含内容类型的一些信息
+语义的意义，也就是说元素本身传达了关于标签所包含内容类型的一些信息，在编程中，指的是HTML元素有什么作用，扮演了什么样的角色
 **为什么要语义**
 1. **代码结构**: 使页面没有css的情况下，也能够呈现出很好的内容结构
 2. **有利于SEO**: 爬虫依赖标签来确定关键字的权重，因此可以和搜索引擎建立良好的沟通，帮助爬虫抓取更多的有效信息
@@ -125,7 +127,41 @@ section     | |
 
 **[:arrow_up: 返回目录](#目录)**
 
+#### 减少dom数量的方法和一次性给大量的dom怎么优化
+**1.减少dom数量的方法**
+* 使用伪元素，阴影实现的内容尽量不使用dom实现，如清楚浮动、样式实现等
+* 按需加载，减少不必要的渲染，如分页和滑动
+* 使用语义化标签
 
+**2.大量的dom优化**
+当对Dom元素进行一系列操作时，对Dom进行访问和修改Dom引起的重绘和回流都比较消耗性能，所以关于操作Dom，可以从以下考虑
+* 1.缓存dom对象:可以再循环之前就主节点，不必循环的Dom节点先获取到，那么在循环里就可以直接引用，而不必去重新查询
+```js
+let rootElem = document.querySelector('#app');
+let childList = rootElem.child; // 假设全是dom节点
+for(let i = 0;i<childList.len;j++){
+    /**
+    * 根据条件对应操作
+    */
+}
+```
+* 2.虚拟dom: virtual DOM是一个纯js对象，所以对它操作会高效。在dom发生变化的时候先对虚拟dom进行操作，通过dom diff算法将虚拟dom和原虚拟dom的结构做对比
+* 最终批量的去修改真实的dom结构，尽可能的避免频繁的修改dom导致频繁的重绘和回流
+
+* 3.文档片段: 利用document.createDocumentFragment()方法创建文档碎片节点，创建的是一个虚拟的节点对象，向这个节点添加dom节点，并不会影响真实的dom结构
+```js
+let fragment = document.createDocumentFragment();
+const operationDomHandle = (fragment) =>{
+    // 操作 
+}
+operationDomHandle(fragment);
+// 然后最后再替换  
+rootElem.replaceChild(fragment,oldDom);
+```
+* 4.用innerHtml代替高频的appendChild
+* 5.最优的layout方案
+
+**[:arrow_up: 返回目录](#目录)**
 
 
 

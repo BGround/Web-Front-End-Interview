@@ -9,15 +9,14 @@ https://github.com/answershuto/learnVue
 
 ### Vue基础
 * [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
-* [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
 * [vm中data调用问题](#-vm中data调用问题)
+* [v-if和v-show和v-html的原理](#-v-if和v-show和v-html的原理)
 * [v-if和v-show的区别](#-v-if和v-show的区别)
 * [v-model的原理](#-v-model的原理)
 * [template的使用](#-template的使用)
 * [computed的实现原理](#-computed的实现原理)
 * [computed和watch区别](#-computed和watch区别)
-* [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
-* [vue的diff算法](#-vue的diff算法)
+* [介绍一下Vue的内容分发机制](#-介绍一下Vue的内容分发机制)
 * [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
 * [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
 * [Vue的响应式系统](#-Vue的响应式系统)
@@ -26,48 +25,41 @@ https://github.com/answershuto/learnVue
 * [你是如何设计一个可扩展、通用的、健壮性组件！](#-你是如何设计一个可扩展-通用的-健壮性组件)
 *
 
+### 生命周期
+* [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
+*
+
+
+### 虚拟DOM
+* [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
+* [vue的diff算法](#-vue的diff算法)
+*
+
+
 ### Vuex
 * [11. vue2和vue3中Vuex使用区别？](#11-vue2和vue3中Vuex使用区别)
 * [12. 为什么Vuex的mutation和Redux的reducer中不能做异步操作](#12-为什么Vuex的mutation和Redux的reducer中不能做异步操作)
 * [13. 为什么Vuex的store中的状态是响应式的?](#13-为什么Vuex的store中的状态是响应式的)
 * [14. 双向绑定和单向数据流不冲突?](#14-双向绑定和单向数据流不冲突)
 * [15. vuex中的数据在页面刷新以后消失怎么办？](#15-vuex中的数据在页面刷新以后消失怎么办)
-*
 
 ### Vue-router
 * [VueRouter的路由模式有几种](#-VueRouter的路由模式有几种)
 * [VueRouter的路由模式hash和history的实现原理](#-VueRouter的路由模式hash和history的实现原理)
 *
-*
-*
-*
+
+
+
+ -------------------------------------
 
 
 #### vue为什么说是一个构建用户界面的渐进式框架
+Vue 是一套用于构建用户界面的渐进式MVVM框架。那怎么理解渐进式呢？渐进式含义：强制主张最少。
+Vue.js包含了声明式渲染、组件化系统、客户端路由、大规模状态管理、构建工具、数据持久化、跨平台支持等，
+但在实际开发中，并没有强制要求开发者之后某一特定功能，而是根据需求逐渐扩展。
 
+Vue.js的核心库只关心视图渲染，且由于渐进式的特性，Vue.js便于与第三方库或既有项目整合。
 
-
-**[:arrow_up: 返回目录](#目录)**
-
-#### vue的生命周期和每个生命周期所做的事情
-vue的生命周期分为四个阶段
-1：实例创建
-2：DOM渲染
-3：数据更新
-4：实例销毁
-共有八个基本钩子函数
-|		生命周期  |   描述   |
-|    -       |     -    |
-| beforeCreat | 在new一个vue实例之后，data和methods都还没有初始化，不能使用|
-|  created    | data和methods都初始化好了，$el还没有，此阶段可以做的：解决loading，请求ajax数据为mounted渲染做准备|
-| beforeMount | vue的$el和data都初始化了，但是还是虚拟的dom节点，具体的data.filter还没替换|
-|  mounted    | 已挂载vue实例已经初始化完成了，data.filter成功渲染，配合路由钩子使用|
-| beforeUpdate | data更新时触发|
-|  updated     | 组件数据更新之后|
-| beforeDestory | 实例销毁之前，实例仍可使用|
-|  destroyed    | 组件销毁后调用 |
- 
-![](images/vue-lifecycle.jpg)
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -96,12 +88,21 @@ vue中定义的data在执行new Vue（）创建时候变为vue对象实例的属
 
 **[:arrow_up: 返回目录](#目录)**
 
+#### v-if和v-show和v-html的原理
+* v-if 会调用 addIfCondiation 方法，生成vnode的时候会忽略对应节点，render的时候就不会渲染、
+* v-show 会生成vnode，render的时候也会渲染成真实节点，只是在render的过程中会在节点的属性中修改show属性值，也就是display
+* v-html 会先移除节点下所有的节点，调用html方法，通过addProp添加innerHml属性，归根结底还是设置innerHtml为v-html的值
+
+**[:arrow_up: 返回目录](#目录)**
+
 #### v-if和v-show的区别
 
 v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的标签元素都不可见，但是这两个选项是有区别的:
-* 1.v-if在条件切换时，会对标签进行适当的创建和销毁，而v-show则仅在初始化时加载一次，因此v-if的开销相对来说会比v-show大。
-* 2.v-if是惰性的，只有当条件为真时才会真正渲染标签；如果初始条件不为真，则v-if不会去渲染标签。v-show则无论初始条件是否成立，都会渲染标签，
-* 它仅仅做的只是简单的CSS切换，改变的是display属性,block显示,none不显示
+* 手段：v-if是动态的向DOM树内添加或者删除DOM元素；v-show是通过设置DOM元素的display样式属性控制显隐；
+* 编译过程：v-if切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；
+* 编译条件：v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译; v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留；
+* 性能消耗：v-if有更高的切换消耗；v-show有更高的初始渲染消耗；
+* 使用场景：v-if适合运营条件不大可能改变；v-show适合频繁切换。
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -199,21 +200,100 @@ watch: {
 	}
 }
 ```
+
+**运用场景：**
+* 当需要进行数值计算,并且依赖于其它数据时，应该使用 computed，因为可以利用 computed 的缓存特性，避免每次获取值时都要重新计算。
+* 当需要在数据变化时执行异步或开销较大的操作时，应该使用 watch，使用 watch 选项允许执行异步操作 ( 访问一个 API )，
+* 限制执行该操作的频率，并在得到最终结果前，设置中间状态。这些都是计算属性无法做到的。
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 介绍一下Vue的内容分发机制
+slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使用slot元素作为承载分发内容的出口。
+插槽slot是子组件的一个模板标签元素，而这一个标签元素是否显示，以及怎么显示是由父组件决定的。slot又分三类，默认插槽，具名插槽和作用域插槽。
+
+* 默认插槽：又名匿名查抄，当slot没有指定name属性值的时候一个默认显示插槽，一个组件内只有有一个匿名插槽。
+* 具名插槽：带有具体名字的插槽，也就是带有name属性的slot，一个组件可以出现多个具名插槽。
+* 作用域插槽：默认插槽、具名插槽的一个变体，可以是匿名插槽，也可以是具名插槽，该插槽的不同点是在子组件渲染作用域插槽时，可以将子组件内部的数据传递给父组件，让父组件根据子组件的传递过来的数据决定如何渲染该插槽。
+
+实现原理：当子组件vm实例化时，获取到父组件传入的slot标签的内容，存放在vm.$slot中，默认插槽为vm.$slot.default，具名插槽为vm.$slot.xxx，xxx 为插槽名，
+当组件执行渲染函数时候，遇到slot标签，使用$slot中的内容进行替换，此时可以为插槽传递数据，若存在数据，则可称该插槽为作用域插槽。
+ 
+**[:arrow_up: 返回目录](#目录)**
+
+#### 为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty
+1. Object.defineProperty无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应；
+
+>Object.defineProperty无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应。 
+为了解决这个问题，经过vue内部处理后可以使用以下几种方法来监听数组(push, pop, shift, unshift, splice, sort, reverse)
+
+由于只针对了以上七种方法进行了hack处理,所以其他数组的属性也是检测不到的，还是具有一定的局限性。
+```
+PS：尤大说了vue针对数组数组下标动态响应不是做不到，而是因为性能不做
+数组length 尽量不能去改写。
+
+length 在规范中不允许改写，configurable = false
+a.length = 100，等于增加了 100 个属性，需要对每个属性进行监听，这样一来，性能上所有问题，使用 push 或者 pop 等重写方法更加简单
+```
+
+2. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。
+3. Proxy不仅可以代理对象，还可以代理数组, 可以劫持整个对象并返回对象。还可以代理动态增加的属性。缺点Proxy是ES6语法
+
+
+参考链接：《[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439)》
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### Vue的响应式系统
+Vue称其为非侵入式响应式系统，数据模型仅仅是普通的 javascript 对象，当你修改他们时，视图会自动更新。
+Vue 2.X 采用的是 Object.defineProperty 把这些属性全部转化为getter/setter
+Vue 3.0 采用的是 ES6 Proxy 
+
+**介绍下Vue 2.X**
+在Vue 2.x的响应式系统中，其核心有三点，observe, watcher, dep:
+* observe: 遍历data中的属性，使用 Object.defineProperty 的 get/set 方法对其进行数据劫持
+* dep: 每个属性拥有自己的消息订阅器dep，用于存放所有订阅了该属性的观察者对象
+* watcher: 观察者(对象)，通过dep实现对响应属性的监听，监听到结果后，主动触发自己的回调进行响应
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### Vue组件通信的几种方式
+
+传送门: 《[Vue组件通信的几种方式](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/Vue组件通信的几种方式.md)》
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### vue和react的对比
+
+参考链接：《[关于Vue和React的一些对比及个人思考（上）](https://juejin.cn/post/6844904040564785159#heading-25)》
+**[:arrow_up: 返回目录](#目录)**
+
+#### vue的生命周期和每个生命周期所做的事情
+vue的生命周期分为四个阶段
+1：实例创建
+2：DOM渲染
+3：数据更新
+4：实例销毁
+共有八个基本钩子函数
+|		生命周期  |   描述   |
+|    -       |     -    |
+| beforeCreat | 在new一个vue实例之后，data和methods都还没有初始化，不能使用|
+|  created    | data和methods都初始化好了，$el还没有，此阶段可以做的：解决loading，请求ajax数据为mounted渲染做准备|
+| beforeMount | vue的$el和data都初始化了，但是还是虚拟的dom节点，具体的data.filter还没替换|
+|  mounted    | 已挂载vue实例已经初始化完成了，data.filter成功渲染，配合路由钩子使用|
+| beforeUpdate | data更新时触发|
+|  updated     | 组件数据更新之后|
+| beforeDestory | 实例销毁之前，实例仍可使用|
+|  destroyed    | 组件销毁后调用 |
+ 
+![](images/vue-lifecycle.jpg)
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### vue的虚拟DOM的理解
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 **[:arrow_up: 返回目录](#目录)**
@@ -267,57 +347,6 @@ vm.dataList = [3, 4, 5, 6, 7] // 数据进行增删
 要解决这个问题，可以为列表项带上新闻id作为唯一key，那么每次渲染列表时都会完全替换所有组件，使其拥有正确状态。
 
 
-**[:arrow_up: 返回目录](#目录)**
-
-
-#### 为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty
-1. Object.defineProperty无法监控到数组下标的变化，导致通过数组下标添加元素，不能实时响应；
-
->Object.defineProperty无法监控到数组下标的变化，导致直接通过数组的下标给数组设置值，不能实时响应。 
-为了解决这个问题，经过vue内部处理后可以使用以下几种方法来监听数组(push, pop, shift, unshift, splice, sort, reverse)
-
-由于只针对了以上七种方法进行了hack处理,所以其他数组的属性也是检测不到的，还是具有一定的局限性。
-```
-PS：尤大说了vue针对数组数组下标动态响应不是做不到，而是因为性能不做
-数组length 尽量不能去改写。
-
-length 在规范中不允许改写，configurable = false
-a.length = 100，等于增加了 100 个属性，需要对每个属性进行监听，这样一来，性能上所有问题，使用 push 或者 pop 等重写方法更加简单
-```
-
-2. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。
-3. Proxy不仅可以代理对象，还可以代理数组, 可以劫持整个对象并返回对象。还可以代理动态增加的属性。
-
-
-参考链接：《[实现双向绑定Proxy比defineproperty优劣如何?](https://juejin.cn/post/6844903601416978439)》
-
-**[:arrow_up: 返回目录](#目录)**
-
-
-#### Vue的响应式系统
-Vue称其为非侵入式响应式系统，数据模型仅仅是普通的 javascript 对象，当你修改他们时，视图会自动更新。
-Vue 2.X 采用的是 Object.defineProperty 把这些属性全部转化为getter/setter
-Vue 3.0 采用的是 ES6 Proxy 
-
-**介绍下Vue 2.X**
-在Vue 2.x的响应式系统中，其核心有三点，observe, watcher, dep:
-* observe: 遍历data中的属性，使用 Object.defineProperty 的 get/set 方法对其进行数据劫持
-* dep: 每个属性拥有自己的消息订阅器dep，用于存放所有订阅了该属性的观察者对象
-* watcher: 观察者(对象)，通过dep实现对响应属性的监听，监听到结果后，主动触发自己的回调进行响应
-
-**[:arrow_up: 返回目录](#目录)**
-
-
-#### Vue组件通信的几种方式
-
-传送门: 《[Vue组件通信的几种方式](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/Vue组件通信的几种方式.md)》
-
-**[:arrow_up: 返回目录](#目录)**
-
-
-#### vue和react的对比
-
-参考链接：《[关于Vue和React的一些对比及个人思考（上）](https://juejin.cn/post/6844904040564785159#heading-25)》
 **[:arrow_up: 返回目录](#目录)**
 
 -----------------------------------------------------------------------------

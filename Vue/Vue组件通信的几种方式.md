@@ -62,6 +62,9 @@ export default {
 </script>
 ```
 
+这种子组件修改父组件中props的方法还有中更加优雅的写法：**自定义修饰符sync**
+
+
 ### 2. EventBus事件总线
 Vue内部实现了一个事件总线系统，即EventBus。在Vue中可以使用 EventBus 来作为沟通桥梁的概念，每一个Vue的组件实例都继承了 EventBus，都可以接受事件$on和发送事件$emit。
 如上面一个例子，child.vue 组件想修改 parent.vue 组件的 parentMsg 数据，怎么办呢？为了保证数据流的可追溯性，直接修改组件内 prop 的 msg 字段是不提倡的，且例子中为非引用类型 String，
@@ -275,7 +278,7 @@ export default {
 ### 总结
 常见使用场景可以分为三类:
 
-* 父子组件通信: props; $parent / $children; provide/inject ; ref ; $attrs / $listeners
+* 父子组件通信: props/emit; $parent / $children; provide/inject ; ref ; $attrs / $listeners
 * 兄弟组件通信: eventBus ; vuex
 * 跨级通信: eventBus；Vuex；provide/inject 、$attrs / $listeners
 

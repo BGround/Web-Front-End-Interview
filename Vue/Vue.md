@@ -8,55 +8,67 @@ https://github.com/answershuto/learnVue
 ### 目录
 
 ### Vue基础
-* [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
-* [vm中data调用问题](#-vm中data调用问题)
-* [Vue中data为什么是一个函数而不是对象](#-Vue中data为什么是一个函数而不是对象)
-* [v-if和v-show和v-html的原理](#-v-if和v-show和v-html的原理)
-* [v-if和v-show的区别](#-v-if和v-show的区别)
-* [v-model的原理](#-v-model的原理)
-* [template的使用](#-template的使用)
-* [computed的实现原理](#-computed的实现原理)
-* [computed和watch区别](#-computed和watch区别)
-* [介绍一下Vue的内容分发机制](#-介绍一下Vue的内容分发机制)
-* [过滤器的作用，如何实现一个过滤器](#-过滤器的作用-如何实现一个过滤器)
-* [修饰符](#-修饰符)
-* [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
-* [Vue的响应式系统](#-Vue的响应式系统)
-* [Vue组件通信的几种方式](#-Vue组件通信的几种方式)
-* [vue和react的对比](#-vue和react的对比)
-* [你是如何设计一个可扩展、通用的、健壮性组件！](#-你是如何设计一个可扩展-通用的-健壮性组件)
-* [assets和static的区别](#-assets和static的区别)
-* [delete和Vue.delete删除数组的区别](#-delete和Vue.delete删除数组的区别)
-* [Vue模版编译原理](#-Vue模版编译原理)
-* [mixin 和 mixins 区别](#-mixin-和-mixins-区别)
+- [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
+- [vm中data调用问题](#-vm中data调用问题)
+- [Vue中data为什么是一个函数而不是对象](#-Vue中data为什么是一个函数而不是对象)
+- [v-if和v-show和v-html的原理](#-v-if和v-show和v-html的原理)
+- [v-if和v-show的区别](#-v-if和v-show的区别)
+- [v-model的原理](#-v-model的原理)
+- [template的使用](#-template的使用)
+- [computed的实现原理](#-computed的实现原理)
+- [computed和watch区别](#-computed和watch区别)
+- [介绍一下Vue的内容分发机制](#-介绍一下Vue的内容分发机制)
+- [过滤器的作用，如何实现一个过滤器](#-过滤器的作用-如何实现一个过滤器)
+- [修饰符](#-修饰符)
+- [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
+- [Vue的响应式系统](#-Vue的响应式系统)
+- [Vue组件通信的几种方式](#-Vue组件通信的几种方式)
+- [vue和react的对比](#-vue和react的对比)
+- [你是如何设计一个可扩展、通用的、健壮性组件！](#-你是如何设计一个可扩展-通用的-健壮性组件)
+- [assets和static的区别](#-assets和static的区别)
+- [delete和Vue.delete删除数组的区别](#-delete和Vue.delete删除数组的区别)
+- [Vue模版编译原理](#-Vue模版编译原理)
+- [mixin 和 mixins 区别](#-mixin-和-mixins-区别)
 
 ### Vue3
-* [Vue3有什么更新](#-Vue3有什么更新)
+- [Vue3有什么更新](#-Vue3有什么更新)
 
-
+ -------------------------------------
+ 
 ### 生命周期
-* [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
-* [created和mounted的区别](#-created和mounted的区别)
-* [一般在哪个生命周期请求异步数据](#-一般在哪个生命周期请求异步数据)
-* [keep-alive中的生命周期哪些](#-keep-alive中的生命周期哪些)
+- [vue的生命周期和每个生命周期所做的事情](#-vue的生命周期和每个生命周期所做的事情)
+- [created和mounted的区别](#-created和mounted的区别)
+- [一般在哪个生命周期请求异步数据](#-一般在哪个生命周期请求异步数据)
+- [keep-alive中的生命周期哪些](#-keep-alive中的生命周期哪些)
 
+ -------------------------------------
+ 
 ### 虚拟DOM
-* [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
-* [vue的diff算法](#-vue的diff算法)
-* [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
-*
+- [vue的虚拟DOM的理解](#-vue的虚拟DOM的理解)
+- [vue的diff算法](#-vue的diff算法)
+- [为什么不建议用index作为key](#-为什么不建议用index作为key)
+- [写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么?](#-写-React和Vue-项目时为什么要在列表组件中写-key，其作用是什么?)
+
+ -------------------------------------
 
 ### Vuex
-* [11. vue2和vue3中Vuex使用区别？](#11-vue2和vue3中Vuex使用区别)
-* [12. 为什么Vuex的mutation和Redux的reducer中不能做异步操作](#12-为什么Vuex的mutation和Redux的reducer中不能做异步操作)
-* [13. 为什么Vuex的store中的状态是响应式的?](#13-为什么Vuex的store中的状态是响应式的)
-* [14. 双向绑定和单向数据流不冲突?](#14-双向绑定和单向数据流不冲突)
-* [15. vuex中的数据在页面刷新以后消失怎么办？](#15-vuex中的数据在页面刷新以后消失怎么办)
+- [Vuex中action和mutation的区别](#-Vuex中action和mutation的区别)
+- [Vuex有哪几种属性](#-Vuex有哪几种属性)
+- [Vuex的严格模式是什么以及有什么作用和开启](#-Vuex的严格模式是什么以及有什么作用和开启)
+- [vue2和vue3中Vuex使用区别？](#-vue2和vue3中Vuex使用区别)
+- [为什么Vuex的mutation和Redux的reducer中不能做异步操作](#-为什么Vuex的mutation和Redux的reducer中不能做异步操作)
+- [为什么Vuex的store中的状态是响应式的?](#-为什么Vuex的store中的状态是响应式的)
+- [双向绑定和单向数据流不冲突?](#-双向绑定和单向数据流不冲突)
+- [vuex中的数据在页面刷新以后消失怎么办？](#-vuex中的数据在页面刷新以后消失怎么办)
 
+ -------------------------------------
+ 
 ### Vue-router
-* [VueRouter的路由模式有几种](#-VueRouter的路由模式有几种)
-* [VueRouter的路由模式hash和history的实现原理](#-VueRouter的路由模式hash和history的实现原理)
-*
+- [VueRouter的路由模式hash和history的实现原理](#-VueRouter的路由模式hash和history的实现原理)
+- [$route 和$router 的区别](#-route和router的区别)
+- [Vue-router跳转和location.href有什么区别](#-Vue-router跳转和location-href有什么区别)
+- [params和query的区别](#-params和query的区别)
+- [VueRouter 导航守卫有哪些](#-VueRouter-导航守卫有哪些)
 
 
 
@@ -453,7 +465,7 @@ vue的生命周期分为四个阶段
 | beforeDestory | 实例销毁之前，实例仍可使用|
 |  destroyed    | 组件销毁后调用 |
  
-![](images/vue-lifecycle.jpg)
+![vue-lifecycle](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/images/vue-lifecycle.jpg)
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -568,6 +580,61 @@ vm.dataList = [3, 4, 5, 6, 7] // 数据进行增删
 
 -----------------------------------------------------------------------------
 
+#### Vuex中action和mutation的区别
+查看如下实列代码
+```js
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  },
+  actions: {
+    increment (context) {
+      context.commit('increment')
+    }
+  }
+})
+
+```
+Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象，因此你可以调用 context.commit 提交一个 mutation，
+或者通过 context.state 和 context.getters 来获取 state 和 getters。
+所以，两者的不同点如下：
+
+* Mutation专注于修改State，理论上是修改State的唯一途径；Action业务代码、异步请求。
+* Mutation：必须同步执行；Action：可以异步，但不能直接操作State。
+* 在视图更新时，先触发actions，actions再触发mutation
+* mutation的参数是state，它包含store中的数据；store的参数是context，它是 state 的父级，包含 state、getters
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### Vuex有哪几种属性
+有五种，分别是 State、 Getter、Mutation 、Action、 Module
+
+* state => 基本数据(数据源存放地)
+* getters => 从基本数据派生出来的数据
+* mutations => 提交更改数据的方法，同步
+* actions => 像一个装饰器，包裹mutations，使之可以异步。
+* modules => 模块化Vuex
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### Vuex的严格模式是什么以及有什么作用和开启
+在严格模式下，无论何时发生了状态变更且不是由mutation函数引起的，将会抛出错误。这能保证所有的状态变更都能被调试工具跟踪到。
+
+在Vuex.Store 构造器选项中开启,如下
+```js
+const store = new Vuex.Store({
+    strict:true,
+})
+
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
 #### vue2和vue3中Vuex使用区别
 两者核心区别就是类型提示，像定义组件需要 defineComponent 同出一辙：
 ```js
@@ -641,6 +708,7 @@ window.addEventListener("beforeunload",()=>{
 -----------------------------------------------------------------------------
 
 #### VueRouter的路由模式hash和history的实现原理
+Vue-Router有两种路由模式：*hash模式*和*history模式*，默认是hash模式。
 1. hash 模式的实现原理
 
 早期的前端路由的实现事基于 location.hash 来实现的。其实现原理很简单，location.hash 的值就是 URL 中 # 后面的内容，比如下面这个网站，它的 location.hash 的值就是 #search
@@ -651,8 +719,13 @@ hash 路由模式的实现主要是基于以下几个特性：
  - URL中 hash 值只是客户端的一种状态，也就是说当向服务器发出请求时，hash部分不会被发送
  - hash 值的改变，都会在浏览器的访问历史中留下记录，因此我们通过浏览器的回退、前进按钮控制 hash 的切换
  - 可以通过 a 标签，并设置 href 属性，当用户点击这个标签后，URL 的 hash 值会发生改变，或者使用 JavaScript 来对 location.hash 进行赋值，改变URL的hash值
- - 我们可以使用 hashchange 事件来监听 hash 值的变化， 从而对页面进行跳转
-
+ - 我们可以使用 onhashchange 事件来监听 hash 值的变化， 从而对页面进行跳转
+```js
+window.onhashchange = function(event) {
+	console.log(event.oldURL, event.newURL);
+	let hash = location.hash.slice(1);
+}
+```
 2. history模式的实现原理
 
 HTML5提供了History API来实现 URL 的变化，其中最主要的API有以下两个：history.pushState() 和 history.replaceState().
@@ -690,14 +763,93 @@ _Vue.mixin({
 
 hash 模式下：
 
-- 通过 history.pushState() 修改浏览器地址，触发更新
-- 通过监听 hashchange 事件来监听浏览器前进或者后退，触发更新
+* 通过 history.pushState() 修改浏览器地址，触发更新
+* 通过监听 onhashchange 事件来监听浏览器前进或者后退，触发更新
 
 history模式下：
 
-- 通过 location.hash 修改 hash 值，触发更新
-- 通过监听 popstate 事件来监听浏览器前进或者后退，触发更新
-- 渲染 router-view 组件
+* 通过 location.hash 修改 hash 值，触发更新
+* 通过监听 popstate 事件来监听浏览器前进或者后退，触发更新
+* 渲染 router-view 组件
 
 **[:arrow_up: 返回目录](#目录)**
+
+#### route和router的区别
+* $route 是 "路由信息对象", 包括 path，params，hash，query，fullPath，matched，name 等路由信息参数
+* $router 是 "路由实例" 对象，包括了路由的跳转方法，钩子函数等
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### Vue-router跳转和location.href有什么区别
+* 使用 location.href= /url 来跳转，简单方便，但是刷新了页面；
+* 使用 history.pushState( /url ) ，无刷新页面，静态跳转；
+* 引进 router ，然后使用 router.push( /url ) 来跳转，使用了 diff 算法，实现了按需加载，减少了 dom 的消耗。其实使用 router 跳转和使用 history.pushState() 没什么差别的，
+* 因为vue-router就是用了 history.pushState() ，尤其是在history模式下。
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### params和query的区别
+**用法：** query要用path来引入，params要用name来引入，接受参数都是类似的，分别是 this.$route.query.name 和 this.$route.params.name
+**url地址显示：** query更加类似与ajax中get传参，params则类似与post，说的简单点就是query在浏览器接口中不显示参数，parmas显示
+
+注意：query刷新不会丢失query里面的数据，params刷新会丢失params里面的数据
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### VueRouter 导航守卫有哪些
+vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程中：全局的，单个路由独享的或者组件级的
+
+* 全局前置守卫: router.beforeEach
+* 全局解析守卫: router.beforeResolve, 在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
+* 全局后置钩子: router.afterEach
+* 路由独享守卫: 可以直接在路由配置上直接定义beforeEnter守卫，和全局前置守卫方法参数是一样的
+* 组件内的守卫: beforeRouteEnter, beforeRouteUpdate, beforeRouteLeave
+```js
+const Foo = {
+  template: `...`,
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+  }
+}
+```	
+
+**完整的导航解析流程:** 
+* 1.导航被触发
+* 2.在失活得组件里调用 beforeRouteLeave 守卫
+* 3.调用全局得 beforeEach 守卫
+* 4.在重用得组件里调用 beforeRouteUpdate 守卫
+* 5.在路由配置里面调用 beforeEnter
+* 6.解析异步路由组件
+* 7.在被激活得组件里调用 beforeRouterEnter
+* 8.调用全局得 beforeResolve
+* 9.导航被确认
+* 10.调用全局得 afterEach 钩子
+* 11.触发DOM更新
+* 12.调用 beforeRouteEnter 守卫中传递给next得回调函数，创建好得组件实例会做为回调函数得参数传入
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+
+
+
+
+
+
+
+
+
+
 

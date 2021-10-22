@@ -39,7 +39,10 @@
 - [34.ES6入门之Promise详解](#34-ES6入门之Promise详解)
 - [35.如何封装一个 javascript 的类型判断函数](#35-如何封装一个-javascript-的类型判断函数)
 - [36.简述一下原型和构造函数以及实例](#36-简述一下原型和构造函数以及实例)
-- [37.JS中高阶函数浅析](#37-JS中高阶函数浅析)
+- [37.原型修改和重写](#37-原型修改和重写)
+- [38.原型链的终点时什么以及如何打印](#38-原型链的终点时什么以及如何打印)
+- [39.use strict是什么和作用](#-39-use-strict是什么和作用)
+- [40.JS中高阶函数浅析](#40-JS中高阶函数浅析)
 - [99.Object有哪些属性方法](#99-Object有哪些属性方法)
 - [100.Array有哪些属性方法](#100-Array有哪些属性方法)
 -
@@ -334,7 +337,27 @@ function deepClone(obj) {
 }
 ```
 
-简单点说就是，**浅拷贝**之后两个数据对象互不关联，而**深拷贝**之后，改变一个数据对象，另一个也同样改变
+```js
+//扩展运算符：
+let outObj = {
+  inObj: {a: 1, b: 2}
+}
+let newObj = {...outObj}
+newObj.inObj.a = 2
+console.log(outObj) // {inObj: {a: 2, b: 2}}
+
+//Object.assign():
+let outObj = {
+  inObj: {a: 1, b: 2}
+}
+let newObj = Object.assign({}, outObj)
+newObj.inObj.a = 2
+console.log(outObj) // {inObj: {a: 2, b: 2}}
+
+可以看到，两者都是浅拷贝。
+```
+
+*简单点说就是，**深拷贝**之后两个数据对象互不关联，而**浅拷贝**之后，改变一个数据对象，另一个也同样改变*
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -598,6 +621,59 @@ fn.apply(this, [arg1, arg2]) // 参数使用数组包裹
 
 **[:arrow_up: 返回目录](#目录)**
 
+**call函数实现的步骤:**
+```js
+Function.prototype.myCall = function(context) {
+	//判断调用对象
+	if(typeof this !== "function") {
+		console.error('type error')
+	}
+	
+	//获取第2个参数
+	let args = [...arguments].slice(1)
+	let result = null
+	
+	//判断context是否传入，如果为传入则设置为window
+	context = context || window
+	//将函数做为上下文对象的一个属性
+	context.fn = this
+	//使用上下文对象来调用这个方法，并保存返回结果
+	result = context.fn(...args)
+	//删除刚才新增的属性
+	delete context.fn
+	return result
+}
+```
+
+**apply函数实现的步骤:**
+```js
+Function.prototype.myApply = function(context) {
+	//判断调用对象
+	if(typeof this !== "function") {
+		console.error('type error')
+	}
+	
+	let result = null
+	//判断context是否传入，如果为传入则设置为window
+	context = context || window
+	//将函数做为上下文对象的一个属性
+	context.fn = this
+	//使用上下文对象来调用这个方法，并保存返回结果
+	if(arguments[1]) {
+		result = context.fn(...arguments[1])
+	}else {
+		result = context.fn()
+	}
+	
+	//删除刚才新增的属性
+	delete context.fn
+	return result
+}
+
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
 #### 15. 手动实现bind方法
 **bind()方法不同于call和apply，它在改变this的指向时，返回一个绑定函数，但是不会立即执行，返回的 boundFunction 的 this 指向无法再次通过bind、apply或 call 修改**
 ```javascript
@@ -622,6 +698,26 @@ fn3() // 1
 ```
 此时打印fn1函数可以看到，它并不是一个普通的function，而是一个bound function，简称**绑定函数**：
 ![](javascript_files/1.jpg)
+
+**bind函数实现:**
+```js
+Function.prototype.myBind = function(context) {
+	//判断调用对象
+	if(typeof this !== "function") {
+		console.error('type error')
+	}
+	
+	var args = [...arguments].slice(1)
+	var fn = this
+	return function Fn() {
+		//函数内部使用 apply 来绑定函数调用，需要判断函数作为构造函数的情况，这个时候需要传入当前函数的 this 给 apply 调用，其余情况都传入指定的上下文对象。
+		return fn.apply(
+			this instanceof Fn ? this : context
+			args.concat(...arguments)
+		)
+	}
+}
+```
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -1102,6 +1198,63 @@ function getType(value) {
 // o.constructor === Object   --> false
 实例.constructor === 构造函数
 ```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 37. 原型修改和重写
+```js
+function Person(name){
+	this.name = name
+}
+
+//修改原型
+Person.prototype.getName = function() {}
+var p = new Person('hello')
+console.log(Object.getPrototypeOf(p) === Person.prototype)          // true
+console.log(Object.getPrototypeOf(p) === p.constructor.prototype)   // true
+
+//重写原型
+Person.prototype = {
+	getName: function() {}
+}
+var p = new Person('hello')
+console.log(Object.getPrototypeOf(p) === Person.prototype)          // true
+console.log(Object.getPrototypeOf(p) === p.constructor.prototype)   // false
+```
+
+可以看到重写原型的时候，p的构造函数不是指向Person了，因为直接给Person的原型对象直接用对象赋值时，它的构造函数指向了根构造函数Object，所以这时候
+p.constructor === object, 而不是p.constructor ===Person.要想成立需要把constructor指回来
+
+```js
+Person.prototype = {
+	getName: function() {}
+}
+var p = new Person('hello')
+p.constructor = Person
+console.log(Object.getPrototypeOf(p) === Person.prototype)          // true
+console.log(Object.getPrototypeOf(p) === p.constructor.prototype)   // true
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 原型链的终点时什么以及如何打印
+由于Object是构造函数，原型链的终点是Object.prototype.__proto__, 而Object.prototype.__proto__ === null //true,
+所以，原型链的终点是null。原型链上的所有原型都是对象，所有的对象最终都是有Object构造，而Object.prototype的下一级是Object.prototye.__proto__
+
+打印：Object.prototye.__proto__
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 39. use strict是什么和作用
+use strict 是ES5添加的一种严格运行模式，这种模式使得JS在更严格的条件下运行。设立严格模式的目的如下：
+* 消除JS语法不合理、不严谨之处，减少怪异的行为
+* 提高编译效率，增加运行速度
+* 为未来新版本的JS做好铺垫
+
+作用：
+* 禁止使用with语句
+* 禁止this关键字指向全局对象
+* 对象不能有重名的属性
 
 **[:arrow_up: 返回目录](#目录)**
 

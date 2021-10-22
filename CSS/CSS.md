@@ -4,8 +4,9 @@
 
 ### 目录
 - [1.请简述下CSS选择器的权重与优先规则](#1-请简述下CSS选择器的权重与优先规则)
-- [2.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
-- [3.如何水平居中一个元素](#3-如何水平居中一个元素)
+- [2.BFC](#2-BFC)
+- [3.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
+- [4.如何水平居中一个元素](#3-如何水平居中一个元素)
 -
 -
 -
@@ -13,12 +14,26 @@
 
 
 ### 1. 请简述下CSS选择器的权重与优先规则
+选择器是CSS样式规则中重要的组成部分，可以将选择器看作是CSS样式和HTML元素之间的匹配模式，与选择器关联的样式规则会应用与选择器所指定的HTML元素上
 !important > 行内样式 > ID选择器 > 类选择器 > 元素选择器 > 通配符选择器 > 继承 > 浏览器默认属性。
+
+* !important 优先级是最高的
+* 内联样式（1000）
+* ID选择器（0100）
+* 类选择器/属性选择器/伪类选择器（0010）
+* 元素选择器/伪元素选择器（0001）
+* 关系选择器/通配符选择器（0000）
 
 **[:arrow_up: 返回目录](#目录)**
 
+### 2. BFC
 
-### 2. 分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 3. 分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景
 **结构：**
 display:none: 会让元素完全从渲染树中消失，渲染的时候不占据任何空间, 不能点击，
 visibility: hidden:不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，不能点击
@@ -38,7 +53,7 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 **[:arrow_up: 返回目录](#目录)**
 
 
-### 3. 如何水平居中一个元素
+### 4. 如何水平居中一个元素
 
  - 如果元素是常规流中的inline元素，为父元素设置 text-align: center, 就可以
 ```

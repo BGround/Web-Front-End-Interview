@@ -135,7 +135,11 @@ Promise.race([promise1,timeOutPromise(5000)]).then(res=>{})
 
 
 
+手写一个promise.all函数，主要考察的是promise.all中有哪些特性
+ - 参数可能不是都是promise，也可能是常量
+ - 参数中的promise是同步执行的，所以返回结果需要按照索引进行存贮
 
+promise缓存，举个常见的场景：在调用接口前都需要做一个权限check
 
 
 

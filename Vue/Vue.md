@@ -18,10 +18,12 @@ https://github.com/answershuto/learnVue
 - [computed的实现原理](#-computed的实现原理)
 - [computed和watch区别](#-computed和watch区别)
 - [介绍一下Vue的内容分发机制](#-介绍一下Vue的内容分发机制)
+- [nextTick原理及作用](#-nextTick原理及作用)
 - [过滤器的作用，如何实现一个过滤器](#-过滤器的作用-如何实现一个过滤器)
 - [修饰符](#-修饰符)
 - [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
 - [Vue的响应式系统](#-Vue的响应式系统)
+- [Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗](#-Vue-data-中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗)
 - [Vue组件通信的几种方式](#-Vue组件通信的几种方式)
 - [vue和react的对比](#-vue和react的对比)
 - [你是如何设计一个可扩展、通用的、健壮性组件！](#-你是如何设计一个可扩展-通用的-健壮性组件)
@@ -143,8 +145,40 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 * text和textarea元素使用value属性和input事件
 * checkbox和radio使用check属性和change事件
 * select字段将value做为prop并将change做为事件
+```js
+<input v-model="sth" />
+//  等同于
+<input 
+    v-bind:value="message" 
+    v-on:input="message=$event.target.value"
+>
+//$event 指代当前触发的事件对象;
+//$event.target 指代当前触发的事件对象的dom;
+//$event.target.value 就是当前dom的value值;
+//在@input方法中，value => sth;
+//在:value中,sth => value;
+
+```
 
 **2. 作用在组件上**
+在自定义组件中，v-model 默认会利用名为 value 的 prop和名为 input 的事件,本质是一个父子组件通信的语法糖，通过prop和$.emit实现。
+
+```js
+// 父组件
+<aa-input v-model="aa"></aa-input>
+// 等价于
+<aa-input v-bind:value="aa" v-on:input="aa=$event.target.value"></aa-input>
+
+// 子组件：
+<input v-bind:value="aa" v-on:input="onmessage"></aa-input>
+
+props:{value:aa,}
+methods:{
+    onmessage(e){
+        $emit('input',e.target.value)
+    }
+}
+```
 **[:arrow_up: 返回目录](#目录)**
 
 #### template的使用
@@ -157,7 +191,7 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 </template>
 ```
 
-<font color=red>template标签中不能使用v-show </font>
+>template标签中不能使用v-show
 
 有时候,不需要这外层的 div ，可以采用下面 的方法，在 <template>标签上使用 v-for来循环
 ```js
@@ -187,13 +221,15 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 * 不支持异步，当computed内有异步操作时无效，无法监听数据的变化
 * computed属性值默认是走缓存的，也就是基于data中声明过的或者父组件传递的props中数据进行计算得到额值
 * 如果computed属性属性值是函数，那么默认会走get方法，函数的返回值就是属性的属性值，
+* 在computed中，属性有一个get方法和一个set方法，当数据发生变化时，会调用set方法。
 
 **侦听属性watch:**
 * 不支持缓存，数据变化，直接会触发操作
 * 支持异步
 * 监听的函数接受两个参数，一个是最新的值，另一个是输入之前的值
-* 监听数据必须是data中声明过的或者是父组件传递的props中的数据，数据变化触发操作，函数有两个参数
+* 监听数据必须是data中声明过的或者是父组件传递的props中的数据，数据变化触发操作
 
+函数有两个参数
 >immediate: 组件加载立即触发回调函数执行
 
 ```js
@@ -251,6 +287,21 @@ slot又名插槽，是Vue的内容分发机制，组件内部的模板引擎使�
 实现原理：当子组件vm实例化时，获取到父组件传入的slot标签的内容，存放在vm.$slot中，默认插槽为vm.$slot.default，具名插槽为vm.$slot.xxx，xxx 为插槽名，
 当组件执行渲染函数时候，遇到slot标签，使用$slot中的内容进行替换，此时可以为插槽传递数据，若存在数据，则可称该插槽为作用域插槽。
  
+**[:arrow_up: 返回目录](#目录)**
+
+#### nextTick原理及作用
+Vue的nextTick其本质是对 Javascript 执行原理EventLoop的一种应用。
+nextTick的核心是利用了如promise，setTimeout、setImmediate的原生js方法来模拟对应的微任务和宏任务的实现，利用js的异步任务回调来实现Vue框架中自己的
+异步任务回调
+
+Vue中引入nextTick异步更新队列机制的原因是：
+* 如果同步更新，多次对一个或多个属性赋值，会频繁触发UI和DOM的渲染
+* 由于vDom的引入，组件监测到状态的变化时，组件内部的vDom会进行diff操作，会有DOM更新操作，如果不是异步渲染会浪费更多的性能进行更新渲染操作
+
+在下列情况下，会用到nextTick
+* 在数据变化后执行的某个操作，而这个操作需要使用数据结构变化之后的DOM结构，这个操作就需要方法在nextTick()的回调函数中
+* 在create生命周期钩子函数中进行DOM操作，也要放在nextTick函数
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### 过滤器的作用,如何实现一个过滤器
@@ -321,6 +372,15 @@ Vue 3.0 采用的是 ES6 Proxy
 
 **[:arrow_up: 返回目录](#目录)**
 
+#### Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗
+**不会立即同步执行重新渲染**
+Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。Vue 在更新 DOM 时是异步执行的。
+只要侦听到数据变化， Vue 将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。
+
+如果同一个watcher被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和 DOM 操作是非常重要的。
+然后，在下一个的事件循环tick中，Vue 刷新队列并执行实际（已去重的）工作。
+
+**[:arrow_up: 返回目录](#目录)**
 
 #### Vue组件通信的几种方式
 

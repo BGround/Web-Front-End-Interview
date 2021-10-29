@@ -12,7 +12,7 @@
 这个是最简单也是最常用的一种通信方式，父组件通过向子组件传递props，子组件得到props之后做相应的处理；
 
 **//父组件App.js**
-```
+```js
 import React, {Component} from 'react';
 import Child from 'Child';
 
@@ -49,7 +49,7 @@ export default Child;
 利用回调函数，可以实现子组件向父组件通信，父组件将一个函数做为props传递给子函数，子函数通过调用该回调函数，便可以向父组件通信
 
 **//子组件Child.js**
-```
+```js
 const Child = (props) => {
 	const sub = (msg) => {
 		return () => {
@@ -66,7 +66,7 @@ const Child = (props) => {
 ```
 
 **//父组件App.js**
-```
+```js
 export default class App extends Component {
 	callback(msg) {
 		console.log('msg='+msg)
@@ -119,13 +119,13 @@ npm install events --save
 之后创建四个文件：ev.js App.js Foo.js Boo.js
 
 新建一个ev.js文件，引入events包, 并向外提供一个事件对象，供通信时使用
-```
+```js
 import {EventEmitter} frpm 'events';
 export default new EventEmitter();
 ```
 
 App.js
-```
+```js
 import React, {Component} from 'react';
 import Foo from 'Foo.js';
 import Boo from 'Boo.js';
@@ -144,7 +144,7 @@ export default class App extends Component {
 ```
 
 Foo.js
-```
+```js
 import React, {Component} from 'react';
 import emitter from './ev.js';
 
@@ -179,7 +179,7 @@ export default class Foo extends Component {
 ```
 
 Boo.js
-```
+```js
 import React, {Component} from 'react';
 import emitter from './ev.js';
 

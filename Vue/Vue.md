@@ -207,11 +207,19 @@ methods:{
 **1. computed的初衷**
 就是为了解决模板中放入太多的声明式的逻辑时会让模板过重，增加对页面的可维护性
 
-**2. computed的使用**
+**2. 实现原理**
+computed watcher，计算属性的监听器
+computed watcher 持有一个dep实例，通过 dirty 属性标记计算属性是否需要重新求值，**注意必须是data中劫持的数据**
+当computed的依赖值改变后，就会通知订阅的watcher进行更新，对于computed watcher会将dirty的
+属性值设置为true，并且进行计算方法的调用
+
+**3. computed的使用**
 定义一个计算属性有两种写法，
 	- 一种是直接跟一个函数
 	- 另一种是添加get和set方法的对象形式
 
+**4. computed的缓存意义是什么？或者经常在什么时候使用？**
+计算属性方法内部操作非常的耗时，比如遍历一个极大的数组，计算一次可能耗时1S
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -365,10 +373,24 @@ Vue 2.X 采用的是 Object.defineProperty 把这些属性全部转化为getter/
 Vue 3.0 采用的是 ES6 Proxy 
 
 **介绍下Vue 2.X**
-在Vue 2.x的响应式系统中，其核心有三点，observe, watcher, dep:
-* observe: 遍历data中的属性，使用 Object.defineProperty 的 get/set 方法对其进行数据劫持
-* dep: 每个属性拥有自己的消息订阅器dep，用于存放所有订阅了该属性的观察者对象
-* watcher: 观察者(对象)，通过dep实现对响应属性的监听，监听到结果后，主动触发自己的回调进行响应
+在Vue 2.x的响应式系统中，其核心有三个核心类，observe, watcher, dep:
+1. observe: 遍历data中的属性，给属性添加getter和setter，用于 **依赖收集**和**派发更新**
+2. dep: 用于收集当前响应式对象的依赖关系，每个响应式对象都有一个dep实例，dep.subs() = watcher[],当数据发生变更时，会通过dep.notify()通知各个watcher 
+3. watcher: 观察者(对象)，render watcher, computed watcher, user watcher
+
+*依赖收集*
+* initState， 对computed属性初始化时，会触发computed watcher依赖收集
+* initState， 对监听属性初始化的时候，触发user watcher依赖收集
+* render，触发 render watcher 依赖收集
+
+*派发更新*
+Object.defineProperty
+* 组件中对响应式数据进行了修改，会触发setter逻辑
+* dep.notify()
+* 遍历所有subs，调用每个watcher的 update 方法
+
+总结原理：
+> 当创建vue实例时，vue会遍历data里的属性，Object.defineProperty为属性添加getter和setter对数据的读取进行劫持
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -799,7 +821,7 @@ history 路由模式实现主要是基于以下几个特性：
 
 - pushState 和 replaceState 两个API来操作实现 URL 的变化
 - 我们可以使用 popstate 事件来监听 URL的变化，从而对页面进行跳转
-- history.pushState() 和 history.replaceState() 不会触发 popstate 事件，这是需要我们手动出发页面更新
+- history.pushState() 和 history.replaceState() 不会触发 popstate 事件，这是需要我们手动触发页面更新
 
 3. 简单实现 Vue Router
 
@@ -821,12 +843,12 @@ _Vue.mixin({
 
 **(2) 如何触发更新**
 
-hash 模式下：
+history 模式下：
 
 * 通过 history.pushState() 修改浏览器地址，触发更新
 * 通过监听 onhashchange 事件来监听浏览器前进或者后退，触发更新
 
-history模式下：
+hash 模式下：
 
 * 通过 location.hash 修改 hash 值，触发更新
 * 通过监听 popstate 事件来监听浏览器前进或者后退，触发更新

@@ -4,9 +4,10 @@
 
 ### 目录
 - [1.请简述下CSS选择器的权重与优先规则](#1-请简述下CSS选择器的权重与优先规则)
-- [2.BFC](#2-BFC)
-- [3.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
-- [4.如何水平居中一个元素](#3-如何水平居中一个元素)
+- [2.对盒模型的理解](#-对盒模型的理解)
+- [BFC](#2-BFC)
+- [分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
+- [如何水平居中一个元素](#3-如何水平居中一个元素)
 -
 -
 -
@@ -23,6 +24,17 @@
 * 类选择器/属性选择器/伪类选择器（0010）
 * 元素选择器/伪元素选择器（0001）
 * 关系选择器/通配符选择器（0000）
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 2. 对盒模型的理解
+CSS3中有两种盒模型：标准盒子模型，IE盒子模型
+
+盒模型都是有四部分组成：margin、border、padding和content
+两种盒模型的区别在于设置width和height时，划分的范围不同
+
+标准盒子模型： width和height => content的width和height
+IE盒子模型： width和height => 包含了border、padding和content
 
 **[:arrow_up: 返回目录](#目录)**
 

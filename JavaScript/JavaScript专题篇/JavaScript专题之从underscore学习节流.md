@@ -29,16 +29,16 @@
 然后更新时间戳为当前的时间戳，如果小于，就不执行。
 第一次是立即执行：
 ```js
-const throttle = (fn, wait) => {
+function throttle(fn, delay){
 	var context, args
-	var prev = 0
+	var lastTime = 0
 	return function() {
-		var now = +new Date() // 一元+运算符将其操作数转换为Number类型并反转其正负, 类似toNumber(new Date())
+		var nowTime = Date.now()
 		context = this
 		args = arguments
-		if(now - perv > wait) {
+		if(nowTime - lastTime > delay) {
 			fn.apply(context,agrs)
-			prev = now
+			lastTime = nowTime
 		}
 	}
 }

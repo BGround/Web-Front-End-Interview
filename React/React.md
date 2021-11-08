@@ -144,20 +144,59 @@ key在React中是添加在数组列表中，用于确定哪些元素是被添加
 
 无状态组件的特点：
  * 不依赖自身的state
- * 可以时类组件也可以是函数组件
+ * 可以是类组件也可以是函数组件
  * 可以完全避免使用this（使用箭头函数无需绑定this）
  * 有更高的性能，当不需要使用生命周期函数钩子的时候，可以考虑使用无状态组件
 
 **[:arrow_up: 返回目录](#目录)**
 
 ### 高阶组件
+高阶组件就是一个函数，且该函数接受另外一个组件做为参数，并返回一个新的组件。是React中复用组件的一种高级技巧
+```js
+const EnhancedComponent = higherOrderComponent(WrappedComponent);
+```
+组件是将 props 转换为 UI，而高阶组件是将组件转换为另一个组件。
+
+高阶组件的实现方式：
+1. 属性代理：通过创建新组件来包裹旧组件，把旧组件做为新组建的子组件进行渲染，可实现对旧组件的props更新和模板更新
+
+```js
+function myHoc(OldCom) {
+	return class NewCom extends React.Component {
+		render() {
+			let newProps = {age: 29, sex: 'male'}
+			return (
+				<OldCom {...newProps}></OldCom>
+			)
+		}
+	}
+}
+
+export default myHoc
+
+```
+
+2. 反向继承：通过创建新组建继承自旧组件，可实现对旧组件的state状态更新和组件模板更新
+
+```js
+function myHoc(OldCom) {
+	return class NewCom extends OldCom {
+		componentDidMount() {
+			this.setState({name: 'zhangsan'})
+		}
+		render() {
+			return super.render()
+		}
+	}
+}
+
+export default myHoc
+```
 
 
 **[:arrow_up: 返回目录](#目录)**
 
-
-
-
+--------------------------------------------------------------------------------------
 
 ## Redux
 

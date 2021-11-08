@@ -23,7 +23,7 @@
 ### 3. 怎么实现 debounce 函数
 实现原理就是利用定时器，函数第一次执行时设定一个定时器，之后调用时发现已经设定过定时器就清空之前的定时器，并重新设定一个新的定时器，如果存在没有被清空的定时器，当定时器计时结束后触发函数执行。
 ```js
-const debounce = (func, wait) => {
+const debounce = (func, delay) => {
 	var context, args
 	var timeout
 	return function() {
@@ -32,13 +32,13 @@ const debounce = (func, wait) => {
 		timeout = setTimeout(() => {
 			if(timeout) clearTimeout(timeout)
 			func.apply(context, agrs)
-		},wait)
+		},delay)
 	}
 }
 ```
 **第一次触发就执行**
 ```js
-const debounce = (func, wait,immediate) => {
+const debounce = (func, delay,immediate) => {
 	var context, args
 	var timeout
 	return function() {
@@ -54,14 +54,14 @@ const debounce = (func, wait,immediate) => {
 		timeout = setTimeout(() => {
 			if(timeout) clearTimeout(timeout)
 			func.apply(context, agrs)
-		},wait)
+		},delay)
 	}
 }
 ```
 
 **加强版throttle**，就是用户频繁的操作，导致函数func也就是用户操作一直得不到响应，所以需要加一个时间判断，只要等待时间超过了就立即执行函数，响应用户的操作
 ```js
-const debounce3 = (func, wait) => {
+const debounce3 = (func, delay) => {
 	var context, args
 	// 上一次执行func的时间戳
 	var prev = 0
@@ -74,13 +74,13 @@ const debounce3 = (func, wait) => {
 		args = arguments
 		
 		// 判断本次触发的时间和上次触发的时间间隔
-		if(now - prev < wait) {
+		if(now - prev < delay) {
 			// 如果小于等待时间就添加一个定时器，定时器结束之后执行func函数
 			if(timeout) clearTimeout(timeout)
 			timeout = setTimeout(() => {
 				prev = now
 				func.apply(context,args)
-			},wait)
+			},delay)
 		} else {
 			// 如果大于等待时间，就立即想用用户的操作
 			prev = now
@@ -93,15 +93,15 @@ const debounce3 = (func, wait) => {
 ### 4. underscore中学习优化debounce
 下面学习下underscore中作者优秀的思想`"version": "1.12.0"`
 ```js
-export default function debounce(func, wait, immediate) {
+export default function debounce(func, delay, immediate) {
   var timeout, previous, args, result, context;
 
   var later = function() {
 	// 判断两次执行触发的间隔时间
     var passed = new Date().getTime() - previous;
-	// 如果小于等待时间，就添加一个定时器，wait - passed时间后执行later函数
-    if (wait > passed) {
-      timeout = setTimeout(later, wait - passed);
+	// 如果小于等待时间，就添加一个定时器，delay - passed时间后执行later函数
+    if (delay > passed) {
+      timeout = setTimeout(later, delay - passed);
     } else {
       // 如果大于等待时间，就清空定时器
       timeout = null;
@@ -116,7 +116,7 @@ export default function debounce(func, wait, immediate) {
     args = _args;
     previous = new Date().getTime();
     if (!timeout) {
-      timeout = setTimeout(later, wait);
+      timeout = setTimeout(later, delay);
       if (immediate) result = func.apply(context, args);
     }
     return result;
@@ -130,11 +130,11 @@ export default function debounce(func, wait, immediate) {
   return debounced;
 }
 
-// 根据给定的毫秒 wait 延迟执行函数 func
-_.delay = restArguments(function(func, wait, args) {
+// 根据给定的毫秒 delay 延迟执行函数 func
+_.delay = restArguments(function(func, delay, args) {
   return setTimeout(function() {
     return func.apply(null, args);
-  }, wait);
+  }, delay);
 });
 
 ```

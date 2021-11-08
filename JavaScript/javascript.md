@@ -304,8 +304,8 @@ function fn() {
 //递归遍历实现
 function deepClone(source) {
 	// 此实现只针对[]与{}，由于null的typeof类型也是object，特做过滤,因为typeof(null) === Object且null === null是true
-	function isObject(obj) {
-		return typeof(obj) === 'object' && obj !== null
+	function isObject(source) {
+		return typeof(source) === 'object' && source !== null
 	}
 	//如果参数不是[]或者{},直接返回
 	if( !isObject(source)) {
@@ -1237,7 +1237,7 @@ console.log(Object.getPrototypeOf(p) === p.constructor.prototype)   // true
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 原型链的终点时什么以及如何打印
+#### 38. 原型链的终点时什么以及如何打印
 由于Object是构造函数，原型链的终点是Object.prototype.__proto__, 而Object.prototype.__proto__ === null //true,
 所以，原型链的终点是null。原型链上的所有原型都是对象，所有的对象最终都是有Object构造，而Object.prototype的下一级是Object.prototye.__proto__
 
@@ -1255,6 +1255,12 @@ use strict 是ES5添加的一种严格运行模式，这种模式使得JS在更�
 * 禁止使用with语句
 * 禁止this关键字指向全局对象
 * 对象不能有重名的属性
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 40. 有哪些情况会造成Javascript内存泄漏
+
+
 
 **[:arrow_up: 返回目录](#目录)**
 

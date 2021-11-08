@@ -1,0 +1,18 @@
+{
+  "name": "webpack-run-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && npx webpack",
+    "dev": "npx webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "webpack": "^4.7.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

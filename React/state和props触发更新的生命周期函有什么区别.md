@@ -63,7 +63,7 @@ export default class Home extends React.Component {
 当state更新时，触发的生命周期函数有
 
 * Home.js:18 home getDerivedStateFromProps props=   state=update now!
-* Home.js:18 home shouldCOmponentUpdate: nextProps=   nextState=update now!
+* Home.js:18 home shouldComponentUpdate: nextProps=   nextState=update now!
 * Home.js:39 home render
 * Home.js:23 home getSnapshotBeforeUpdate prevProps=   prevState=react study
 * Home.js:35 home componentDidUpdate

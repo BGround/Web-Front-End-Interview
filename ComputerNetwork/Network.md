@@ -6,6 +6,7 @@
 ### 目录
 - [HTTP 1.1 和 HTTP 2.0 的区别](#-HTTP各个版本的区别)
 - [HTTP和HTTPS协议的区别](#-HTTP和HTTPS协议的区别)
+- [与缓存相关的HTTP请求头有哪些](#-与缓存相关的HTTP请求头有哪些)
 
 
 
@@ -32,11 +33,16 @@
 * HTTP协议连接很简单，是无状态的，HTTPS协议是SSL和HTTP协议构建的可进行加密传输、身份认证的网络协议，比HTTP更加安全
 
 
+**[:arrow_up: 返回目录](#目录)**
 
+#### 与缓存相关的HTTP请求头有哪些
+**强缓存：**   -- 200
+* Expires
+* Cache-Control
 
-
-
-
+**协商缓存**    -- 304
+* Etag，If-None-Match
+* Last-Modified, If-Modified-Since
 
 
 

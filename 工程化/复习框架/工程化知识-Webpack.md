@@ -1,18 +1,24 @@
 ## Webpack
 
 ### 目录
-- [webpak moudles, 如何表达自己的各种依赖关系](#-webpak-moudles, 如何表达自己的各种依赖关)
-- [webpak 中 moudles bundle 和 Chunkd 的区别是什么](#-webpak-中-moudles-bundle-和-Chunkd-的区别是什么)
-- [Plugin 和 Loader 分别是什么？ 怎么工作的？](#-Plugin-和-Loader-分别是什么-怎么工作的)
-- [webpack的构建流程](#-webpack的构建流程)
+- [Webpack](#webpack)
+  - [目录](#目录)
+  - [webpak moudles, 如何表达自己的各种依赖关系](#webpak-moudles-如何表达自己的各种依赖关系)
+  - [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
+  - [Plugin 和 Loader 分别是什么？ 怎么工作的？](#plugin-和-loader-分别是什么-怎么工作的)
+  - [webpack的构建流程](#webpack的构建流程)
+  - [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
+  - [webpack层面如何做性能优化](#webpack层面如何做性能优化)
+  - [介绍一下webpack dll](#介绍一下webpack-dll)
+  - [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
 
 
 
 
 ### webpak moudles, 如何表达自己的各种依赖关系
-* ESM import
-* CommonJs require
-* AMD define require
+* ESM / export default, import
+* CommonJs / module.exports, require 同步加载，都是单实例 普遍使用在node项目中
+* AMD / define, require 异步加载 浏览器端的规范使用AMD比较好
 * css/sass/less @import.
 
 **[:arrow_up: 返回目录](#目录)**
@@ -21,11 +27,10 @@
 
 1. Chunk
 
-Chunk 是webpack打包过程中Moudles的集合，是打包过程中的概念。
+Chunk 是webpack**打包过程中**Moudles的集合，是打包过程中的概念。
 
 webpack 的打包是从一个入口模块开始，入口模块引用其他模块， 其他模块引用其他模块.....
 webpack 通过引用关系逐个打包模块， 这些moudle就形成了一个Chunk
-
 
 如果有多个入口模块，可能会产生多条打包路径，每条路径会形成一个Chunk
 
@@ -38,6 +43,8 @@ webpack 通过引用关系逐个打包模块， 这些moudle就形成了一个Ch
 大多数情况下， 一个Chunk会生产一个Bundle， 但是也有例外
 
 但是如果加了sourcemap，一个entry， 一个chunk对应着两个bundle。
+
+Chunk时过程中代码块，Bundle时打包结果输出的代码块，Chunk在构建完成呈现为Bundle
 
 4. Split Chunk
 
@@ -76,8 +83,6 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
  7. 输出完成: 在确定好输出内容后，根据输出路劲和文件名，把输出内容写入到文件系统
 
 **[:arrow_up: 返回目录](#目录)**
-
-
 
 ### webpack和rollup之间的异同点
  1. 相同点

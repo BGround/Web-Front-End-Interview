@@ -1,0 +1,370 @@
+## Webpack
+
+### 目录
+- [webpack初体验时需要注意的点](#-webpack初体验时需要注意的点)
+- [Plugin 和 Loader 分别是什么？ 怎么工作的？](#plugin-和-loader-分别是什么-怎么工作的)
+- [Loader的作用是什么和常用的Loader](#-Loader的作用是什么和常用的Loader)
+- [Plugin的作用是什么和常用的Plugin](#-Plugin的作用是什么和常用的Plugin)
+- [编写Loader](#-编写Loader)
+- [编写Plugin](#-编写Plugin)
+- [webpak moudles, 如何表达自己的各种依赖关系](#webpak-moudles-如何表达自己的各种依赖关系)
+- [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
+- [热更新的配置和实现原理](#-热更新的配置和实现原理)
+- [文件指纹](#-文件指纹)
+- [Less Sass和Scss以及PostCss](#-Less-Sass和Scss以及PostCss)
+- [静态资源内联](#-静态资源内联)
+- [webpack的构建流程](#webpack的构建流程)
+- [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
+- [webpack层面如何做性能优化](#webpack层面如何做性能优化)
+- [介绍一下webpack dll](#介绍一下webpack-dll)
+- [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
+
+
+------------------------------------------------------------------------------------------
+
+### webpack初体验时需要注意的点
+1. 学习chunks时，要使用webpack版本4.7，5.X版本以上没法看到chunks
+2. 在package.json中不配置sricpt时，运行webpack命令是: ./node_modules/.bin/webpack
+3. npm run build的原理是在./node_modules/.bin中创建软链接, 在json文件中配置"build": "webpack"，可以在命令中执行npm run build
+4. webpack文件名要是webpack.config.js,不然打包成的dist目录下文件是main.js文件
+5. npm install webpack webpack-cli -D
+6. npm i @babel/core @babel/preset-env babel-loader -D
+7. npm i react react-dom @babel/preset-react -S
+8. -S 安装在dependencies, -D 安装在devDenpendencies, devDependencies用于本地环境开发时候，dependencies用户发布环境，也就是开发阶段的依赖最后是不对被打入包内。
+9. 通常框架、组件和 utils 等业务逻辑相关的包依赖放在dependencies里面，对于构建、ESlint、单元测试等相关依赖放在devDependencies中
+10. clean-webpack-plugin已经被output中clean替换了
+11. optimize-css-assets-plugin插件也没有看见？？？
+12. 
+
+### Plugin 和 Loader 分别是什么？ 怎么工作的？
+
+1. Plugin
+
+扩展webpack功能的插件，webpack运行的各个生命周期阶段，都会广播出对应的事件，plugin插件去监听对应的事件，在合适的时机通过Webpack提供的API改变输出结果。
+
+2. Loader
+
+模块转换器，将非js模块转换为webpack可以识别的js模块
+
+本质上，webpack loader 将所有类型的文件，转换为应用程序的**依赖图**可以直接引用的模块
+
+3. Compiler
+对象，包含了webpack环境的所有配置信息，包换options loader， plugins, 
+webpack启动的时候实例化，他是全局唯一的，可以把他理解为webpack的实例
+
+4. Compilation
+做为plugin内置事件回调函数的参数，包含了当前的模块资源，编译生成资源，变化的文件以及被跟踪依赖的状态信息。
+webpack 在开发模式下运行的时候，每当检测到一个文件变化，就会创建一次新的Compliation
+
+**[:arrow_up: 返回目录](#目录)**
+
+### Loader的作用是什么和常用的Loader
+* 对不同格式文件坐处理, 如将Sass文件处理成Css文件，Ts文件处理成JS文件
+* 编译文件，是文件可以加载到依赖关系中
+
+常用的Loader：
+* file-loader: 用于处理文件，通过相对URL去引用输出的文件
+* url-loader: 能在字体和图片文件很小的情况下（options中设置limit）以base64的方式将文件内容注入到代码中,内部原理也是用的file-loader(如果图片大小超过limit就不会base进文件)
+* source-map-loader: 从现有的js文件提取出source maps
+* css-loader: css-loader 会对 @import 和 url() 进行处理，就像 js 解析 import/require() 一样
+* style-loader: 将css注入到js中，通过操作DOM来加载CSS
+* less-loader: 将less文件转换成css文件
+* image-loader: 加载并压缩图片文件
+* babel-loader: 将ES6转换成ES5
+* thread-loader: 多进程打包js文件
+
+**[:arrow_up: 返回目录](#目录)**
+
+### Plugin的作用是什么和常用的Plugin
+功能例如打包优化，环境变量注入，资源管理等，本质是一个具有apply方法JavaScript对象，目的是解决loader无法实现的其他事情。
+
+常用的Plugin:
+* HtmlWebpackPlugin: 在打包结束之后，自动生成一个html文件，并把打包生成的js模块引入到html中
+* SplitChunksPlugin: optimization.splitChunksPlugin将chunks相同的模块代码提取成公共js
+* CleanWebpackPlugin: 删除构建目录
+* mini-css-extract-plugin: 提取css到一个单独的文化中
+* DefinePlugin: webpack内置的一个插件，不需要安装，允许在编译时创建配置的全局对象，如设置process.env.NODE_ENV为development或者production
+* UlglifyjsWebpackPlugin: 压缩JS
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 编写Loader
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 编写Plugin
+Plugin中apply方法会被webpack compiler调用，并且在整个编译周期都可以访问compiler对象
+```js
+const myPluginName = 'consoleLogOnBuildWebpackPlugin'
+
+class ConsoleLogOnBuildWebpackPlugin {
+	apply(compiler) {
+		compiler.hooks.run.tap(myPluginName, (compilation) => {
+			console.log('webpack 构建过程开始')
+		})
+	}
+}
+
+module.exports = ConsoleLogOnBuildWebpackPlugin
+
+```
+
+自己实现的Plugin，也需要遵循一定的规范:
+* 插件必须是一个函数或者是一个包含了apply方法的对象，这样才能访问compiler实例
+* 传给每个插件的compiler和compilation对象都是同一个引用，因此不建议修改
+* 异步的事件需要在插件处理完任务时调用回调函数通知webpack进入下一个流程，不然会卡住
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpak moudles, 如何表达自己的各种依赖关系
+* ESM / export default, import
+* CommonJs / module.exports, require 同步加载，都是单实例 普遍使用在node项目中
+* AMD / define, require 异步加载 浏览器端的规范使用AMD比较好
+* css/sass/less @import.
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpak 中 moudles bundle 和 Chunk 的区别是什么 
+
+1. Chunk
+
+Chunk 是webpack**打包过程中**Moudles的集合，是打包过程中的概念。
+
+webpack 的打包是从一个入口模块开始，入口模块引用其他模块， 其他模块引用其他模块.....
+webpack 通过引用关系逐个打包模块， 这些moudle就形成了一个Chunk
+
+如果有多个入口模块，可能会产生多条打包路径，每条路径会形成一个Chunk
+
+2. Bundle
+
+是我们最终输出的一个打包文件
+
+3. Chunk 和 Bundle 的区别
+
+大多数情况下， 一个Chunk会生产一个Bundle， 但是也有例外
+
+但是如果加了sourcemap，一个entry， 一个chunk对应着两个bundle。
+
+Chunk时过程中代码块，Bundle时打包结果输出的代码块，Chunk在构建完成呈现为Bundle
+
+4. Split Chunk
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 热更新的配置和实现原理
+1. 配置
+热更新HMR(hot module replacement)是在开发模式下配置webpack-dev-server, 搭配插件webpack.HotModuleReplacementPlugin,但是v4开始，HMR默认启用的。
+因为在webpack-dev-server中设置hot=true或者CLI设置--hot时，不需要在webpack.config.js中添加该插件
+```js
+// 首先要安装
+npm i webpack-dev-server
+
+// package.json添加
+
+"script": {
+	dev: 'webpack-dev-server'
+}
+
+// webpack.config.js
+
+// 1、配置 mode
+mode: 'development'
+
+// 2、配置webpack-dev-server
+devserver: {
+	hot: true,
+	open: true
+}
+```
+2. 实现原理
+这里面的热更新有最核心的是 HMR Server 和 HMR runtime。
+
+HMR Server 是服务端，用来将变化的 js 模块通过 websocket 的消息通知给浏览器端。
+HMR Runtime是浏览器端，用于接受 HMR Server 传递的模块数据，浏览器端可以看到 .hot-update.json 的文件过来。
+
+HotModuleReplacementPlugin是做什么用的？
+
+webpack 构建出来的 bundle.js 本身是不具备热更新的能力的，HotModuleReplacementPlugin 的作用就是将 HMR runtime 注入到 bundle.js，
+使得bundle.js可以和HMR server建立websocket的通信连接
+
+参照流程图
+![]()
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 文件指纹
+1. 文件指纹的生成
+* Hash: 和整个项目的构建相关, 只要项目文件有修改，整个项目构建的hash值就会更改，可以指图片hash,设置file-loader的name，使用[hash]
+options: {
+	name: '[name]_[hash:8].[ext]'
+}
+ ⬇
+* Chunkhash: 和webpack打包的chunk有关，不同的entry会生成不同的chunkhash值，打包成成的bundle.js文件，设置output的filename，使用[chunkhash]
+filename: '[name]_[chunkhash:8].js',
+ ⬇
+* Contenthash: 根据文件内容来定义hash，文件内容不变，则contenthash不变，设置MiniCssExtractPlugin的filename，使用[contenthash]
+new MiniCssExtractPlugin({
+	filename: '[name]_[contenthash:8].css'
+})
+
+**[:arrow_up: 返回目录](#目录)**
+
+### Less Sass和Scss以及PostCss
+
+
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 静态资源内联
+静态资源内联指的是将html css和js，或者图片字体内联到html中。
+
+静态资源内联的意义：
+
+1. 代码层面
+* 页面框架的初始化脚本
+* 上报相关打点
+* css 内联避免页面的闪动
+
+2. 请求层面
+* 减少Http网络请求数
+* 小图片或者字体内联（url-loader）
+
+如果是版本较高 "html-webpack-plugin": "^4.2.0",
+1. raw-loader内联 html
+<%= require('raw-loader!./meta.html') %>
+2. raw-loader内联 js
+<script><%= require('raw-loader!babel-loader!../../node_modules/lib-flexible/flexible.js') %></script>
+3. css内联
+* 借助style-loader
+```js
+//webpack.config.js
+module.exports = {
+	module: {
+		rules: [
+			test: /\.less$/,
+			use: [
+				{
+					loader: 'style-loader',
+					options: {
+						insertAt: 'top', // 样式插入到<head>
+						singleton: true, // 将所有的style合并一个
+					}
+				}
+			]
+		]
+	}
+}
+```
+* html-inline-css-webpack-plugin
+```js
+// 首先安装 npm i html-inline-css-webpack-plugin -D
+
+// 在package.json中放在html-webpack-plugin后面
+
+```
+
+Css内联的原理：
+1. style-loader插入样式是一个动态的过程，在打包后的html源码中不会看见html的style样式，style-loader是代码运行时动态的创建style标签，然后将css style插入到标签中
+2. css-loader的作用时将css转换成commonjs对象，也就是样式代码会被放到js代码中
+3. 首先需要借助mini-css-extract-plugin将css文件打包成一个单独的文件，再用html-inline-css-webpack-plugin内联
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack的构建流程
+ 1. 初始化参数: 从配置和shell语句中读取并合并参数，确定最终参数
+ 2. 开始编译: 从上一步得到的参数初始化compiler对象，加载所有配置的plugins，执行对象的run方法开始编译
+ 3. 确定入口: 根据配置的entry确定所有的入口文件
+ 4. 编译模块: 根据入口文件，调用所有配置Loader的模块进行编译，再找出模块所依赖的模块，递归本步骤直到所有入口依赖的模块完成编译
+ 5. 完成模块编译: 经过所有Loader翻译完所有模块后，得到最终内容和他们之间的依赖关系
+ 6. 输出资源: 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的Chunk，再把每个Chunk转换成一个单独的文件加入到输出列表中，这是可以修改内容的最后机会
+ 7. 输出完成: 在确定好输出内容后，根据输出路劲和文件名，把输出内容写入到文件系统
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack和rollup之间的异同点
+ 1. 相同点
+  - 在打包编译上都有Tree Shaking 和 Scope hoisting功能
+ 2. 不同点
+	- webpack有代码分割和静态资源导入有着先天的优势，同时还支持HMR功能，这个是rollup所没有的
+	- Rollup对于代码的Tree-shaking和ES6模块有着算法优势上的支持
+	- 所以开发应用时使用webpack，开发javascript库时使用rollup
+
+
+### webpack层面如何做性能优化
+用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。
+
+ 1. 压缩代码。删除多余的代码、注释、简化代码的写法等等方式。可以利用webpack的UglifyJsPlugin和ParallelUglifyPlugin来压缩JS文件， 利用cssnano（css-loader?minimize）来压缩css。使用webpack4，打包项目使用production模式，会自动开启代码压缩。
+ 2. 利用CDN加速。在构建过程中，将引用的静态资源路径修改为CDN上对应的路径。可以利用webpack对于output参数和各loader的publicPath参数来修改资源路径
+ 3. 删除死代码（Tree Shaking）。将代码中永远不会走到的片段删除掉。可以通过在启动webpack时追加参数--optimize-minimize来实现或者使用es6模块开启删除死代码。
+ 4. Code Spliting: 将代码按照路由维度或者组件分块(chunk)，这样做到按需加载，同时可以充分利用浏览器缓存
+ 5. 提取公共第三方库，SplitChunksPlugin插件来进行公共模块抽取，利用浏览器缓存可以长期缓存这些无需频繁变动的公共代码
+ 6. 优化图片，对于小图可以使用 base64 的方式写入文件中，和image-loader
+
+### 介绍一下webpack dll
+ 1. dll是什么?
+在webpack打包的时候，对于一些不经常更新的第三方库，比如react，vue，loadsh等，打包的时候希望能和我们的代码分离开。
+dll的想法就类似动态链接库
+
+ 2. dll怎么用?
+	- 由于需要单独打包第三方模块，需要一个独立的webpack配置，所以创建webpack.dll.js文件
+	- webpack.config.js文件需要稍微的改动下
+	- 编译的话 webpack --config webpack.dll.js   webpack --config webpack.config.js
+```js
+/*****webpack.dll.js******/
+const webpack = require('webpack')
+const library = '[name]_lib'
+const path = require('path')
+
+module.exports = {
+  mode: 'production',
+  entry: {
+    vendors: ['vue']                                   
+  },
+
+  output: {
+    filename: '[name].dll.js',
+    path: path.join(__dirname, 'dist'),
+    library
+  },
+
+  plugins: [
+    new webpack.DllPlugin({
+      path: path.join(__dirname, 'dist/[name]-manifest.json'),
+      // This must match the output.library option above
+      name: library
+    }),
+  ],
+}
+
+/*****webpack.config.js******/
+plugins: [
+	... //其他plugin配置
+	new webpack.DllReferencePlugin({
+		context: __dirname,
+		manifest: require('./dist/vendors-manifest.json')
+	})
+]
+```
+
+备注： dll的目的就是为了提升打包的速度，但是在create-react-app和webpack5+版本之后都去除了dll，在webpack5+版本之后，自动配置了
+autodll-webpack-plugin插件，所以dll已经被抛弃了，但是dll的思想还是保留了下来
+
+### 介绍一下webpack的Tree Sharking
+
+
+
+
+
+
+
+
+
+
+
+
+
+

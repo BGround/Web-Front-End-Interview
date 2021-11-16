@@ -1,0 +1,17 @@
+{
+  "name": "large-number-bground",
+  "version": "3.0.0",
+  "description": "大整数相加js库",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "prepublish": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.64.1",
+    "webpack-cli": "^4.9.1"
+  }
+}

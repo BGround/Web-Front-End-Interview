@@ -1,0 +1,12 @@
+.search-text {
+	font-size: 40px;
+	color: #f00;
+}
+.search-text {
+  font-size: 40px;
+  background-color: #FFF000;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+

@@ -1,23 +1,28 @@
 ## Webpack
 
 ### 目录
-- [webpack初体验时需要注意的点](#-webpack初体验时需要注意的点)
+- [webpack初体验时需要注意的点](#webpack初体验时需要注意的点)
 - [Plugin 和 Loader 分别是什么？ 怎么工作的？](#plugin-和-loader-分别是什么-怎么工作的)
-- [Loader的作用是什么和常用的Loader](#-Loader的作用是什么和常用的Loader)
-- [Plugin的作用是什么和常用的Plugin](#-Plugin的作用是什么和常用的Plugin)
-- [编写Loader](#-编写Loader)
-- [编写Plugin](#-编写Plugin)
+- [Loader的作用是什么和常用的Loader](#Loader的作用是什么和常用的Loader)
+- [Plugin的作用是什么和常用的Plugin](#Plugin的作用是什么和常用的Plugin)
+- [编写Loader](#编写Loader)
+- [编写Plugin](#编写Plugin)
 - [webpak moudles, 如何表达自己的各种依赖关系](#webpak-moudles-如何表达自己的各种依赖关系)
 - [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
-- [热更新的配置和实现原理](#-热更新的配置和实现原理)
-- [文件指纹](#-文件指纹)
-- [Less Sass和Scss以及PostCss](#-Less-Sass和Scss以及PostCss)
-- [静态资源内联](#-静态资源内联)
+- [热更新的配置和实现原理](#热更新的配置和实现原理)
+- [文件指纹](#文件指纹)
+- [Less Sass和Scss以及PostCss](#Less-Sass和Scss以及PostCss)
+- [静态资源内联](#静态资源内联)
+- [多页面应用打包通用方案](#多页面应用打包通用方案)
+- [source map](#source map)
+- [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
+- [代码分割和动态import](#代码分割和动态import)
+- [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
 - [webpack的构建流程](#webpack的构建流程)
 - [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
 - [webpack层面如何做性能优化](#webpack层面如何做性能优化)
 - [介绍一下webpack dll](#介绍一下webpack-dll)
-- [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
+
 
 
 ------------------------------------------------------------------------------------------
@@ -274,6 +279,115 @@ Css内联的原理：
 
 **[:arrow_up: 返回目录](#目录)**
 
+### 多页面应用打包通用方案
+```js
+//webpack.prod.config.js
+const setMPA = () => {
+	const entry = {};
+	const htmlWebpackPlugin = [];
+	
+	const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+	Object.keys(entryFiles)
+		.map((index) => {
+			const entryFile = entryFiles[index];
+			const match = entryFile.match(/src\/(.*)\/index\.js/);
+			
+			const pageName = match && match[1];
+			entry[pageName] = entryFile;
+			
+			htmlWebpackPlugin.push(
+				new HtmlWebpackPlugin({
+					template: path.join(__dirname, `src/${pageName}/index.html`),
+					filename: `${pageName}.html`,
+					chunks: [pageName],
+					inject: true,
+					minify: {
+						html5: true,
+						collapsWhitespace: true,
+						preserveLineBreaks: false,
+						minifyCSS: true,
+						minifyJS: true,
+						removeComments: false
+					}
+				})
+			)
+			
+		})
+
+	return {
+		entry,
+		htmlWebpackPlugin
+	}
+}
+
+const {entry, htmlWebpackPlugin} = setMPA();
+```
+**[:arrow_up: 返回目录](#目录)**
+
+### source map
+1. 作用:在devtool中配置sourcemap，通过source map定位到源代码中，开发环境开启，线上环境关闭（线上排查问题的时候可以将sourcemap上传到错误监控系统中e.g. Sentry）
+2. source map关键字
+| 关键字      | Description | 
+| :---       |    :----:   |
+| eval       | 使用eval包裹模块代码  |
+| source map | 产生.map文件  | 
+| cheap      | 不包含列信息 |
+| inline     | 将.map作为DataURI嵌入，不单独生成.map文件 |
+| module     | 包含loader的sourcemap |
+3. source map类型
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 提取页面公共资源splitChunksPlugin
+```js
+module.exports = {
+    //...
+    optimization: {
+      splitChunks: {
+        // async：异步引入的库进行分离（默认）， initial： 同步引入的库进行分离， all：所有引入的库进行分离（推荐）
+        chunks: 'async',
+        minSize: 30000, // 抽离的公共包最小的大小，单位字节
+        maxSize: 0, // 最大的大小
+        minChunks: 1, // 资源使用的次数(在多个页面使用到)， 大于1， 最小使用次数
+        maxAsyncRequests: 5, // 并发请求的数量
+        maxInitialRequests: 3, // 入口文件做代码分割最多能分成3个js文件
+        automaticNameDelimiter: '~', // 文件生成时的连接符
+        automaticNameMaxLength: 30, // 自动自动命名最大长度
+        name: true, //让cacheGroups里设置的名字有效
+        cacheGroups: { //当打包同步代码时,上面的参数生效
+          vendors: {
+            test: /[\\/]node_modules[\\/]/, //检测引入的库是否在node_modlues目录下的
+            priority: -10, //值越大,优先级越高.模块先打包到优先级高的组里
+            filename: 'vendors.js'//把所有的库都打包到一个叫vendors.js的文件里
+          },
+          default: {
+            minChunks: 2, // 上面有
+            priority: -20, // 上面有
+            reuseExistingChunk: true //如果一个模块已经被打包过了,那么再打包时就忽略这个上模块
+          }
+        }
+      }
+    }
+  };
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 代码分割和动态import
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 介绍一下webpack的Tree Sharking
+1. 是什么？
+Tree sharking是一种通过清除多余代码的方式来优化项目打包体积的技术，专业术语叫Dead code elimination
+
+2. 原理
+* 因为tree sharking只能在静态modules下工作，所以CommonJs的reuire动态导入不适合，而ES6 Module不同于CommonJs，ES6中，引入了完全静态的导入语法import
+* 静态分析程序，判断哪些模块和变量未被使用或者引用，进而删除对应的代码
+
+**[:arrow_up: 返回目录](#目录)**
+
 ### webpack的构建流程
  1. 初始化参数: 从配置和shell语句中读取并合并参数，确定最终参数
  2. 开始编译: 从上一步得到的参数初始化compiler对象，加载所有配置的plugins，执行对象的run方法开始编译
@@ -293,6 +407,7 @@ Css内联的原理：
 	- Rollup对于代码的Tree-shaking和ES6模块有着算法优势上的支持
 	- 所以开发应用时使用webpack，开发javascript库时使用rollup
 
+**[:arrow_up: 返回目录](#目录)**
 
 ### webpack层面如何做性能优化
 用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。
@@ -303,6 +418,8 @@ Css内联的原理：
  4. Code Spliting: 将代码按照路由维度或者组件分块(chunk)，这样做到按需加载，同时可以充分利用浏览器缓存
  5. 提取公共第三方库，SplitChunksPlugin插件来进行公共模块抽取，利用浏览器缓存可以长期缓存这些无需频繁变动的公共代码
  6. 优化图片，对于小图可以使用 base64 的方式写入文件中，和image-loader
+
+**[:arrow_up: 返回目录](#目录)**
 
 ### 介绍一下webpack dll
  1. dll是什么?
@@ -353,7 +470,9 @@ plugins: [
 备注： dll的目的就是为了提升打包的速度，但是在create-react-app和webpack5+版本之后都去除了dll，在webpack5+版本之后，自动配置了
 autodll-webpack-plugin插件，所以dll已经被抛弃了，但是dll的思想还是保留了下来
 
-### 介绍一下webpack的Tree Sharking
+**[:arrow_up: 返回目录](#目录)**
+
+
 
 
 

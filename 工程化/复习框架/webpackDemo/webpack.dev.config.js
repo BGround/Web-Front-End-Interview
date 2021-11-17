@@ -73,10 +73,11 @@ module.exports = {
 					'less-loader'
 				]
 			},
-			// {
-			// 	test: /\.(png|jpg|jpeg|gif)$/,
-			// 	use: 'file-loader'
-			// },
+			/** 
+			{
+				test: /\.(png|jpg|jpeg|gif)$/,
+				use: 'file-loader'
+			},*/
 			{
 				test: /\.(png|jpg|jpeg|gif)$/,
 				use: [{

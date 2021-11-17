@@ -18,7 +18,7 @@
 - [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
 - [代码分割和动态import](#代码分割和动态import)
 - [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
-- [webpack打包库和组件](#-webpack打包库和组件)
+- [webpack实现SSR打包](#-webpack实现SSR打包)
 - [webpack的构建流程](#webpack的构建流程)
 - [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
 - [webpack层面如何做性能优化](#webpack层面如何做性能优化)
@@ -397,9 +397,35 @@ Tree sharking是一种通过清除多余代码的方式来优化项目打包体�
 
 **[:arrow_up: 返回目录](#目录)**
 
-### webpack打包库和组件
+### webpack实现SSR打包
+服务端渲染SSR（server side render）:
+1. 渲染：HTML + CSS + JS + Data -> 渲染后的html
+2. 服务端：
+* 所有模板等资源都存储在服务器端
+* 内网机器拉取数据更快
+* 一个HTML返回所有数据
 
+SSR实现的思路
+1. 服务端
+* 使用react-dom/server 的renderToString方法将React组件渲染字符串
+* 服务端路由返回对应的模板
 
+2. 客户端
+* 打包出针对服务端的组件
+
+如何解决样式不显示的问题？
+* 使用打包出来的浏览器端html为模板，设置占位符(如腾讯团队注释： <!--HTML_PLACEHOLDE -->)，动态插入组件
+```html
+<!DOCTYPE html>
+...
+<body>
+	<div><!--HTML_PLACEHOLDE --></div>
+</body>
+```
+之后在服务端进行替换
+
+首屏数据如何处理？
+* 服务端获取数据，替换占位符
 
 **[:arrow_up: 返回目录](#目录)**
 

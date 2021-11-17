@@ -4,37 +4,38 @@ const path = require('path');
 const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const setMPA = () => {
 	const entry = {};
 	const htmlWebpackPlugin = [];
 	
-	const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+	const entryFiles = glob.sync(path.join(__dirname, './src/*/index-server.js'));
 	Object.keys(entryFiles)
 		.map((index) => {
 			const entryFile = entryFiles[index];
-			const match = entryFile.match(/src\/(.*)\/index\.js/);
+			const match = entryFile.match(/src\/(.*)\/index-server\.js/);
 			
 			const pageName = match && match[1];
 			entry[pageName] = entryFile;
 			
-			htmlWebpackPlugin.push(
-				new HtmlWebpackPlugin({
-					template: path.join(__dirname, `src/${pageName}/index.html`),
-					filename: `${pageName}.html`,
-					chunks: [pageName],
-					inject: true,
-					minify: {
-						html5: true,
-						collapsWhitespace: true,
-						preserveLineBreaks: false,
-						minifyCSS: true,
-						minifyJS: true,
-						removeComments: false
-					}
-				})
-			)
+            if(pageName) {
+                htmlWebpackPlugin.push(
+                    new HtmlWebpackPlugin({
+                        template: path.join(__dirname, `src/${pageName}/index.html`),
+                        filename: `${pageName}.html`,
+                        chunks: [pageName],
+                        inject: true,
+                        minify: {
+                            html5: true,
+                            collapsWhitespace: true,
+                            preserveLineBreaks: false,
+                            minifyCSS: true,
+                            minifyJS: true,
+                            removeComments: false
+                        }
+                    })
+                )
+            }
 			
 		})
 
@@ -51,7 +52,8 @@ module.exports = {
 	entry: entry,
 	output: {
 		path: path.join(__dirname, './dist'),
-		filename: '[name]_[chunkhash:8].js',
+		filename: '[name]-server.js',
+        libraryTarget: 'umd',
 		clean: true
 	},
 	module: {
@@ -95,7 +97,6 @@ module.exports = {
 					}
 				]
 			},
-			/** 
 			{
 				test: /\.(png|jpg|jpeg|gif)$/,
 				use: {
@@ -104,7 +105,8 @@ module.exports = {
 						name: '[name]_[hash:8].[ext]'
 					}
 				}
-			},*/
+			},
+            /** 
 			{
 				test: /\.(png|jpg|jpeg|gif)$/,
 				use: [{
@@ -113,7 +115,7 @@ module.exports = {
 						limit: 102400
 					}
 				}]
-			},
+			},*/
 			{
 				test: /\.(woff|woff2|ttf|eot|otf)$/,
 				use: {
@@ -128,9 +130,8 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: '[name]_[contenthash:8].css'
-		}),
-		new FriendlyErrorsWebpackPlugin()
+		})
 	].concat(htmlWebpackPlugin),
 	// devtool: 'cheap-source-map',
-	stats: 'errors-only'
+	
 }

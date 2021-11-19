@@ -1,1 +1,0 @@
-!function(){"use strict";document.write("hello worold")}();

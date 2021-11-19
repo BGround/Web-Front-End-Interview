@@ -18,9 +18,10 @@
 - [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
 - [代码分割和动态import](#代码分割和动态import)
 - [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
-- [webpack实现SSR打包](#-webpack实现SSR打包)
+- [webpack实现SSR打包](#webpack实现SSR打包)
 - [webpack的构建流程](#webpack的构建流程)
 - [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
+- [webpack构建速度和体积优化策略](#webpack构建速度和体积优化策略)
 - [webpack层面如何做性能优化](#webpack层面如何做性能优化)
 - [介绍一下webpack dll](#介绍一下webpack-dll)
 
@@ -450,6 +451,41 @@ SSR实现的思路
 
 **[:arrow_up: 返回目录](#目录)**
 
+### webpack构建速度和体积优化策略
+1. 初级分析，使用webpack内置得stats
+2. 速度分析, 使用speed-measure-webpack-plugin
+3. 体积分析，使用webpack-bundle-analyzer(BundleAnalyzerPlugin)
+4. 使用高版本得webpack和Node.js
+5. 多实例和多进程打包Happypack, thread-loader
+6. 多进程代码压缩 uglifyJs-webpack-plguin和terser-webpack-plugin
+7. 预编译打包，dll技术
+8. 开启二次缓存提升构建速度
+	* babel-loader 开启cacheDirectory = true
+	* terser-webpack-plugin开启缓存（好像没有cache这个属性？）
+	* 使用hard-source-webpack-plugin
+9. 缩小构建目标,尽可能得少构建模块
+```js
+module.exports = {
+	rules: {
+		test: /\.js$/,
+		loader: 'babel-loader',
+		exclude: 'node_modules' // 不构建node_modules模块
+	},
+	
+	resolve: {
+		alias: {
+			'react': path.resolve(__dirname, './node_modules/react/umd/react.production.min.js'),
+			'react-dom': path.resolve(__dirname, './node_modules/react-dom/umd/react-dom.production.min.js')
+		},
+		extensions: ['.js'],
+		mainFields: ['main']
+	}
+}
+```
+10. 图片压缩，基于Node库得imagemin搭配image-webpack-loader使用
+
+**[:arrow_up: 返回目录](#目录)**
+
 ### webpack层面如何做性能优化
 用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。
 
@@ -473,43 +509,47 @@ dll的想法就类似动态链接库
 	- 编译的话 webpack --config webpack.dll.js   webpack --config webpack.config.js
 ```js
 /*****webpack.dll.js******/
-const webpack = require('webpack')
-const library = '[name]_lib'
-const path = require('path')
-
 module.exports = {
-  mode: 'production',
-  entry: {
-    vendors: ['vue']                                   
-  },
-
-  output: {
-    filename: '[name].dll.js',
-    path: path.join(__dirname, 'dist'),
-    library
-  },
-
-  plugins: [
-    new webpack.DllPlugin({
-      path: path.join(__dirname, 'dist/[name]-manifest.json'),
-      // This must match the output.library option above
-      name: library
-    }),
-  ],
+    mode: 'none',
+    entry: {
+        library: [
+            'react',
+            'react-dom'
+        ]
+    },
+    output: {
+        path: path.join(__dirname, 'build/library'),
+        filename: '[name]_[chunkhash:8].dll.js',
+        library: "[name]",
+        // clean: true
+    },
+    plugins: [
+        new webpack.DllPlugin({
+            name: "[name]_[hash:8]",
+            path: path.join(__dirname, 'build/library/library.json')
+        })
+    ]
 }
+
 
 /*****webpack.config.js******/
 plugins: [
 	... //其他plugin配置
 	new webpack.DllReferencePlugin({
 		context: __dirname,
-		manifest: require('./dist/vendors-manifest.json')
+		manifest: require('build/library/library.json')
 	})
 ]
 ```
 
 备注： dll的目的就是为了提升打包的速度，但是在create-react-app和webpack5+版本之后都去除了dll，在webpack5+版本之后，自动配置了
 autodll-webpack-plugin插件，所以dll已经被抛弃了，但是dll的思想还是保留了下来
+
+是的，如果项目使用了 Webpack4，确实对 dll 的依赖没那么大，使用 dll 相对来说提升也不是特别明显。而且有 hard-source-webpack-plugin 可以极大提升二次构建速度。
+
+不过从实际前端工程中来说， dll 还是很有必要掌握的。对于一个团队而言，基本是采用相同的技术栈，要么 React、要么Vue 等等。这个时候，通常的做法都是把公共框架打成一个 common bundle 文件供所有项目使用。
+比如我们团队会将 react、react-dom、redux、react-redux 等等打包成一个公共库。dll 可以很好的满足这种场景：将多个npm包打成一个公共包。
+因此团队里面的分包方案使用 dll 还是很有价值，常见的会从整个工程的角度分为基础包（react、redux等）、业务公共包（所有业务都要用到的监控上报脚本、页面初始化脚本）、某个业务的js。
 
 **[:arrow_up: 返回目录](#目录)**
 

@@ -100,7 +100,10 @@ module.exports = {
 			directory: path.join(__dirname, './dist'),
 		},
 		hot: true,
-		open: true
+		open: true,
+		client: {
+			progress: true
+		}
 	},
 	devtool: 'source-map'
 }

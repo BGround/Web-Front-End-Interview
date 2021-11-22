@@ -2,11 +2,10 @@
 
 ### 目录
 - [webpack初体验时需要注意的点](#webpack初体验时需要注意的点)
+- [webpack得理解和解决得问题](#webpack得理解和解决得问题)
 - [Plugin 和 Loader 分别是什么？ 怎么工作的？](#plugin-和-loader-分别是什么-怎么工作的)
 - [Loader的作用是什么和常用的Loader](#Loader的作用是什么和常用的Loader)
 - [Plugin的作用是什么和常用的Plugin](#Plugin的作用是什么和常用的Plugin)
-- [编写Loader](#编写Loader)
-- [编写Plugin](#编写Plugin)
 - [webpak moudles, 如何表达自己的各种依赖关系](#webpak-moudles-如何表达自己的各种依赖关系)
 - [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
 - [热更新的配置和实现原理](#热更新的配置和实现原理)
@@ -18,12 +17,15 @@
 - [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
 - [代码分割和动态import](#代码分割和动态import)
 - [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
+- [介绍一下webpack dll](#介绍一下webpack-dll)
+- [webpack的proxy工作原理](#-webpack的proxy工作原理)
+- [编写Loader](#编写Loader)
+- [编写Plugin](#编写Plugin)
 - [webpack实现SSR打包](#webpack实现SSR打包)
 - [webpack的构建流程](#webpack的构建流程)
 - [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
 - [webpack构建速度和体积优化策略](#webpack构建速度和体积优化策略)
 - [webpack层面如何做性能优化](#webpack层面如何做性能优化)
-- [介绍一下webpack dll](#介绍一下webpack-dll)
 
 
 
@@ -41,19 +43,35 @@
 9. 通常框架、组件和 utils 等业务逻辑相关的包依赖放在dependencies里面，对于构建、ESlint、单元测试等相关依赖放在devDependencies中
 10. clean-webpack-plugin已经被output中clean替换了
 11. optimize-css-assets-plugin插件也没有看见？？？
-12. 
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack得理解和解决得问题
+
+为了是实现模块化，前期得方案有
+1. 每个文件是一个独立得模块，通过script将这些js文件引入到页面，这个方法弊端也很明显，模块都是再全局工作，全局变量污染环境，模块之间没有依赖性，维护困难
+2. 命名空间方式，规定每个模块只暴露一个全局对象，然后模块得内容挂载到这个对象中，这个方法也没有解决模块得依赖问题
+3. 之后就是IIFE立即执行函数，为模块提供私有空间，通过参数得形式作为依赖声明
+
+webpack是用于js应用程序得静态模块打包工具
+1. 模块化开发，js文件、html和css资源文件都需要模块化
+2. 使用高级特性编译代码，loader、sass和less
+3. 监听文件变化，watch、HMR
+4. 开发完成之后代码压缩，合并以及优化
+
+**[:arrow_up: 返回目录](#目录)**
 
 ### Plugin 和 Loader 分别是什么？ 怎么工作的？
 
 1. Plugin
 
-扩展webpack功能的插件，webpack运行的各个生命周期阶段，都会广播出对应的事件，plugin插件去监听对应的事件，在合适的时机通过Webpack提供的API改变输出结果。
+*作用*：扩展webpack功能的插件，webpack运行的各个生命周期阶段，都会广播出对应的事件，plugin插件去监听对应的事件，在合适的时机通过Webpack提供的API改变输出结果。 
+*语法*: 在module.plugins中单独配置，类型为数组，每一项都是一个plugin实例，参数通过构造函数传入
 
 2. Loader
 
-模块转换器，将非js模块转换为webpack可以识别的js模块
-
-本质上，webpack loader 将所有类型的文件，转换为应用程序的**依赖图**可以直接引用的模块
+*作用*: 模块转换器，将非js模块转换为webpack可以识别的js模块。本质上，webpack loader 将所有类型的文件，转换为应用程序的**依赖图**可以直接引用的模块
+*语法*: 再module.rules中配置，作为模块得解析而存在。类型为数组，每一项都是一个Object，里面描述了对于什么类型得文件（test）,使用什么加载（loader）和使用参数（options）
 
 3. Compiler
 对象，包含了webpack环境的所有配置信息，包换options loader， plugins, 
@@ -66,8 +84,8 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
 **[:arrow_up: 返回目录](#目录)**
 
 ### Loader的作用是什么和常用的Loader
-* 对不同格式文件坐处理, 如将Sass文件处理成Css文件，Ts文件处理成JS文件
-* 编译文件，是文件可以加载到依赖关系中
+* 对不同格式文件做处理, 如将Sass文件处理成Css文件，Ts文件处理成JS文件
+* 编译文件，使文件可以加载到依赖关系中
 
 常用的Loader：
 * file-loader: 用于处理文件，通过相对URL去引用输出的文件
@@ -79,6 +97,7 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
 * image-loader: 加载并压缩图片文件
 * babel-loader: 将ES6转换成ES5
 * thread-loader: 多进程打包js文件
+* Eslint-loader: 使用Eslint规范检查JS代码
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -93,35 +112,6 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
 * DefinePlugin: webpack内置的一个插件，不需要安装，允许在编译时创建配置的全局对象，如设置process.env.NODE_ENV为development或者production
 * UlglifyjsWebpackPlugin: 压缩JS, 3.0版本是支持ES6的JS压缩
 * TerserWebpackPlugin: webpack v5 开箱即带有最新版本的 terser-webpack-plugin, 是ulglifjswebpackplugin改良版
-
-**[:arrow_up: 返回目录](#目录)**
-
-### 编写Loader
-
-
-**[:arrow_up: 返回目录](#目录)**
-
-### 编写Plugin
-Plugin中apply方法会被webpack compiler调用，并且在整个编译周期都可以访问compiler对象
-```js
-const myPluginName = 'consoleLogOnBuildWebpackPlugin'
-
-class ConsoleLogOnBuildWebpackPlugin {
-	apply(compiler) {
-		compiler.hooks.run.tap(myPluginName, (compilation) => {
-			console.log('webpack 构建过程开始')
-		})
-	}
-}
-
-module.exports = ConsoleLogOnBuildWebpackPlugin
-
-```
-
-自己实现的Plugin，也需要遵循一定的规范:
-* 插件必须是一个函数或者是一个包含了apply方法的对象，这样才能访问compiler实例
-* 传给每个插件的compiler和compilation对象都是同一个引用，因此不建议修改
-* 异步的事件需要在插件处理完任务时调用回调函数通知webpack进入下一个流程，不然会卡住
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -398,106 +388,6 @@ Tree sharking是一种通过清除多余代码的方式来优化项目打包体�
 
 **[:arrow_up: 返回目录](#目录)**
 
-### webpack实现SSR打包
-服务端渲染SSR（server side render）:
-1. 渲染：HTML + CSS + JS + Data -> 渲染后的html
-2. 服务端：
-* 所有模板等资源都存储在服务器端
-* 内网机器拉取数据更快
-* 一个HTML返回所有数据
-
-SSR实现的思路
-1. 服务端
-* 使用react-dom/server 的renderToString方法将React组件渲染字符串
-* 服务端路由返回对应的模板
-
-2. 客户端
-* 打包出针对服务端的组件
-
-如何解决样式不显示的问题？
-* 使用打包出来的浏览器端html为模板，设置占位符(如腾讯团队注释： <!--HTML_PLACEHOLDE -->)，动态插入组件
-```html
-<!DOCTYPE html>
-...
-<body>
-	<div><!--HTML_PLACEHOLDE --></div>
-</body>
-```
-之后在服务端进行替换
-
-首屏数据如何处理？
-* 服务端获取数据，替换占位符
-
-**[:arrow_up: 返回目录](#目录)**
-
-### webpack的构建流程
- 1. 初始化参数: 从配置和shell语句中读取并合并参数，确定最终参数
- 2. 开始编译: 从上一步得到的参数初始化compiler对象，加载所有配置的plugins，执行对象的run方法开始编译
- 3. 确定入口: 根据配置的entry确定所有的入口文件
- 4. 编译模块: 根据入口文件，调用所有配置Loader的模块进行编译，再找出模块所依赖的模块，递归本步骤直到所有入口依赖的模块完成编译
- 5. 完成模块编译: 经过所有Loader翻译完所有模块后，得到最终内容和他们之间的依赖关系
- 6. 输出资源: 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的Chunk，再把每个Chunk转换成一个单独的文件加入到输出列表中，这是可以修改内容的最后机会
- 7. 输出完成: 在确定好输出内容后，根据输出路劲和文件名，把输出内容写入到文件系统
-
-**[:arrow_up: 返回目录](#目录)**
-
-### webpack和rollup之间的异同点
- 1. 相同点
-  - 在打包编译上都有Tree Shaking 和 Scope hoisting功能
- 2. 不同点
-	- webpack有代码分割和静态资源导入有着先天的优势，同时还支持HMR功能，这个是rollup所没有的
-	- Rollup对于代码的Tree-shaking和ES6模块有着算法优势上的支持
-	- 所以开发应用时使用webpack，开发javascript库时使用rollup
-
-**[:arrow_up: 返回目录](#目录)**
-
-### webpack构建速度和体积优化策略
-1. 初级分析，使用webpack内置得stats
-2. 速度分析, 使用speed-measure-webpack-plugin
-3. 体积分析，使用webpack-bundle-analyzer(BundleAnalyzerPlugin)
-4. 使用高版本得webpack和Node.js
-5. 多实例和多进程打包Happypack, thread-loader
-6. 多进程代码压缩 uglifyJs-webpack-plguin和terser-webpack-plugin
-7. 预编译打包，dll技术
-8. 开启二次缓存提升构建速度
-	* babel-loader 开启cacheDirectory = true
-	* terser-webpack-plugin开启缓存（好像没有cache这个属性？）
-	* 使用hard-source-webpack-plugin
-9. 缩小构建目标,尽可能得少构建模块
-```js
-module.exports = {
-	rules: {
-		test: /\.js$/,
-		loader: 'babel-loader',
-		exclude: 'node_modules' // 不构建node_modules模块
-	},
-	
-	resolve: {
-		alias: {
-			'react': path.resolve(__dirname, './node_modules/react/umd/react.production.min.js'),
-			'react-dom': path.resolve(__dirname, './node_modules/react-dom/umd/react-dom.production.min.js')
-		},
-		extensions: ['.js'],
-		mainFields: ['main']
-	}
-}
-```
-10. 图片压缩，基于Node库得imagemin搭配image-webpack-loader使用
-
-**[:arrow_up: 返回目录](#目录)**
-
-### webpack层面如何做性能优化
-用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。
-
- 1. 压缩代码。删除多余的代码、注释、简化代码的写法等等方式。可以利用webpack的UglifyJsPlugin和ParallelUglifyPlugin来压缩JS文件， 利用cssnano（css-loader?minimize）来压缩css。使用webpack4，打包项目使用production模式，会自动开启代码压缩。
- 2. 利用CDN加速。在构建过程中，将引用的静态资源路径修改为CDN上对应的路径。可以利用webpack对于output参数和各loader的publicPath参数来修改资源路径
- 3. 删除死代码（Tree Shaking）。将代码中永远不会走到的片段删除掉。可以通过在启动webpack时追加参数--optimize-minimize来实现或者使用es6模块开启删除死代码。
- 4. Code Spliting: 将代码按照路由维度或者组件分块(chunk)，这样做到按需加载，同时可以充分利用浏览器缓存
- 5. 提取公共第三方库，SplitChunksPlugin插件来进行公共模块抽取，利用浏览器缓存可以长期缓存这些无需频繁变动的公共代码
- 6. 优化图片，对于小图可以使用 base64 的方式写入文件中，和image-loader
-
-**[:arrow_up: 返回目录](#目录)**
-
 ### 介绍一下webpack dll
  1. dll是什么?
 在webpack打包的时候，对于一些不经常更新的第三方库，比如react，vue，loadsh等，打包的时候希望能和我们的代码分离开。
@@ -552,6 +442,173 @@ autodll-webpack-plugin插件，所以dll已经被抛弃了，但是dll的思想�
 因此团队里面的分包方案使用 dll 还是很有价值，常见的会从整个工程的角度分为基础包（react、redux等）、业务公共包（所有业务都要用到的监控上报脚本、页面初始化脚本）、某个业务的js。
 
 **[:arrow_up: 返回目录](#目录)**
+
+### webpack实现SSR打包
+服务端渲染SSR（server side render）:
+1. 渲染：HTML + CSS + JS + Data -> 渲染后的html
+2. 服务端：
+* 所有模板等资源都存储在服务器端
+* 内网机器拉取数据更快
+* 一个HTML返回所有数据
+
+SSR实现的思路
+1. 服务端
+* 使用react-dom/server 的renderToString方法将React组件渲染字符串
+* 服务端路由返回对应的模板
+
+2. 客户端
+* 打包出针对服务端的组件
+
+如何解决样式不显示的问题？
+* 使用打包出来的浏览器端html为模板，设置占位符(如腾讯团队注释： <!--HTML_PLACEHOLDE -->)，动态插入组件
+```html
+<!DOCTYPE html>
+...
+<body>
+	<div><!--HTML_PLACEHOLDE --></div>
+</body>
+```
+之后在服务端进行替换
+
+首屏数据如何处理？
+* 服务端获取数据，替换占位符
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+### webpack的proxy工作原理
+
+1. 是什么?
+webpack proxy即webpack提供的代理服务，其目的是为了便于开发者在开发模式下解决跨域问题(浏览器安全策略限制)，
+想要实现代理首先需要一个中间服务器，webpack中提供服务器的工具是webpck-dev-server.
+
+2. 工作原理
+proxy工作原理实质上是利用http-roxy-middleware这个http代理中间件，实现请求转发给其他服务器
+
+eg：
+在开发阶段，本地地址是localhost:3000，该浏览器发送一个前缀带有/api标识的请求到服务器获取数据，但响应这个请求的服务器只是将请求转发到另一台服务器中
+```js
+const express = require('express')
+const proxy = require('http-proxy-middleware')
+
+const app = new express()
+
+app.use('./api', proxy({
+	target: 'http://www.example.com',changeOrigin: true
+}))
+
+app.listen(3000)
+
+```
+
+说明：就是本地请求后台服务器，就出现跨域请求的问题。通过设置webpack proxy实现代理请求, 相当于浏览器与服务端中添加了一个代理服务器。
+
+本地请求通过代理服务器转发到后台服务器，后台服务器响应数据再返回给代理服务器，最终有代理服务器返回给本地
+
+注意: 服务器与服务器之间请求数据并不会存在跨域行为，跨域行为是浏览器安全策略限制
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 编写Loader
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 编写Plugin
+Plugin中apply方法会被webpack compiler调用，并且在整个编译周期都可以访问compiler对象
+```js
+const myPluginName = 'consoleLogOnBuildWebpackPlugin'
+
+class ConsoleLogOnBuildWebpackPlugin {
+	apply(compiler) {
+		compiler.hooks.run.tap(myPluginName, (compilation) => {
+			console.log('webpack 构建过程开始')
+		})
+	}
+}
+
+module.exports = ConsoleLogOnBuildWebpackPlugin
+
+```
+
+自己实现的Plugin，也需要遵循一定的规范:
+* 插件必须是一个函数或者是一个包含了apply方法的对象，这样才能访问compiler实例
+* 传给每个插件的compiler和compilation对象都是同一个引用，因此不建议修改
+* 异步的事件需要在插件处理完任务时调用回调函数通知webpack进入下一个流程，不然会卡住
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+### webpack的构建流程
+ 1. 初始化参数: 从配置和shell语句中读取并合并参数，确定最终参数
+ 2. 开始编译: 从上一步得到的参数初始化compiler对象，加载所有配置的plugins，执行对象的run方法开始编译
+ 3. 确定入口: 根据配置的entry确定所有的入口文件
+ 4. 编译模块: 根据入口文件，调用所有配置Loader的模块进行编译，再找出模块所依赖的模块，递归本步骤直到所有入口依赖的模块完成编译
+ 5. 完成模块编译: 经过所有Loader翻译完所有模块后，得到最终内容和他们之间的依赖关系
+ 6. 输出资源: 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的Chunk，再把每个Chunk转换成一个单独的文件加入到输出列表中，这是可以修改内容的最后机会
+ 7. 输出完成: 在确定好输出内容后，根据输出路劲和文件名，把输出内容写入到文件系统
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack和rollup之间的异同点
+ 1. 相同点
+  - 在打包编译上都有Tree Shaking 和 Scope hoisting功能
+ 2. 不同点
+	- webpack有代码分割和静态资源导入有着先天的优势，同时还支持HMR功能，这个是rollup所没有的
+	- Rollup对于代码的Tree-shaking和ES6模块有着算法优势上的支持
+	- 所以开发应用时使用webpack，开发javascript库时使用rollup
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack构建速度和体积优化策略
+1. 初级分析，使用webpack内置得stats
+2. 速度分析, 使用speed-measure-webpack-plugin
+3. 体积分析，使用webpack-bundle-analyzer(BundleAnalyzerPlugin)
+4. 使用高版本得webpack和Node.js
+5. 多实例和多进程打包Happypack, thread-loader
+6. 多进程代码压缩 uglifyjs-webpack-plugin和terser-webpack-plugin
+7. 预编译打包，dll技术
+8. 开启二次缓存提升构建速度
+	* babel-loader 开启cacheDirectory = true
+	* terser-webpack-plugin开启缓存（好像没有cache这个属性？）
+	* 使用hard-source-webpack-plugin
+9. 缩小构建目标,尽可能得少构建模块
+```js
+module.exports = {
+	rules: {
+		test: /\.js$/,
+		loader: 'babel-loader',
+		exclude: 'node_modules' // 不构建node_modules模块
+	},
+	
+	resolve: {
+		alias: {
+			'react': path.resolve(__dirname, './node_modules/react/umd/react.production.min.js'),
+			'react-dom': path.resolve(__dirname, './node_modules/react-dom/umd/react-dom.production.min.js')
+		},
+		extensions: ['.js'],
+		mainFields: ['main']
+	}
+}
+```
+10. 图片压缩，基于Node库得imagemin搭配image-webpack-loader使用
+
+**[:arrow_up: 返回目录](#目录)**
+
+### webpack层面如何做性能优化
+用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。
+
+ 1. 压缩代码。删除多余的代码、注释、简化代码的写法等等方式。可以利用webpack的UglifyJsPlugin和ParallelUglifyPlugin来压缩JS文件， 利用cssnano（css-loader?minimize）来压缩css。使用webpack4，打包项目使用production模式，会自动开启代码压缩。
+ 2. 利用CDN加速。在构建过程中，将引用的静态资源路径修改为CDN上对应的路径。可以利用webpack对于output参数和各loader的publicPath参数来修改资源路径
+ 3. 删除死代码（Tree Shaking）。将代码中永远不会走到的片段删除掉。可以通过在启动webpack时追加参数--optimize-minimize来实现或者使用es6模块开启删除死代码。
+ 4. Code Spliting: 将代码按照路由维度或者组件分块(chunk)，这样做到按需加载，同时可以充分利用浏览器缓存
+ 5. 提取公共第三方库，SplitChunksPlugin插件来进行公共模块抽取，利用浏览器缓存可以长期缓存这些无需频繁变动的公共代码
+ 6. 优化图片，对于小图可以使用 base64 的方式写入文件中，和image-loader
+
+**[:arrow_up: 返回目录](#目录)**
+
 
 
 

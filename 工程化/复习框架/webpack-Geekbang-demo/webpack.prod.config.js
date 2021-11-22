@@ -10,7 +10,9 @@ const SpeedMesaureWebpackPlugin = require('speed-measure-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HappyPack = require('happypack');
 const TerserPlugin = require('terser-webpack-plugin');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const chalk = require('chalk');
 
 const smp = new SpeedMesaureWebpackPlugin();
 
@@ -180,7 +182,11 @@ module.exports = smp.wrap({
 		new HappyPack({
 			loaders: ['babel-loader?cacheDirectory=true']
 		}),
-		// new HardSourceWebpackPlugin()
+		// new HardSourceWebpackPlugin(),
+		new ProgressBarPlugin({
+			format: '  build [:bar] ' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+			clear: false
+		})
 	].concat(htmlWebpackPlugin),
 	// devtool: 'cheap-source-map',
 	// stats: 'errors-only',

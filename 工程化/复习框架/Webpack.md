@@ -16,7 +16,7 @@
 - [source map](#source-map)
 - [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
 - [代码分割和动态import](#代码分割和动态import)
-- [介绍一下webpack的Tree Sharking](#介绍一下webpack的tree-sharking)
+- [介绍一下webpack的Tree Sharking](#介绍一下webpack的Tree Sharking)
 - [介绍一下webpack dll](#介绍一下webpack-dll)
 - [webpack的proxy工作原理](#-webpack的proxy工作原理)
 - [编写Loader](#编写Loader)

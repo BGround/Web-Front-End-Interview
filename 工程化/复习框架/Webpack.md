@@ -521,17 +521,25 @@ Plugin中apply方法会被webpack compiler调用，并且在整个编译周期�
 ```js
 const myPluginName = 'consoleLogOnBuildWebpackPlugin'
 
-class ConsoleLogOnBuildWebpackPlugin {
-	apply(compiler) {
-		compiler.hooks.run.tap(myPluginName, (compilation) => {
-			console.log('webpack 构建过程开始')
+class ConsoleLogOnBuildWebpackPlugin {                             // 1. 插件名称
+	apply(compiler) {                                                // 2. 插件上的apply方法
+		compiler.hooks.run.tap(myPluginName, (compilation) => {        // 3. 插件的hooks
+			console.log('webpack 构建过程开始')                           // 4. 插件处理逻辑
 		})
 	}
 }
 
-module.exports = ConsoleLogOnBuildWebpackPlugin
+module.exports = ConsoleLogOnBuildWebpackPlugin                    // 5. 插件export导出
 
+
+// webpack.config.js
+module.exports = {
+	...
+	plugins: [new ConsoleLogOnBuildWebpackPlugin()]                  // 6. 插件的使用
+}
 ```
+
+
 
 自己实现的Plugin，也需要遵循一定的规范:
 * 插件必须是一个函数或者是一个包含了apply方法的对象，这样才能访问compiler实例

@@ -5,6 +5,11 @@ vue源码可以推荐两个：
 https://ustbhuangyi.github.io/vue-analysis/
 https://github.com/answershuto/learnVue
 
+## Vue 原理源码学习
+- [Vue2官方网站](https://cn.vuejs.org/v2/guide/)
+- [Vue3官方网站](https://v3.cn.vuejs.org/guide/typescript-support.html)
+- [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)
+
 ### 目录
 
 ### Vue基础

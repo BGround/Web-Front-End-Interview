@@ -483,7 +483,7 @@ webpack proxy即webpack提供的代理服务，其目的是为了便于开发者
 想要实现代理首先需要一个中间服务器，webpack中提供服务器的工具是webpck-dev-server.
 
 2. 工作原理
-proxy工作原理实质上是利用http-roxy-middleware这个http代理中间件，实现请求转发给其他服务器
+proxy工作原理实质上是利用http-proxy-middleware这个http代理中间件，实现请求转发给其他服务器
 
 eg：
 在开发阶段，本地地址是localhost:3000，该浏览器发送一个前缀带有/api标识的请求到服务器获取数据，但响应这个请求的服务器只是将请求转发到另一台服务器中

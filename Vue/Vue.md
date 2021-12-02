@@ -13,29 +13,32 @@ https://github.com/answershuto/learnVue
 ### 目录
 
 ### Vue基础
-- [vue为什么说是一个构建用户界面的渐进式框架](#-vue为什么说是一个构建用户界面的渐进式框架)
-- [vm中data调用问题](#-vm中data调用问题)
-- [Vue中data为什么是一个函数而不是对象](#-Vue中data为什么是一个函数而不是对象)
-- [v-if和v-show和v-html的原理](#-v-if和v-show和v-html的原理)
-- [v-if和v-show的区别](#-v-if和v-show的区别)
-- [v-model的原理](#-v-model的原理)
-- [template的使用](#-template的使用)
-- [computed的实现原理](#-computed的实现原理)
-- [computed和watch区别](#-computed和watch区别)
-- [介绍一下Vue的内容分发机制](#-介绍一下Vue的内容分发机制)
-- [nextTick原理及作用](#-nextTick原理及作用)
-- [过滤器的作用，如何实现一个过滤器](#-过滤器的作用-如何实现一个过滤器)
-- [修饰符](#-修饰符)
-- [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#-为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
-- [Vue的响应式系统](#-Vue的响应式系统)
-- [Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗](#-Vue-data-中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗)
-- [Vue组件通信的几种方式](#-Vue组件通信的几种方式)
-- [vue和react的对比](#-vue和react的对比)
-- [你是如何设计一个可扩展、通用的、健壮性组件！](#-你是如何设计一个可扩展-通用的-健壮性组件)
-- [assets和static的区别](#-assets和static的区别)
-- [delete和Vue.delete删除数组的区别](#-delete和Vue.delete删除数组的区别)
-- [Vue模版编译原理](#-Vue模版编译原理)
-- [mixin 和 mixins 区别](#-mixin-和-mixins-区别)
+- [vue为什么说是一个构建用户界面的渐进式框架](#vue为什么说是一个构建用户界面的渐进式框架)
+- [vm中data调用问题](#vm中data调用问题)
+- [Vue中data为什么是一个函数而不是对象](#Vue中data为什么是一个函数而不是对象)
+- [v-if和v-show和v-html的原理](#v-if和v-show和v-html的原理)
+- [v-if和v-show的区别](#v-if和v-show的区别)
+- [v-if和v-for为啥不建议一起用](#v-if和v-for为啥不建议一起用)
+- [v-model的原理](#v-model的原理)
+- [template的使用](#template的使用)
+- [computed的实现原理](#computed的实现原理)
+- [computed和watch区别](#computed和watch区别)
+- [介绍一下Vue的内容分发机制](#介绍一下Vue的内容分发机制)
+- [nextTick原理及作用](#nextTick原理及作用)
+- [过滤器的作用，如何实现一个过滤器](#过滤器的作用-如何实现一个过滤器)
+- [修饰符](#修饰符)
+- [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
+- [Vue的响应式系统](#Vue的响应式系统)
+- [Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗](#Vue-data-中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗)
+- [Vue组件通信的几种方式](#Vue组件通信的几种方式)
+- [vue和react的对比](#vue和react的对比)
+- [你是如何设计一个可扩展、通用的、健壮性组件！](#你是如何设计一个可扩展-通用的-健壮性组件)
+- [assets和static的区别](#assets和static的区别)
+- [delete和Vue.delete删除数组的区别](#delete和Vue.delete删除数组的区别)
+- [Vue模版编译原理](#Vue模版编译原理)
+- [Vue中mixin的理解](#Vue中mixin的理解)
+- [如何解决跨域问题](#如何解决跨域问题)
+- [Vue中权限控制](#Vue中权限控制)
 
 ### Vue3
 - [Vue3有什么更新](#-Vue3有什么更新)
@@ -140,6 +143,76 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 * 编译条件：v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译; v-show是在任何条件下，无论首次条件是否为真，都被编译，然后被缓存，而且DOM元素保留；
 * 性能消耗：v-if有更高的切换消耗；v-show有更高的初始渲染消耗；
 * 使用场景：v-if适合运营条件不大可能改变；v-show适合频繁切换。
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### v-if和v-for为啥不建议一起用
+1. 作用
+* v-if 指令是用于条件性得渲染一块内容.这块内容只在指令返回true得时候被渲染
+* v-for 指令是基于一个数组来渲染一个列表。采用item in items特殊语法，items是源数组或者对象，item是是被迭代得数组元素得别名
+```js
+<template v-if="isShow">
+	<li v-for = 'item in items' v-bind:key='item.id'>
+		{item.text}
+	</li>
+</template>
+```
+
+2. 优先级
+通过如下代码将v-for和v-if置于一个p标签下
+```js
+<div id = "app">
+	<p v-if="item.isShow" v-dor="item in items" v-bind:key="item.id">
+		{item.title}
+	</p>
+</div>
+```
+输出下render函数中，先遍历items再进行if判断，初步得出v-for得优先级是高于v-if得
+
+再通过源码vue\src\compiler\codegen\index.js
+```js
+export function genElement (el: ASTElement, state: CodegenState): string {
+  if (el.parent) {
+    el.pre = el.pre || el.parent.pre
+  }
+
+  if (el.staticRoot && !el.staticProcessed) {
+    return genStatic(el, state)
+  } else if (el.once && !el.onceProcessed) {
+    return genOnce(el, state)
+  } else if (el.for && !el.forProcessed) {
+    return genFor(el, state)
+  } else if (el.if && !el.ifProcessed) {
+    return genIf(el, state)
+  } else if (el.tag === 'template' && !el.slotTarget && !state.pre) {
+    return genChildren(el, state) || 'void 0'
+  } else if (el.tag === 'slot') {
+    return genSlot(el, state)
+  } else {
+		...
+		
+```
+在进行Element if判断得时候，v-for优先级是比v-if先进行判断，所以v-for优先级是高于v-if得
+
+3. 注意事项
+* 不要把v-for和v-if放在一个元素上，带来性能得浪费
+* 如何避免出现这样得情况，则在外层先嵌套template进行v-if判断，然后在内部进行v-for遍历
+```js
+<template v-if="isShow">
+	<li v-for = 'item in items' v-bind:key='item.id'>
+		{item.text}
+	</li>
+</template>
+```
+* 条件出现在内部，可以先通过computed过滤那些不需要显示得项
+```js
+export default {
+	...
+	computed: {
+		items: item => item.isShow
+	}
+}
+```
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -504,8 +577,33 @@ Vue中的模板template无法被浏览器解析并渲染，因为不属于浏览
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### mixin 和 mixins 区别
-mixin 用于全局混入，会影响到每个组件实例，通常插件都是这样做初始化的
+#### Vue中mixin的理解
+> 官方定义:来分发Vue组件中可复用的功能，一个mixin对象可以包含组件任意选项，(data, computed, methods, components, created等)，其实就是一个js对像
+
+在Vue中mixin可以用于局部混入和全局混入
+1. 局部混入
+定义一个myMixin对象，有组件options的data，methods属性
+```js
+const myMixin = {
+	created: function() {
+		this.hello()
+	},
+	methods: {
+		hello: function() {
+			console.log("hello from mixin")
+		}
+	}
+}
+```
+组件通过mixins属性调用mixin对象
+```js
+Vue.component('componentA', {
+	mixins: [myMixin]
+})
+
+```
+
+2. mixin 用于全局混入，会影响到每个组件实例，通常插件都是这样做初始化的
 ```js
 Vue.mixin({
 	beforeCreate() {
@@ -516,6 +614,19 @@ Vue.mixin({
 虽然文档不建议在应用中直接使用 mixin，但是如果不滥用的话也是很有帮助的，比如可以全局混入封装好的 ajax 或者一些工具函数等等。
 mixins 应该是最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码，比如上拉下拉加载数据这种逻辑等等。
 另外需要注意的是 mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并。
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+#### 如何解决跨域问题
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### Vue中权限控制
+
+
 
 **[:arrow_up: 返回目录](#目录)**
 

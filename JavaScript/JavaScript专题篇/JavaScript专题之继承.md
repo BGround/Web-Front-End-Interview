@@ -54,7 +54,10 @@ console.log(c1.arr,c2.arr);
 ```
 ![原型链继承2](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/image/原型链继承2.png)
 
-可以看到只改变c1的arr属性，c2也跟着改变了。这是因为两个实例是公用的一个原型对象，内存空间是共享的。
+可以看到只改变c1的arr属性，c2也跟着改变了。
+*缺点*：
+1. 实例是公用的一个原型对象，内存空间是共享的。
+2. 在实例不能向Parent传参
 
 ### 第二种：构造函数继承
 结合原型链继承，先看一段代码来了解下
@@ -82,6 +85,8 @@ console.log(Children.getName())
 ```
 执行代码可以得到下面的结果
 ![构造函数继承](https://github.com/BGround/Web-Front-End-Interview/blob/main/JavaScript/image/构造函数继承.png)
+*缺点*：
+1. 实例不能访问Parent原型链上的属性
 
 ### 第三种：组合继承
 这种方式结合前两种继承方式的优缺点，结合起来的继承，代码如下
@@ -113,7 +118,7 @@ console.log(s3.arr, s4.arr); //互不影响
 console.log(s3.getName()); // p3
 console.log(s4.getName()); // p3
 ```
-从结果可以看出组合继承可以解决原型链和构造函数两种继承方式的缺点，但是增加了一个新的问题，Parent3调用了两次，增加了性能的开销。
+从结果可以看出组合继承可以解决原型链和构造函数两种继承方式的缺点，**但是增加了一个新的问题，Parent3调用了两次，增加了性能的开销。**
 
 那么是否有更好的办法解决这个问题呢？请你再往下学习，下面的3种继承方式可以更好地解决这里的问题。
 

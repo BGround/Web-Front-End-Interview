@@ -619,8 +619,6 @@ fn.call(this, arg1, arg2); // 参数散列
 fn.apply(this, [arg1, arg2]) // 参数使用数组包裹
 ```
 
-**[:arrow_up: 返回目录](#目录)**
-
 **call函数实现的步骤:**
 ```js
 Function.prototype.myCall = function(context) {
@@ -633,7 +631,7 @@ Function.prototype.myCall = function(context) {
 	let args = [...arguments].slice(1)
 	let result = null
 	
-	//判断context是否传入，如果为传入则设置为window
+	//判断context是否传入，如果没有传入则设置为window
 	context = context || window
 	//将函数做为上下文对象的一个属性
 	context.fn = this

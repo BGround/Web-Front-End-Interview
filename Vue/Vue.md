@@ -29,6 +29,7 @@ https://github.com/answershuto/learnVue
 - [修饰符](#修饰符)
 - [为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty?](#为什么在Vue3.0采用了Proxy，抛弃了Object.defineProperty)
 - [Vue的响应式系统](#Vue的响应式系统)
+- [Vue的双向绑定原理](#Vue的双向绑定原理)
 - [Vue data 中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗](#Vue-data-中某一个属性的值发生改变后，视图会立即同步执行重新渲染吗)
 - [Vue组件通信的几种方式](#Vue组件通信的几种方式)
 - [vue和react的对比](#vue和react的对比)
@@ -469,6 +470,30 @@ Object.defineProperty
 
 总结原理：
 > 当创建vue实例时，vue会遍历data里的属性，Object.defineProperty为属性添加getter和setter对数据的读取进行劫持
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### Vue的双向绑定原理
+1. 什么是双向绑定
+所谓双向绑定是建立在MVVM模型基础之上的，它有三个重要的部分构成
+
+* Model数据层 : 应用的数据以及业务逻辑
+* View 视图层 : 应用的展示效果，UI组件等
+* ViewModel 业务逻辑层: 赋值将数据和视图绑定在一起
+
+理解**ViewModel**,他的主要职责就是
+* 数据变化之后更新视图
+* 视图变化之后更新数据
+
+当然还有两个重要的组成部分
+* 监听器Observe: 对所有数据的属性进行监听
+* 解析器Compiler: 对每个元素节点的指令进行扫描和解析，根据指令替换数据，绑定对应的更新函数
+
+2. 具体的实现原理
+* new Vue()执行初始化，对data通过Object.defineProperty进行响应处理，这个过程是发生在Observe中，每个key都有个dep实例来存储watcher实例数组
+* 对模板编译，v-开头的关键词作为指令解析，找到动态绑定的数据，从data中获取数据并初始化视图。这个过程是发生在compiler中
+* 在解析指令的过程中，会定义个更新函数和Watcher，之后对应的数据变化时Watcher会调用更新函数。new Watcher()的过程中会读取data的key，触发gette依赖收集，将对应的Watcher添加到dep中
+* 
 
 **[:arrow_up: 返回目录](#目录)**
 

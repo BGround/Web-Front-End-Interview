@@ -4,13 +4,14 @@
 
 ### 目录
 - [1.请简述下CSS选择器的权重与优先规则](#1-请简述下CSS选择器的权重与优先规则)
-- [2.对盒模型的理解](#-对盒模型的理解)
-- [BFC](#2-BFC)
-- [分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#2-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
-- [如何水平居中一个元素](#3-如何水平居中一个元素)
--
--
--
+- [2.对盒模型的理解](#2-对盒模型的理解)
+- [3.BFC](#3-BFC)
+- [4.使用link和@import导入页面样式有啥区别](#4-使用link和@import导入页面样式有啥区别)
+- [5.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#5-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
+- [6.如何水平居中一个元素](#6-如何水平居中一个元素)
+- [7.em/rem/px/vw/vh单位](#7-em-rem-px-vw-vh单位区别)
+- [8.单行和多行文本溢出的省略的样式](#8-单行和多行文本溢出的省略的样式)
+- [9.CSS的三大预处器和区别](#9-CSS的三大预处器和区别)
 -
 
 
@@ -38,14 +39,23 @@ IE盒子模型： width和height => 包含了border、padding和content
 
 **[:arrow_up: 返回目录](#目录)**
 
-### 2. BFC
-
+### 3. BFC
+block formatting context 块级格式化上下文
 
 
 
 **[:arrow_up: 返回目录](#目录)**
 
-### 3. 分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景
+### 4. 使用link和@import导入页面样式有啥区别
+link属于html标签，@import是属于CSS提供的，link方式的样式权重高于@import
+
+页面被加载时，link会同时被加载，而@import引用的css会等到页面加载完再加载；
+
+@import只有再IE5以上才能识别，而linl时XHTML标签，无兼容问题
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 5. 分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景
 **结构：**
 display:none: 会让元素完全从渲染树中消失，渲染的时候不占据任何空间, 不能点击，
 visibility: hidden:不会让元素从渲染树消失，渲染元素继续占据空间，只是内容不可见，不能点击
@@ -65,7 +75,7 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 **[:arrow_up: 返回目录](#目录)**
 
 
-### 4. 如何水平居中一个元素
+### 6. 如何水平居中一个元素
 
  - 如果元素是常规流中的inline元素，为父元素设置 text-align: center, 就可以
 ```
@@ -171,5 +181,100 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 ```
 
 **[:arrow_up: 返回目录](#目录)**
+
+### 7. em rem px vw vh单位区别
+|CSS单位 | - |
+| --------   | -----:   |
+|相对长度单位 | em、ex、ch、rem、vm、vh、vmin、vmax、% |
+|绝对长度单位| cm、mm、in、px、pt、pc |
+
+主要学习写px、rem、vh、vw
+
+**px**
+表示像素，页面按精确像素展示，px的大小和元素的其他属性无关
+
+**rem**
+rem，相对单位，相对的只是HTML根元素font-size的值。浏览器默认的字体高度是16px = 1rem
+想要简化font-size的转化，可以再根元素html中加入` html {font-size: 10px} ` /* 16px * 62.5% = 10px */
+
+和em不同的是rem总是相对与根元素，而不像em一样使用级联的方式来计算尺寸
+
+**vh、vw**
+vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就是一半高，同理vw就是窗口的宽度
+一般定义窗口的高度大小是定义 calc(100vh)
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 8. 单行和多行文本溢出的省略的样式
+**单行文本溢出**
+实现的方式很简单，涉及的CSS属性有
+* overflow: hidden 文字长度超出限定宽度, 则掩藏超出的内容
+* white-space: nowrap 设置文字在一行显示，不能换行
+* text-overflow: ellipsis 规定当文本溢出时，显示省略号来代表被修剪的文本
+
+```js
+ * {
+	 width: 400px;
+	 height: 40px;
+	 line-height: 40px;
+	 overflow: hidden;
+	 white-space: nowrap;
+	 text-overflow: ellipsis; // 只有设置了overflow: hidden和white-space: nowrap才能够生效
+ }
+```
+
+**多行文本溢出**
+多行文本溢出的时候，可以分为两种情况
+* 基于高度截断
+* 基于行数截断
+
+1. 基于高度截断 => 为元素 + 定位
+实现原理很好理解，就是通过伪元素绝对定位到行尾并遮住文字，再通过overflow: hidden掩藏多余文字。
+`一般文本存在英文的时候，可以设置word-break: break-all使用一个单词能够再换行时进行拆分`
+```js
+		.demo {
+			position: relative;
+			background-color: #008080;
+			height: 2.5rem;
+			line-height: 1.25rem;
+			overflow: hidden;
+		}
+		.demo::after {
+			content: "...";
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			padding: 0 20px 0 10px;
+		}
+```
+
+2. 基于行数截断
+纯CSS实现非常简单，核心的CSS的代码如下：
+* -webkit-line-clamp: 2, 用来限制一个块元素显示的文本行数
+* display: -webkit-box, 和第一个结合使用，将对象作为弹性伸缩盒子模型显示
+* -webkit-box-orient: vertical, 和第一个结合使用，设置排列方式
+* overflow: hidden, 文本溢出的限定的宽度就掩藏内容
+* text-overflow: ellipsis, 多行文本的情况下，用省略号"..."掩藏溢出范围的文本
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 9. CSS的三大预处器和区别
+1. 分类: CSS预编译语言在前端里面有三大优秀的预编处理器，分别是
+* sass(进化版版scss)
+* less
+* stylus
+
+
+
+
+
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+
+
+
+
 
 

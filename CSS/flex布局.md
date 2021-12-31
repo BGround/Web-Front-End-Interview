@@ -43,8 +43,17 @@ align-content: flex-start | flex-end | center | space-between | space-around | s
 
 如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小。
 
-4. flex-basis
+4. flex-basis 分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小
 5. flex
+
+属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
+
+eg: 
+* {flex: 1;} 等同于 {flex-grow: 1, flex-shrink: 1, flex-basis: 0%}
+* {flex: 1 2;} 等同于 {flex-grow: 1, flex-shrink: 2, flex-basis: 0%}
+* {flex: 10%[ 20px]} 等同于 {flex-grow: 1, flex-shrink: 1, flex-basis: 10%[ 20px]}
+
 6. align-self
 
 属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。

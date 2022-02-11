@@ -12,7 +12,9 @@
 - [7.em/rem/px/vw/vh单位](#7-em-rem-px-vw-vh单位区别)
 - [8.单行和多行文本溢出的省略的样式](#8-单行和多行文本溢出的省略的样式)
 - [9.CSS的三大预处器和区别](#9-CSS的三大预处器和区别)
--
+- [10.行内元素和块级元素](#10-行内元素和块级元素)
+- [11.清除浮动及原因](#11-清除浮动及原因)
+- [10.移动端适配方案和对比](#10-移动端适配方案和对比)
 
 
 ### 1. 请简述下CSS选择器的权重与优先规则
@@ -21,21 +23,53 @@
 
 * !important 优先级是最高的
 * 内联样式（1000）
-* ID选择器（0100）
-* 类选择器/属性选择器/伪类选择器（0010）
+* ID选择器（0100）使用#和id来定位某个元素
+* 类选择器/属性选择器/伪类选择器（0010）使用class来定位，和id不同得是定位多个元素
 * 元素选择器/伪元素选择器（0001）
 * 关系选择器/通配符选择器（0000）
 
 **[:arrow_up: 返回目录](#目录)**
 
 ### 2. 对盒模型的理解
-CSS3中有两种盒模型：标准盒子模型，IE盒子模型
+CSS3中有两种盒模型：标准盒子模型，怪异盒子模型（IE盒子模型）
 
-盒模型都是有四部分组成：margin、border、padding和content
-两种盒模型的区别在于设置width和height时，划分的范围不同
+首先了解盒模型都是有四部分组成：margin、border、padding和content
+两种盒模型的区别在于设置content的width和height时，划分的范围不同
 
 标准盒子模型： width和height => content的width和height
-IE盒子模型： width和height => 包含了border、padding和content
+怪异盒子模型： width和height => 包含了border、padding和content,实际的width = width - 2*border - 2* padding
+
+如下代码，在style中设置了
+box-sizing: border-box;  将采用怪异模式
+box-sizing: content-box; 将采用标准模式
+
+```css
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        *{margin: 0; padding: 0;}
+        .box {
+            background-color: aquamarine;
+            width: 1000px;
+            height: 500px;
+            margin: 4px;
+            border: 2px;
+            padding: 5px;
+						box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+
+    </div>
+</body>
+</html>
+```
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -44,7 +78,7 @@ block formatting context 块级格式化上下文
 
 
 
-**[:arrow_up: 返回目录](#目录)**
+**[:arrow_up: 返回目录](#目录)** 
 
 ### 4. 使用link和@import导入页面样式有啥区别
 link属于html标签，@import是属于CSS提供的，link方式的样式权重高于@import
@@ -197,6 +231,7 @@ opacity: 0 ：修改元素会造成重绘，性能消耗较少
 rem，相对单位，相对的只是HTML根元素font-size的值。浏览器默认的字体高度是16px = 1rem
 想要简化font-size的转化，可以再根元素html中加入` html {font-size: 10px} ` /* 16px * 62.5% = 10px */
 
+**em**
 和em不同的是rem总是相对与根元素，而不像em一样使用级联的方式来计算尺寸
 
 **vh、vw**
@@ -260,7 +295,7 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 
 ### 9. CSS的三大预处器和区别
 1. 分类: CSS预编译语言在前端里面有三大优秀的预编处理器，分别是
-* sass(进化版版scss)
+* sass(进化版本scss)
 * less
 * stylus
 
@@ -275,6 +310,20 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 
 
 
+### 11. 清除浮动及原因
+1. 浮动是怎么产生的
+一般情况下，我们都会使用float浮动属性，在父级盒子不能被撑开，并且之间会产生一定的距离，因此浮动就产生了，很多浮动效果都是使用了float:left或float:right属性而产生的浮动
+
+2. CSS为什么要清除浮动
+* 因为使用了float属性，出现了margin,padding设置不能正确显示，浮动会导致父子级之间设置了padding，导致了属性不能正常表达，margin不能正确显示，因此需要清除浮动
+* 父级不能撑开，如果设置了背景属性，会导致背景图片不能正常展示
+* 边框不能撑开
+
+3. 如何清除浮动
+* 使用伪元素清除浮动
+* 首先对父级进行设置CSS高度进行清除
+* 利用clear:both属性，进行清除浮动，可以在div中加一个class="clear"样式，就可以清除浮动（不推荐）
+* 对父级div进行定义属性，对父级css选择器定义一个overflow:hidden样式，就可以清除父级产生的浮动（不推荐
 
 
 

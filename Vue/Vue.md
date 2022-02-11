@@ -9,6 +9,7 @@ https://github.com/answershuto/learnVue
 - [Vue2官方网站](https://cn.vuejs.org/v2/guide/)
 - [Vue3官方网站](https://v3.cn.vuejs.org/guide/typescript-support.html)
 - [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)
+- [知识大地图](https://pan.baidu.com/s/1mXVg8uO9M-tgZbwiuaeF9Q 密码:cxa7)
 
 ### 目录
 
@@ -413,6 +414,13 @@ filters: {
 **[:arrow_up: 返回目录](#目录)**
 
 #### 修饰符
+.trim 绑定数据去前后空格，.number 绑定数据转数字类型
+.caption 用于事件捕获
+.prevent 阻止默认事件
+.self 将事件绑定在自身身上
+.once 事件只执行一次
+.stop 阻止事件冒泡
+
 * 事件修饰符
 * 按键修饰符
 * sync修饰符
@@ -650,8 +658,18 @@ mixins 应该是最常使用的扩展组件的方式了。如果多个组件中�
 **[:arrow_up: 返回目录](#目录)**
 
 #### Vue中权限控制
+前端权限控制思路
+1. 菜单的控制
+在登录请求中, 会得到用户权限菜单数据, 当然, 这个需要后端返回数据的支持. 前端根据权限数据, 展示对应的菜单.点击菜单,才能查看相关的界面.
 
+2. 界面的控制
+如果用户没有登录,手动在地址栏敲入管理界面的地址, 则需要跳转到登录界面，如果用户已经登录, 可是手动敲入非权限内的地址, 则需要跳转404界面.
 
+3. 按钮的控制
+在某个菜单的界面中, 还得根据权限数据, 展示出可进行操作的按钮, 比如删除,修改,增加等
+
+4. 请求和响应的控制
+如果用户通过非常规操作, 比如通过浏览器调试工具将某些禁用的按钮变成启动状态, 此时发的请求, 也应该被前端所拦截
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -687,7 +705,7 @@ vue的生命周期分为四个阶段
 |  updated     | 组件数据更新之后|
 | beforeDestory | 实例销毁之前，实例仍可使用|
 |  destroyed    | 组件销毁后调用 |
- 
+
 ![vue-lifecycle](https://github.com/BGround/Web-Front-End-Interview/blob/main/Vue/images/vue-lifecycle.jpg)
 
 **[:arrow_up: 返回目录](#目录)**

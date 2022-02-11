@@ -3,7 +3,7 @@
 本部分主要是笔者在复习 JavaScript 相关知识(ES6入门)和一些相关面试题时所做的笔记，如果出现错误，希望大家指出！
 
 #### 目录
-- [1.介绍js的基本数据类型](#1-介绍js的基本数据类型)
+- [1.介绍js的数据类型](#1-介绍js的数据类型)
 - [2.const与let和var的区别](#2-const与let和var的区别)
 - [3.说下你理解的作用域和作用域链](#3-说下你理解的作用域和作用域链)
 - [4.说说对于闭包的理解](#4-说说对于闭包的理解)
@@ -66,13 +66,14 @@
 -
 -
 
-#### 1. 介绍js的基本数据类型.
-```javascript
+#### 1. 介绍js的数据类型.
+1. 
 js 一共有六种基本数据类型，分别是 Undefined、Null、Boolean、Number、String，还有在 ES6 中新增的 Symbol 和 BigInt 类型。
 Symbol 代表创建后独一无二且不可变的数据类型，它的出现我认为主要是为了解决可能出现的全局变量冲突的问题。
  - 新建的方式，不用new，var s = Symbol(). typeof s 为symbol
 BigInt 是一种数字类型的数据，它可以表示任意精度格式的整数，使用 BigInt 可以安全地存储和操作大整数，即使这个数已经超出了 Number 能够表示的安全整数范围。
-```
+2. 
+还有引用数据类型，Array，Function，Object
 **[:arrow_up: 返回目录](#目录)**
 
 #### 2. const与let和var的区别
@@ -1264,7 +1265,7 @@ use strict 是ES5添加的一种严格运行模式，这种模式使得JS在更�
 
 #### 99. Object有哪些属性方法
 Object 构造函数创建一个对象包装器,可以通过**new Object()**, **Object.create()方法**，或者使用**字面量标识**(初始化标记)[初始化对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Object_initializer)。
-##### 属性
+1. 属性
 > Object.prototype.__proto__
 __proto__属性是一个访问器属性(一个setter和一个getter函数), 暴露了通过它访问对象内部的[[prototype]] {一个对象或null},注意：因为修改属性会引起性能问题，不推荐使用
 ```javascript
@@ -1285,7 +1286,7 @@ console.log(shape.__proto__ === circle); // true
 ```javascript
 ```
 
-##### 方法
+2. 方法
 > Object.create
 Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
 ```javascript
@@ -1337,7 +1338,7 @@ Object.defineProperty(obj, "a", {
 
 #### 100. Array有哪些属性方法
 javascript中Array对象是用于构造数组的全局对象, 创建的方式有两种: **new Array()**、和 **通过字面量的方式**const arr = [1,2,...];
-##### 属性
+1. 属性
 >Array.length
 
 数组的长度属性.在js中, Array.length是没有上界的,可以通过下标来给数组添加新的元素，不会发生越界错误
@@ -1348,7 +1349,7 @@ arr  // [1,2,3,4]
 ```
 后面的push方法要更加的方便完成这件事情
 
-##### 方法
+2. 方法
 >Array.prototype.filter()
 
 为数组提供过滤功能,它会遍历数组的所有元素,并返回满足筛选条件元素组成的**新数组**,filter()不会修改原数组

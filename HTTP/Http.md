@@ -93,8 +93,19 @@ if-match、if-None-Match等更多可供选择
 * 如果浏览器命中强缓存，则不需要给服务器发送请求；而协商缓存最终由服务器来决定是否使用缓存，即客户端与服务器之间存在一次通信
 * 在chrome中强缓存的请求状态码返回是200(虽然没有发出真实的HTTP请求)；而协商缓存如果命中走缓存的话，状态码返回的是304(not modified)
 
-请求流程: 
+H5 应用程序缓存为应用带来三个优势：
 
+* 离线浏览 用户可在应用离线时使用它们
+* 速度 已缓存资源加载得更快
+* 减少服务器负载 浏览器将只从服务器下载更新过或更改过的资源。
+
+根据标准，到目前为止，H5 一共有6种缓存机制，有些是之前已有，有些是 H5 才新加入的。
+* 浏览器缓存机制 强缓存协商缓存等
+* Dom Storgage（Web Storage）存储机制 (locationStorage & sessionStorage)
+* Web SQL Database 存储机制(基本废弃不维护)
+* Application Cache（AppCache）它的缓存机制类似于浏览器的缓存（Cache-Control 和 Last-Modified）机制，都是以文件为单位进行缓存，且文件有一定更新机制
+* Indexed Database （IndexedDB）
+* File System API
 
 **[:arrow_up: 返回目录](#目录)**
 

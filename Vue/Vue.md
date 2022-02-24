@@ -15,6 +15,7 @@ https://github.com/answershuto/learnVue
 
 ### Vue基础
 - [vue为什么说是一个构建用户界面的渐进式框架](#vue为什么说是一个构建用户界面的渐进式框架)
+- [理解Vue中MVVM和Android中的MVP](#理解Vue中MVVM和Android中的MVP)
 - [vm中data调用问题](#vm中data调用问题)
 - [Vue中data为什么是一个函数而不是对象](#Vue中data为什么是一个函数而不是对象)
 - [v-if和v-show和v-html的原理](#v-if和v-show和v-html的原理)
@@ -93,6 +94,11 @@ Vue.js包含了声明式渲染、组件化系统、客户端路由、大规模�
 但在实际开发中，并没有强制要求开发者之后某一特定功能，而是根据需求逐渐扩展。
 
 Vue.js的核心库只关心视图渲染，且由于渐进式的特性，Vue.js便于与第三方库或既有项目整合。
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+#### 理解Vue中MVVM和Android中的MVP
 
 
 **[:arrow_up: 返回目录](#目录)**

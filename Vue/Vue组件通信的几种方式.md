@@ -157,7 +157,7 @@ window.localStorage.setItem(key, value) // 存数据
 window.localStroage.getItem(key) // 取数据
 ```
 
-#### 5. provide和inject
+#### 5. provide和inject（依赖注入）
 provide/inject 是vue2.2.0新增的api,简单来说就是父组件中通过provide来提供变量，然后在子组件中通过inject注入变量。
 不论子组件嵌套的有多深，只要调用了inject那么就可以注入provide中的数据，不局限与只能从当前父组件的props属性中回去数据
 

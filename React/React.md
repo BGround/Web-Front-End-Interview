@@ -15,10 +15,10 @@ React项目中经常用到的知识点
 - [React中key的作用](#-React中key的作用)
 - [React中Dom diff算法](#-React中Dom-diff算法)
 - [无状态组件](#-无状态组件)
-- [高阶组件](#-高阶组件)
-- 
+- [高阶组件](#-高阶组件) //TODO
+- [React中ref有什么用](#-React中ref有什么用)
 -
-高阶组件 refs和DOM Fragments diff(协调) 非受控组件
+DOM Fragments diff(协调)
 
 ## Redux
 - [聊聊Redux和Vuex的设计思想](#-聊聊Redux和Vuex的设计思想)
@@ -151,7 +151,14 @@ key在React中是添加在数组列表中，用于确定哪些元素是被添加
 **[:arrow_up: 返回目录](#目录)**
 
 ### 高阶组件
-高阶组件就是一个函数，且该函数接受另外一个组件做为参数，并返回一个新的组件。是React中复用组件的一种高级技巧
+> 你能用HOC做什么？
+HOC可用于许多任务，例如：
+
+代码重用，逻辑和引导抽象
+渲染劫持
+状态抽象和控制
+Props 控制
+高阶组件就是一个函数，且该函数接受另外一个组件做为参数，并返回一个新的组件。它是纯函数，不会修改传入的组件，也不会使用继承来复制其行为
 ```js
 const EnhancedComponent = higherOrderComponent(WrappedComponent);
 ```
@@ -166,7 +173,7 @@ function myHoc(OldCom) {
 		render() {
 			let newProps = {age: 29, sex: 'male'}
 			return (
-				<OldCom {...newProps}></OldCom>
+				<OldCom {...props}{...newProps}></OldCom>
 			)
 		}
 	}
@@ -193,6 +200,57 @@ function myHoc(OldCom) {
 export default myHoc
 ```
 
+**【面试题】如何计算⼀个组件render期间的渲染耗时？-HOC反向继承**
+```js
+import React from "react";
+
+class Home extends React.Component {
+  render() {
+    return <div>Hello world</div>;
+  }
+}
+
+function withTiming(WrappedComponent) {
+  let start, end;
+  return class extends WrappedComponent {
+    constructor(props) {
+      super(props);
+      start = 0;
+      end = 0;
+    }
+
+    componentWillMount() {
+      // 这个判断代码必须是要的，因为要保持子组件和父组件执行的代码逻辑是一样的
+      if (super.componentWillMount) {
+        super.componentWillMount();
+      }
+      start = +Date.now();
+    }
+
+    componentDidMount() {
+      // 这个判断代码必须是要的，因为要保持子组件和父组件执行的代码逻辑是一样的
+      if (super.componentDidMount) {
+        super.componentDidMount();
+      }
+      end = +Date.now();
+      console.log(`${WrappedComponent.name}执行时间是${end - start}`);
+    }
+
+    render() {
+      return super.render();
+    }
+  };
+}
+
+export default withTiming(Home);
+
+```
+
+**[:arrow_up: 返回目录](#目录)**
+
+### React中ref有什么用
+
+参看：【![说说对React refs 的理解？应用场景？](https://mp.weixin.qq.com/s/ZBKWcslVBi0IKQgz7lYzbA)】
 
 **[:arrow_up: 返回目录](#目录)**
 

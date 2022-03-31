@@ -32,11 +32,7 @@
 - [27.继承的方式](#27-继承的方式)
 - [28.ES5的继承和ES6的继承有什么区别](#28-ES5的继承和ES6的继承有什么区别)
 - [29.模块化发展历程](#29-模块化发展历程)
-- [30.ES6入门-变量的解构赋值](#30-ES6入门之变量的解构赋值)
-- [31.ES6入门-函数形参的扩展及箭头函数](#31-ES6入门之函数形参的扩展及箭头函数)
-- [32.ES6入门-第七种数据类型Symbol](#32-ES6入门之第七种数据类型Symbol)
-- [33.ES6入门-Set和Map数据结构](#33-ES6入门之Set和Map数据结构)
-- [34.ES6入门之Promise详解](#34-ES6入门之Promise详解)
+- 
 - [35.如何封装一个 javascript 的类型判断函数](#35-如何封装一个-javascript-的类型判断函数)
 - [36.简述一下原型和构造函数以及实例](#36-简述一下原型和构造函数以及实例)
 - [37.原型修改和重写](#37-原型修改和重写)
@@ -79,32 +75,32 @@ BigInt 是一种数字类型的数据，它可以表示任意精度格式的整�
 #### 2. const与let和var的区别
 **let和var声明的是变量，const声明的是常量**
 常量：只能取值不能赋值，就是只读不写   
-常量的声明：
+常量的声明赋值：
 ```javascript
 var es = 'ES6';
 ```
-let和var的区别
-① let不允许重复声明，var可以
+*var* 和 *const* 的区别
+* const不允许重复声明，var可以
 ```javascript
 var str = 'es6';
 var str = 'es2015';
 console.log(str);
 
 
-let es = 'es6';
-let es = 'es2015';
+const es = 'es6';
+const es = 'es2015';
 console.log(es);    
 //Uncaught SyntaxError: Identifier 'es' has already been declared
 ```
-② let不属于顶层对象window,var可以
+* const 不属于顶层对象 window, var 可以
 ```javascript
-let str = 'es6';
+const str = 'es6';
 console.log(window.str);   //undefined
 ```
-③ 不存在变量提升[5.JS的执行上下文](#JS的执行上下文)
+* 不存在变量提升[5.JS的执行上下文](#JS的执行上下文)
 ```javascript
 console.log(str);
-let str = 'es2015';
+const str = 'es2015';
 //Uncaught ReferenceError: Cannot access 'str' before initialization
 
 console.log(str);               var str;
@@ -112,7 +108,7 @@ var str = 'es2015';    =>       console.log(str);
                                 str = 'es6';    
 //结果是undefined，具体细节参照执行上下文分析								
 ```
-④ 暂时性死区,在代码块内，使用let命令声明变量之前，该变量都是不可用的
+* 暂时性死区,在代码块内，使用let命令声明变量之前，该变量都是不可用的
 ```javascript
 if(true) {
     console.log(str);
@@ -125,16 +121,16 @@ var的创建和初始化被提升，赋值不会被提升。
 let的创建被提升，初始化和赋值不会被提升。
 function的创建、初始化和赋值均会被提升。
 
-⑤ 块级作用域
+* 块级作用域
 ```javascript
 if(true) {
-    let str = 'es6';
+    const str = 'es6';
 }
 console.log(str);
 //Uncaught ReferenceError: str is not defined
 ```
-###### let的特性const都有，不能重复声明、不存在变量提升、存在块级作用域也有暂时性死区，唯一的区别const声明常量，一旦声明无法修改。
-###### 但是有一点特别注意，上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
+> * let的特性const都有，不能重复声明、不存在变量提升、存在块级作用域也有暂时性死区，唯一的区别const声明常量，一旦声明无法修改。
+> * 但是有一点特别注意，上面的列子中不能修改的都是基本数据类型，对于数组或者对象都是引用数据类型，引用数据类型可以修改的是存在堆内存中的数据
 ```javascript
 const esObj = {
     name: 'es6',
@@ -148,9 +144,9 @@ const arr = ['es6', 'es7', 'es8'];
 arr[0] = 'es2015';
 console.log(arr);
 ```
-###### let定义的变量，只能在块作用域里访问，不能跨块作用域访问，也不能跨函数作用域访问,ES6新增的命令
-###### var定义的变量，可以跨块作用域访问, 不能跨函数作用域访问,
-###### const用来定义常量，创建时必须赋值，只能在块作用域里访问，并且不能修改引用数据类型的指向地址，但是可以修改引用数据指向地址内的数据。
+> * let定义的变量，只能在块作用域里访问，不能跨块作用域访问，也不能跨函数作用域访问,ES6新增的命令
+> * var定义的变量，可以跨块作用域访问, 不能跨函数作用域访问,
+> * const用来定义常量，创建时必须赋值，只能在块作用域里访问，并且不能修改引用数据类型的指向地址，但是可以修改引用数据指向地址内的数据。
 
 [面试题](https://github.com/BGround/Web-Front-End-Interview/issues/5)
 
@@ -160,9 +156,9 @@ console.log(arr);
 作用域是变量和函数的作用域范围和生命周期,当在当前作用域查找不到某变量时,就会去上层作用域查找，此行为一直找到全局对象window(非严格模式)，此查找的过程就是所谓的作用域链
 PS:函数作用域的含义：属于这个函数的全部变量可以在整个函数的范围内使用及复用。
 
-<font color=red>顺便理解下静态作用域和动态作用域</font>
-*静态作用域指的是一段代码，在它执行之前就已经确定了它的作用域，简单来说就是在执行之前就确定了它可以应用哪些地方的作用域(变量)。
-动态作用域–函数的作用域是在函数调用的时候才决定的*
+顺便理解下静态作用域和动态作用域
+*静态作用域指的是一段代码，在它执行之前就已经确定了它的作用域，简单来说就是在执行之前就确定了它可以应用哪些地方的作用域(变量)。// java c/c++ ts也在致力于
+动态作用域–函数的作用域是在函数调用的时候才决定的* // javascript python
 
 ```javascript
 var a = 10;
@@ -293,6 +289,40 @@ function fn() {
 	console.log('函数体提前');
 }
 ```
+
+下面是关于同名变量和函数的两点处理原则：
+1. 如果是同名的函数，JavaScript编译阶段会选择最后声明的那个。
+```js
+showName()
+var showName = function() {
+	console.log('1')
+}
+
+function showName() {
+	console.log('2')
+}
+showName()
+
+//输出结果
+'2'
+'1'  // 这个结果看第二点
+
+```
+2. 如果变量和函数同名，那么在编译阶段，变量的声明会被忽略
+```js
+showName()
+var showName = '1'
+function showName() {
+    console.log('2')
+}
+console.log(showName)
+
+//输出结果
+'2'
+'1' //函数提升要比变量提升的优先级要高一些，那么在编译阶段且不会被变量声明覆盖，执行阶段但是会被变量赋值之后覆盖。
+
+```
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### 7. 深拷贝和浅拷贝的理解
@@ -437,6 +467,7 @@ let  a = getLocalStorage('demo');//[1,2,3]
 **[:arrow_up: 返回目录](#目录)**
 
 #### 9. 浏览器中的事件循环
+
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -1058,9 +1089,9 @@ console.log(newArr) // [1, true, Infinity, {}, []]
 
 什么是事件流？事件流描述的是从页面中接受事件的顺序，DOM事件流出现于DOM2级事件规范中，其规定的事件流包括三个阶段
 
- - 事件捕获阶段
- - 处于目标阶段
- - 事件冒泡阶段
+ - 捕获阶段
+ - 目标阶段
+ - 冒泡阶段
 
 像npm中events包就是添加事件监听器的插件包，可以用于非嵌套组件之间通信
 
@@ -1145,30 +1176,6 @@ import React from 'react'
 
 **[:arrow_up: 返回目录](#目录)**
 
-#### 30. ES6入门之变量的解构赋值
-[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/6)
-
-**[:arrow_up: 返回目录](#目录)**
-
-#### 31. ES6入门之函数形参的扩展及箭头函数
-[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/7)
-
-**[:arrow_up: 返回目录](#目录)**
-
-#### 32. ES6入门之第七种数据类型Symbol
-[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/8)
-
-**[:arrow_up: 返回目录](#目录)**
-
-#### 33. ES6入门之Set和Map数据结构
-[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/9)
-
-**[:arrow_up: 返回目录](#目录)**
-
-#### 34. ES6入门之Promise详解
-[传送门](https://github.com/BGround/Web-Front-End-Interview/issues/12)
-
-**[:arrow_up: 返回目录](#目录)**
 
 #### 35. 如何封装一个-javascript-的类型判断函数
 ```js

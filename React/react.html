@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title></title>
+    <link rel="stylesheet" href="../static/css/common.css" />
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+  </head>
+  <body>
+	<div id = 'app'></div>
+	<script type="text/babel">
+		class Person extends React.Component {
+			render() {
+				return (
+					<div>Hello React</div>
+				)
+			}
+		}
+		ReactDOM.render(
+			<Person name = 'Json' />,
+			document.getElementById('app')
+		);
+	</script>
+  </body>
+
+  <style scoped>
+	.app {
+		background-color: gray;
+		width: 200px;
+		height: 20px;
+	}
+  </style>
+</html>

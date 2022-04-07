@@ -6,6 +6,7 @@ React项目中经常用到的知识点
 - [react 生命周期](#-react-生命周期)
 - [state和props触发更新的生命周期函有什么区别](#-state和props触发更新的生命周期函有什么区别)
 - [构建组件的方式](#-构建组件的方式)
+- [类组件和函数组件](#-类组件和函数组件)
 - [props和state的区别](#-props和state的区别)
 - [父组件中props改变会不会引起子组件的重新渲染](#-父组件中props改变会不会引起子组件的重新渲染)
 - [react中setState是同步还是异步的](#-react中setState是同步还是异步的)
@@ -65,6 +66,66 @@ version >= 16.4
 ### 构建组件的方式
 **类组件:** ES6 class 定义的组件，一个类组件必须有一个render()方法，这个方法必须返回一个jsx元素，要用一个外层的元素把所有的内容都包裹起来
 **函数组件:** 本质上就是一个JavaScript函数，接受唯一带数据的props对象和返回一个React元素
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 类组件和函数组件
+*类组件*
+```js
+<script type="text/babel">
+	class Person extends React.Component {
+		render() {
+			return (
+				<div>Hello {this.props.name}</div>
+			)
+		}
+	}
+	ReactDOM.render(
+		<Person name = 'Json' />,
+		document.getElementById('app')
+	);
+</script>
+```
+*函数组件*
+```js
+function Person(props) {
+	return <div>Hello {props.name}</div>
+}
+
+ReactDOM.render(
+	<Person name = 'Json' />,
+	document.getElementById('app')
+);
+```
+区别：
+1. 在语法上，函数组件是以function开始，是一个纯函数，接收唯一的props作为参数并返回一个react元素。类组件是以class开始，需要继承
+	React.Component或者PureComponent，必须实现render方法并返回一个react元素
+
+2. 调用方式上，
+```js
+// 函数组件, 则是直接调用
+function Person() {
+	return <div>Hello, Json</div>
+}
+
+const result = Person(props) // <div>Hello, Json</div>
+
+// 类组件, 需要先new一个实例
+class Person extends React.Component {
+	render() {
+		return (
+			<div>Hello React</div>
+		)
+	}
+}
+
+const instance = new Person(props);
+const result = instance.render();
+```
+3. 在状态管理上，因为函数组件是一个纯函数，所以不能使用setState()
+4. 在生命周期钩子上，这个同状态管理一样，因为所有的生命周期钩子都是来自React.Component
+
+但是React16.8版本中，添加了Hook，使得我们可以在函数组件中用useState钩子去管理state，使用useEffect钩子去使用生命周期函数，从Hook中可以看出后面两点并不是区别点了
 
 **[:arrow_up: 返回目录](#目录)**
 

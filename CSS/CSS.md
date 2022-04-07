@@ -5,7 +5,7 @@
 ### 目录
 - [1.请简述下CSS选择器的权重与优先规则](#1-请简述下CSS选择器的权重与优先规则)
 - [2.对盒模型的理解](#2-对盒模型的理解)
-- [3.BFC](#3-BFC)
+- [3.](#3-)
 - [4.使用link和@import导入页面样式有啥区别](#4-使用link和@import导入页面样式有啥区别)
 - [5.分析比较 opacity: 0 visibility: hidden display: none 优劣和适用场景](#5-分析比较-opacity:-0-visibility:-hidden-display:-none-优劣和适用场景)
 - [6.如何水平居中一个元素](#6-如何水平居中一个元素)
@@ -13,9 +13,13 @@
 - [8.单行和多行文本溢出的省略的样式](#8-单行和多行文本溢出的省略的样式)
 - [9.CSS的三大预处器和区别](#9-CSS的三大预处器和区别)
 - [10.display有哪些属性](#10-display有哪些属性)
-- [11.行内元素和块级元素](#11-行内元素和块级元素)
+- [11.](#11-)
 - [12.清除浮动及原因](#12-清除浮动及原因)
-- [13.移动端适配方案和对比](#13-移动端适配方案和对比)
+- [13.BFC](#13-BFC)
+- [14.CSS中掩藏一个元素的方法](#14-CSS中掩藏一个元素的方法)
+- [15.style标签写在body前后有啥区别](#15-style标签写在body前后有啥区别)
+- [16.实现两栏布局，左侧固定右侧自适应](#16-实现两栏布局-左侧固定右侧自适应)
+- [17.实现三栏布局，两侧固定中间自适应](#17-实现三栏布局-两侧固定中间自适应)
 
 
 ### 1. 请简述下CSS选择器的权重与优先规则
@@ -24,8 +28,8 @@
 
 * !important 优先级是最高的
 * 内联样式（1000）直接再DOM中写style样式
-* ID选择器（0100）使用#和id来定位某个元素
-* 类选择器/属性选择器/伪类选择器（0010）使用class来定位，和id不同得是定位多个元素
+* ID选择器（0100）使用#和id来定位某个元素 #app {}
+* 类选择器/属性选择器/伪类选择器（0010）使用class来定位，和id不同得是定位多个元素 .div {}
 * 元素选择器/伪元素选择器（0001）
 * 关系选择器/通配符选择器（0000）
 
@@ -250,12 +254,9 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 
 ```js
  * {
-	 width: 400px;
-	 height: 40px;
-	 line-height: 40px;
-	 overflow: hidden;
-	 white-space: nowrap;
-	 text-overflow: ellipsis; // 只有设置了overflow: hidden和white-space: nowrap才能够生效
+		overflow: hidden;            // 溢出隐藏
+		white-space: nowrap;         // 规定段落中的文本不进行换行
+		text-overflow: ellipsis; // 溢出用省略号显示，只有设置了overflow: hidden和white-space: nowrap才能够生效
  }
 ```
 
@@ -286,11 +287,16 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 
 2. 基于行数截断
 纯CSS实现非常简单，核心的CSS的代码如下：
-* -webkit-line-clamp: 2, 用来限制一个块元素显示的文本行数
-* display: -webkit-box, 和第一个结合使用，将对象作为弹性伸缩盒子模型显示
-* -webkit-box-orient: vertical, 和第一个结合使用，设置排列方式
-* overflow: hidden, 文本溢出的限定的宽度就掩藏内容
-* text-overflow: ellipsis, 多行文本的情况下，用省略号"..."掩藏溢出范围的文本
+```js
+ * {
+		overflow: hidden;            // 溢出隐藏
+		text-overflow: ellipsis;     // 溢出用省略号显示
+		display: -webkit-box;         // 作为弹性伸缩盒子模型显示。
+		-webkit-box-orient: vertical; // 设置伸缩盒子的子元素排列方式：从上到下垂直排列
+		-webkit-line-clamp: 3;        // 显示的行数
+ }
+
+```
 
 **[:arrow_up: 返回目录](#目录)**
 
@@ -309,6 +315,20 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 **[:arrow_up: 返回目录](#目录)**
 
 ### 10. display有哪些属性
+常用的有以下4种属性
+1. none
+元素不显示，从文档流中移除
+2. inline
+行内元素类型，元素不会独占一行，无法设置width和height，可以设置水平方向上padding、weight，无法设置垂直方向上padding、weight
+3. block
+块级元素类型，元素会独占一行，可以设置width、height、margin和padding属性
+4. inlin-block
+将对象设置为inline，但对象的内容作为block对象呈现，之后的内联对象会被排列在一行内
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 11. 
+
 
 
 **[:arrow_up: 返回目录](#目录)**
@@ -327,6 +347,293 @@ vh,就是根据窗口的高度，分成100等份，100vw就是满高，50vh就�
 * 首先对父级进行设置CSS高度进行清除
 * 利用clear:both属性，进行清除浮动，可以在div中加一个class="clear"样式，就可以清除浮动（不推荐）
 * 对父级div进行定义属性，对父级css选择器定义一个overflow:hidden样式，就可以清除父级产生的浮动（不推荐
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 13. 
+
+
+**[:arrow_up: 返回目录](#目录)**
+
+### 14. CSS中掩藏一个元素的方法
+下面是公共代码
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+	</head>
+	<body>
+		<div id='app'>
+			<p type="button" class="text"> this is text</p>
+			<button class='hide'>hide it</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		const target = document.getElementsByClassName('hide')[0]
+		target.addEventListener('click', () => {
+			window.alert('click hide element')
+		})
+	</script>
+	<style>
+		//TODO...
+	</style>
+</html>
+
+
+```
+1. 使用opacity: 0属性，
+这个属性只是设置元素的透明度，设置为0就相当于掩藏元素了，但是元素所占据的空间和响应事件仍然是存在的
+```js
+	<style>
+		.hide {
+			opacity: 0;
+			background-color: gray;
+		}
+	</style>
+	// 点击元素之后仍然可以弹出alert
+```
+2. 使用visibility hidden属性
+视觉上消失，可以理解为透明度为0的效果，在文档流中站位，浏览器也会解析该元素，不能点击
+```js
+	<style>
+		.hide {
+			visibility: hidden;
+			background-color: gray;
+		}
+	</style>
+	// 点击元素之后仍然可以弹出alert
+```
+3. 使用display none属性
+是彻底消失，不在文档流中站位，浏览器也不会解析该元素
+```js
+<style>
+	.hide {
+		display: none;
+		background-color: gray;
+	}
+</style>
+```
+4. 使用position
+position属性的意义就是把元素脱离文档流移出视觉区域，添加该属性后既不会影响布局，又能让元素保持可以操作
+```js
+<style>
+	.hide {
+		position: absolute;
+		left: -999px;
+		top: -999px;
+		background-color: gray;
+	}
+</style>
+```
+
+|  | opacity: 0 | visibilty: hidden | display: none |
+| --- | --- | --- |
+| 渲染树结构 | 占居空间，内容不可见，不能点击 |  占据空间，内容不可见， 可点击 | 不占居空间，不能点击 |
+| 继承 |  继承属性，不能修改子孙节点仍无法显示| 非继承属性，修改子孙节点可以显示 |  继承属性，不能修改子孙节点仍无法显示|
+
+### 15. style标签写在body前后有啥区别
+页面加载是自上而下的，当然是先加载样式。
+
+写在body标签后面，由于浏览器是逐行方式对HTML文档进行解析，当解析到写在尾部的样式表会导致浏览器停止之前的渲染，等待加载且解析样式表完成之后的渲染，可能会出现闪烁的问题
+
+### 16. 实现两栏布局，左侧固定右侧自适应
+典型页面 Ant Design 文档，这个布局非常常见，往往是以一个定宽栏和一个自适应的栏并排展示
+*实现思路也非常简单*
+* 使用float左浮左边栏
+* 右边模块使用margin-left撑出内容块做展示
+* 为父级元素添加BFC，防止下方元素飞到上方元素上
+```js
+<style>
+	#box {
+		overflow: hidden // 添加BFC
+	}
+	.left {
+		float: left;
+		width: 200px;
+		height: 400px;
+		background-color: gray;
+	}
+	.right {
+		margin-left: 210px;
+		background-color: lightcoral;
+		height: 400px;
+	}
+</style>
+<body>
+	<div id="box">
+		<div class="left">左边</div>
+		<div class="right">右边</div>
+	</div>
+</body>
+```
+
+*还有使用flex布局*
+```js
+<style>
+	#box {
+		display: flex;
+		/* align-items: flex-start; */
+	}
+	.left {
+		width: 100px;
+		height: 400px;
+		background-color: gray;
+	}
+	.right {
+		flex: 1;
+		background-color: lightcoral;
+	}
+	
+</style>
+<body>
+	<div id="box">
+		<div class="left">左边</div>
+		<div class="right">右边</div>
+	</div>
+</body>
+```
+
+### 17. 实现三栏布局，两侧固定中间自适应
+*主要实现方式有*
+* 两边使用float，中间使用margin
+* 两边使用absolute，中间使用margin
+* 两边使用float和负margin
+* display：table实现
+* flex实现
+* grid网格布局
+
+```js
+// 公共代码
+<style>
+	// TODO...
+</style>
+<body>
+	<div id="box">
+		<div class="left">左边</div>
+		<div class="right">右边</div>
+		<div class="mid">中间</div> <!-- 放在最后，否则右侧会沉在右边下面 -->
+	</div>
+</body>
+
+```
+
+1. 两边使用float，中间使用margin
+```js
+	<style>
+		#box {
+			background-color: #eee;
+			overflow: hidden;
+			padding: 20px;
+			height: 400px;
+		}
+		.left {
+			width: 100px;
+			height: 400px;
+			float: left;
+			background-color: gray;
+		}
+		.right {
+			width: 100px;
+			height: 400px;
+			float: right;
+			background-color: lightcoral;
+		}
+		.mid {
+			height: 400px;
+			margin-left: 200px;
+			margin-right: 200px;
+			background-color: lightblue;
+		}
+		
+	</style>
+
+```
+
+2. 两边使用absolute，中间使用margin
+```js
+	<style>
+		#box {
+			background-color: #eee;
+			overflow: hidden;
+			position: relative;
+			height: 400px;
+		}
+		.left,
+		.right {
+			position: absolute;
+			width: 100px;
+			height: 400px;
+			top: 0;
+		}
+		.left {
+			left: 0;
+			background-color: gray;
+		}
+		.right {
+			right: 0;
+			background-color: lightcoral;
+		}
+		.mid {
+			height: 400px;
+			margin: 0 120px;
+			background-color: lightblue;
+		}
+		
+	</style>
+
+```
+
+3. flex实现
+flex布局实现时，只需将display设置为flex，中间宽度设置100%，或者flex: 1
+```js
+	<style>
+		#box {
+			background-color: #eee;
+			display: flex;
+			justify-content: space-between;
+		}
+		.left,
+		.right,
+		.mid {
+			height: 400px;
+		}
+		.left {
+			width: 100px;
+			background-color: gray;
+		}
+		.right {
+			width: 200px;
+			background-color: lightcoral;
+		}
+		.mid {
+			width: 100%;
+			margin: 0 120px;
+			background-color: lightblue;
+		}
+		
+	</style>
+	<body>
+		<div id="box">
+			<div class="left">左边</div>
+			<div class="mid">中间</div>
+			<div class="right">右边</div>
+		</div>
+	</body>
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -100,7 +100,7 @@ Vue.js的核心库只关心视图渲染，且由于渐进式的特性，Vue.js�
 
 #### 理解Vue中MVVM和Android中的MVP
 
-
+	
 **[:arrow_up: 返回目录](#目录)**
 
 #### vm中data调用问题
@@ -957,7 +957,7 @@ window.addEventListener("beforeunload",()=>{
 Vue-Router有两种路由模式：*hash模式*和*history模式*，默认是hash模式。
 1. hash 模式的实现原理
 
-早期的前端路由的实现事基于 location.hash 来实现的。其实现原理很简单，location.hash 的值就是 URL 中 # 后面的内容，比如下面这个网站，它的 location.hash 的值就是 #search
+早期的前端路由的实现是基于 location.hash 来实现的。其实现原理很简单，location.hash 的值就是 URL 中 # 后面的内容，比如下面这个网站，它的 location.hash 的值就是 #search
 **https://www.baidu.com#search**
 
 hash 路由模式的实现主要是基于以下几个特性：
@@ -966,26 +966,57 @@ hash 路由模式的实现主要是基于以下几个特性：
  - hash 值的改变，都会在浏览器的访问历史中留下记录，因此我们通过浏览器的回退、前进按钮控制 hash 的切换
  - 可以通过 a 标签，并设置 href 属性，当用户点击这个标签后，URL 的 hash 值会发生改变，或者使用 JavaScript 来对 location.hash 进行赋值，改变URL的hash值
  - 我们可以使用 onhashchange 事件来监听 hash 值的变化， 从而对页面进行跳转
-```js
-window.onhashchange = function(event) {
-	console.log(event.oldURL, event.newURL);
-	let hash = location.hash.slice(1);
-}
+```html
+	<body>
+		<a href="#/a">a页面</a>
+		<a href="#/b">b页面</a>
+		<div id="app"></div>
+	</body>
+	<script>
+		function render() {
+			app.innerHTML = window.location.href
+		}
+		window.addEventListener('hashchange', render)
+		render();
+	</script>
 ```
 2. history模式的实现原理
 
-HTML5提供了History API来实现 URL 的变化，其中最主要的API有以下两个：history.pushState() 和 history.replaceState().
-这两个API可以在不进行刷新的情况下，操作浏览器的历史记录。唯一不同的是，前者是新增一个历史记录，后者是直接替换当前的历史记录，如下所示：
-```
-window.history.pushState(null, null, path)
-window.history.replaceState(null, null, path)
+HTML5提供了History API来实现 URL 的变化，允许开发者直接更改前端路由，即更新浏览器URL地址而不重新发起请求。
+*路劲比较正规，兼容性不如hash，且需要服务端支持，否则刷新页面会出现404*
+
+```html
+	<body>
+		<a href="javascript: toA()">a页面</a>
+		<a href="javascript: toB()">b页面</a>
+		<div id="app"></div>
+	</body>
+	<script>
+		function render() {
+			app.innerHTML = window.location.pathname
+		}
+		function toA() {
+			history.pushState({}, null, '/a')
+			render() // 手动调用，popstate监听不到
+		}
+		function toB() {
+			history.pushState({}, null, '/b')
+			render() // 手动调用，popstate监听不到
+		}
+		// 通过监听 popstate 事件，可以监听到 back，forward 和 go方法
+		window.addEventListener('popstate', render)
+		render();
+	</script>
 ```
 
-history 路由模式实现主要是基于以下几个特性：
-
-- pushState 和 replaceState 两个API来操作实现 URL 的变化
-- 我们可以使用 popstate 事件来监听 URL的变化，从而对页面进行跳转
-- history.pushState() 和 history.replaceState() 不会触发 popstate 事件，这是需要我们手动触发页面更新
+history API 提供了丰富的函数可供调用
+```js
+history.replaceState({}, null, '/a') // 替换路由
+history.pushState({}, null, '/b') // 路由压栈
+history.back() // 返回
+history.forward() // 前进
+history.go(-1) // 正数前进几次，负数后退几次 
+```
 
 3. 简单实现 Vue Router
 

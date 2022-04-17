@@ -6,7 +6,7 @@ new Vue({
 }).$mount('#app')
 ```
 
-#### vue2
+#### vue2和vue3创建实例
 ```js
 <body>
 	<div id="root"> 

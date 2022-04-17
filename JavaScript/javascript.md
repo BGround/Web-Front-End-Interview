@@ -532,8 +532,11 @@ ES5 中新增了一个 Object.getPrototypeOf() 方法，我们可以通过这个
 原型链的尽头一般来说都是 Object.prototype 所以这就是我们新建的对象为什么能够使用 toString() 等方法的原因。
 
 **获取原型的方法**
-* p.proto
+从 *构造函数* 获得原型对象
 * p.constructor.prototype
+
+从 *对象实例* 获得父级原型对象
+* p.proto（不建议使用，有兼容问题）
 * Object.getPrototypeOf(p)
 
 **说明**  

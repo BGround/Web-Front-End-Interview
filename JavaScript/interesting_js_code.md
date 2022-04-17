@@ -1,0 +1,36 @@
+### 赋值计算方式
+```js
+var a = {n: 1}
+var b = a
+a.x = a = {n: 2}
+console.log(a)
+console.log(b)
+```
+
+### 箭头函数返回值
+```js
+const getUser = user => {
+	name: user.name,
+	age: user.age
+}
+
+const uses = {
+	name: 'Lida',
+	age: 21
+}
+
+console.log(getUser(uses))
+```
+解析：这样运行会导致报错，*Uncaught SyntaxError: Unexpected token :*
+说明箭头函数返回一个值时是不需要使用{}，如果是返回一个对象需要使用()包裹
+```js
+const getUser = user => ({
+	name: user.name,
+	age: user.age
+})
+
+```
+
+
+
+

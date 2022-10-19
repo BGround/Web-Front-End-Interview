@@ -158,7 +158,7 @@ rootElem.replaceChild(fragment,oldDom);
 	 
 	 
 #### 关于DOCTYPE html和meta 
-   ```
+   
   <!DOCTYPE html>  H5标准声明，使用 HTML5 doctype，不区分大小写
   <head lang=”en”> 标准的 lang 属性写法
   <meta charset=’utf-8′>    声明文档使用的字符编码
@@ -191,7 +191,7 @@ rootElem.replaceChild(fragment,oldDom);
   <meta http-equiv=”pragma” content=”no-cache”>
   <meta http-equiv=”cache-control” content=”no-cache”>
   <meta http-equiv=”expires” content=”0″>
-   ```
+   
 详细资料可以参考：[《关于<!doctype html>和meta》](https://www.jianshu.com/p/2acf929ac280?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
 
 **[:arrow_up: 返回目录](#目录)**

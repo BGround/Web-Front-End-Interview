@@ -10,7 +10,6 @@
 - [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
 - [热更新的配置和实现原理](#热更新的配置和实现原理)
 - [文件指纹](#文件指纹)
-- [Less Sass和Scss以及PostCss](#Less-Sass和Scss以及PostCss)
 - [静态资源内联](#静态资源内联)
 - [多页面应用打包通用方案](#多页面应用打包通用方案)
 - [source map](#source-map)

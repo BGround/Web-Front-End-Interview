@@ -99,8 +99,16 @@ Vue.js的核心库只关心视图渲染，且由于渐进式的特性，Vue.js�
 **[:arrow_up: 返回目录](#目录)**
 
 #### 理解Vue中MVVM和Android中的MVP
+* 1. 发展史和旁支
+		a. 语义化模板, 纯HTML模板
+		b. MVC model view controller
+		c. MVVM model-view-viewModel 
 
+	数据会绑定在viewModel层，自动将数据渲染到页面中
+	视图变化时，会通知viewModel层更新数据
 	
+MVVM是一种思想，
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### vm中data调用问题

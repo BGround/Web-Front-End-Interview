@@ -160,6 +160,9 @@ v-if和v-show看起来似乎差不多，当条件不成立时，其所对应的�
 * 性能消耗：v-if有更高的切换消耗；v-show有更高的初始渲染消耗；
 * 使用场景：v-if适合运营条件不大可能改变；v-show适合频繁切换。
 
+display: none   => v-if
+visability: hidden => v-show
+
 **[:arrow_up: 返回目录](#目录)**
 
 #### v-if和v-for为啥不建议一起用
@@ -318,6 +321,10 @@ computed watcher 持有一个dep实例，通过 dirty 属性标记计算属性�
 **[:arrow_up: 返回目录](#目录)**
 
 #### computed和watch区别
+相同点: 
+1. 都是基于vue的依赖收集机制
+2. 都是被依赖的变化触发，改变之后进行处理计算
+
 **计算属性computed:**
 * 支持缓存，已有依赖数据发生改变时，才会重新进行计算
 * 不支持异步，当computed内有异步操作时无效，无法监听数据的变化

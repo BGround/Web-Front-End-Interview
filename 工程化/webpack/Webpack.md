@@ -1,34 +1,59 @@
 ## Webpack
 
 ### 目录
-- [webpack初体验时需要注意的点](#webpack初体验时需要注意的点)
-- [webpack得理解和解决得问题](#webpack得理解和解决得问题)
-- [Plugin 和 Loader 分别是什么？ 怎么工作的？](#plugin-和-loader-分别是什么-怎么工作的)
-- [Loader的作用是什么和常用的Loader](#Loader的作用是什么和常用的Loader)
-- [Plugin的作用是什么和常用的Plugin](#Plugin的作用是什么和常用的Plugin)
-- [webpak moudles, 如何表达自己的各种依赖关系](#webpak-moudles-如何表达自己的各种依赖关系)
-- [webpak 中 moudles bundle 和 Chunk 的区别是什么](#webpak-中-moudles-bundle-和-chunk-的区别是什么)
-- [热更新的配置和实现原理](#热更新的配置和实现原理)
-- [文件指纹](#文件指纹)
-- [静态资源内联](#静态资源内联)
-- [多页面应用打包通用方案](#多页面应用打包通用方案)
-- [source map](#source-map)
-- [提取页面公共资源splitChunksPlugin](#提取页面公共资源splitChunksPlugin)
-- [代码分割和动态import](#代码分割和动态import)
-- [介绍一下webpack的Tree Sharking](#介绍一下webpack的Tree Sharking)
-- [介绍一下webpack dll](#介绍一下webpack-dll)
+- [模块化标准](#-模块化标准)
+- [babel原理和用途](#-babel原理和用途)
+- [webpack初体验时需要注意的点](#-webpack初体验时需要注意的点)
+- [webpack得理解和解决得问题](#-webpack得理解和解决得问题)
+- [Plugin 和 Loader 分别是什么？ 怎么工作的？](#-plugin-和-loader-分别是什么-怎么工作的)
+- [Loader的作用是什么和常用的Loader](#-Loader的作用是什么和常用的Loader)
+- [Plugin的作用是什么和常用的Plugin](#-Plugin的作用是什么和常用的Plugin)
+- [webpack moudles, 如何表达自己的各种依赖关系](#-webpack-moudles-如何表达自己的各种依赖关系)
+- [webpack 中 moudles bundle 和 Chunk 的区别是什么](#-webpack-中-moudles-bundle-和-chunk-的区别是什么)
+- [热更新的配置和实现原理](#-热更新的配置和实现原理)
+- [文件指纹](#-文件指纹)
+- [静态资源内联](#-静态资源内联)
+- [多页面应用打包通用方案](#-多页面应用打包通用方案)
+- [source map](#-source-map)
+- [提取页面公共资源splitChunksPlugin](#-提取页面公共资源splitChunksPlugin)
+- [代码分割和动态import](#-代码分割和动态import)
+- [介绍一下webpack的Tree Sharking](#-介绍一下webpack的Tree Sharking)
+- [介绍一下webpack dll](#-介绍一下webpack-dll)
 - [webpack的proxy工作原理](#-webpack的proxy工作原理)
-- [编写Loader](#编写Loader)
-- [编写Plugin](#编写Plugin)
-- [webpack实现SSR打包](#webpack实现SSR打包)
-- [webpack的构建流程](#webpack的构建流程)
-- [webpack和rollup之间的异同点](#webpack和rollup之间的异同点)
-- [webpack构建速度和体积优化策略](#webpack构建速度和体积优化策略)
-- [webpack层面如何做性能优化](#webpack层面如何做性能优化)
+- [编写Loader](#-编写Loader)
+- [编写Plugin](#-编写Plugin)
+- [webpack实现SSR打包](#-webpack实现SSR打包)
+- [webpack的构建流程](#-webpack的构建流程)
+- [webpack和rollup之间的异同点](#-webpack和rollup之间的异同点)
+- [webpack构建速度和体积优化策略](#-webpack构建速度和体积优化策略)
+- [webpack层面如何做性能优化](#-webpack层面如何做性能优化)
 
 
 
 ------------------------------------------------------------------------------------------
+### 模块化标准
+CommonJS 现主要用于Node.js（Node@13.2.0开始支持直接使用ES Module）
+AMD require.js 依赖前置，市场存量不建议使用
+CMD sea.js 就近执行，市场存量不建议使用
+ES Module  ES语言规范，标准，趋势，未来
+
+**[:arrow_up: 返回目录](#目录)**
+
+### babel原理和用途
+**babel 用途**
+
+- 转译 esnext、typescript 到目标环境支持 js （高级语言到到低级语言叫编译，高级语言到高级语言叫转译）
+- 代码转换（taro）
+- 代码分析（模块分析、tree-shaking、linter 等）
+
+**bebel 如何转换的？** （也就是babel的原理是什么？）
+对源码字符串 parse 生成 AST，然后对 AST 进行增删改，然后输出目标代码字符串转换
+
+- parse 阶段：首先使用 @babel/parser将源码转换成 AST
+- transform 阶段：接着使用@babel/traverse遍历 AST，并调用 visitor 函数修改 AST，修改过程中通过@babel/types来创建、判断 AST 节点；使用@babel/template来批量创建 AST
+- generate 阶段：使用@babel/generate将 AST 打印为目标代码字符串，期间遇到代码错误位置时会用到@babel/code-frame
+
+**[:arrow_up: 返回目录](#目录)**
 
 ### webpack初体验时需要注意的点
 1. 学习chunks时，要使用webpack版本4.7，5.X版本以上没法看到chunks
@@ -114,7 +139,7 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
 
 **[:arrow_up: 返回目录](#目录)**
 
-### webpak moudles, 如何表达自己的各种依赖关系
+### webpack moudles, 如何表达自己的各种依赖关系
 * ESM / export default, import
 * CommonJs / module.exports, require 同步加载，都是单实例 普遍使用在node项目中
 * AMD / define, require 异步加载 浏览器端的规范使用AMD比较好
@@ -122,7 +147,7 @@ webpack 在开发模式下运行的时候，每当检测到一个文件变化，
 
 **[:arrow_up: 返回目录](#目录)**
 
-### webpak 中 moudles bundle 和 Chunk 的区别是什么 
+### webpack 中 moudles bundle 和 Chunk 的区别是什么 
 
 1. Chunk
 

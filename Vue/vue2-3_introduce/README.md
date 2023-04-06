@@ -17,11 +17,19 @@ Vue  是一套用于构建用户界面的渐进式框架，
 3. keepAlive
 4. v-model .sync
 5. 强制刷新 this.$forceUpdate
-6. 插槽
-7. 混入mixin
-8. 指令
-9. 过滤器 filters // 面试题: 在过滤器中this不指向实例，只是一个纯函数
-10. 
+6. 插槽 solt slot-scope
+7. 混入 mixin 
+合并策略
+a: data 冲突时，以组件主题为优先
+b: 生命周期钩子会先后执行，先mixin后主体
+c: 有相同对象合并时，递归合并优先级仍以主体优先
+8. 继承拓展 extends 整体拓展 extend
+合并策略 - 与mixin相同
+a: data 冲突时，以组件主题为优先
+b: 生命周期钩子会先后执行，先mixin后主体 
+9. 指令 directive
+10. 过滤器 filters // 面试题: 在过滤器中this不指向实例，只是一个纯函数
+11. 插件 plugins
 
 ### 性能
 - FP FCP - FMP

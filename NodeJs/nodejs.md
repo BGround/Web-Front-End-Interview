@@ -25,8 +25,9 @@ npm install moment
 - [2.express使用](#2-express使用)
 - [3.koa使用](#3-koa使用)
 - [4.简述RPC调用](#4-简述RPC调用)
-- 
--
+- [5.commonJS和es6模块引入的区别](#5-commonJS和es6模块引入的区别)
+- [6.require和import的区别](#6-require和import的区别)
+
 
 
 
@@ -55,11 +56,23 @@ npm install moment
 
 **[:arrow_up: 返回目录](#目录)**
 
+### 5. commonJS和es6模块引入的区别
+CommonJS是一种模块规范，最初是用于Nodejs,成为Nodejs的模块规范，使用require进行模块引入
+再ES6出来之前，前端也实现了一套相同的模块规范(AMD), 用来对前端模块进行管理
 
+自ES6起，引入了ES6 modules规范，使用import 进行模块引入
 
+**在使用上的区别:**
+CommonJS模块输出是值的copy，运行时加载，ES6输出的是值的引用，模块是编译时输出接口
+CommonJS是单个模块导出，ES6模块可以导出多个
+CommonJS是动态语法，可以写在判断里面，ES6是静态语法，具有置顶性，但是建议写在文件头部
 
+**[:arrow_up: 返回目录](#目录)**
 
+const nums = [1, 0, false, null, undefined]
+### 6. require和import的区别
 
+[同上第五条](#5-commonJS和es6模块引入的区别)
 
-
+**[:arrow_up: 返回目录](#目录)**
 

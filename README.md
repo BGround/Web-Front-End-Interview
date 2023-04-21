@@ -47,6 +47,7 @@
 #### 2020
  - [字节](https://juejin.im/post/5e61136ee51d4527196d6019)
  - [由浅入深，66条JavaScript面试知识点和答案解析](https://juejin.im/post/5ef8377f6fb9a07e693a6061)
+ - [面试](https://github.com/febobo/web-interview)
 ## 框架搭建
  - [手把手教你搭建一个灰度发布环境](https://segmentfault.com/a/1190000022612488)
 
